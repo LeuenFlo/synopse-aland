@@ -2,7 +2,9 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0f0e0c" />
   <title>Synopse nach Aland</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,9 +28,16 @@
     }
 
     * { box-sizing: border-box; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: rgba(199, 92, 51, 0.18);
       font-family: "DM Sans", system-ui, sans-serif;
       font-optical-sizing: auto;
       background: var(--bg);
@@ -41,7 +50,8 @@
     .wrap {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
+      padding: 2.5rem max(1.25rem, env(safe-area-inset-right)) 4rem max(1.25rem, env(safe-area-inset-left));
+      padding-bottom: max(4rem, calc(4rem + env(safe-area-inset-bottom)));
     }
 
     header {
@@ -203,27 +213,28 @@
     .list {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.65rem;
     }
 
     .row-wrap .row-head {
       display: grid;
       grid-template-columns: auto 1fr auto;
-      gap: 0.75rem 1rem;
-      align-items: center;
-      padding: 0.65rem 1rem;
+      gap: 0.65rem 1.2rem;
+      align-items: start;
+      padding: 0.85rem 1.15rem;
       transition: background 0.15s;
     }
 
     .row-wrap:hover {
-      border-color: rgba(232, 228, 220, 0.2);
+      border-color: rgba(232, 228, 220, 0.22);
     }
 
     .row-wrap {
       background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: calc(var(--radius) + 2px);
       overflow: hidden;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
     }
 
     .row-head {
@@ -243,21 +254,24 @@
     .row-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.55rem;
       flex-wrap: wrap;
       justify-content: flex-end;
+      align-self: start;
+      padding-top: 0.1rem;
     }
 
     .row-wrap .chev {
-      font-size: 0.65rem;
-      opacity: 0.5;
+      font-size: 0.7rem;
+      opacity: 0.45;
       transition: transform 0.25s ease, opacity 0.2s ease;
       user-select: none;
+      flex-shrink: 0;
     }
 
     .row-head:hover .chev {
-      transform: translateX(2px);
-      opacity: 0.9;
+      transform: translate(2px, -1px);
+      opacity: 0.85;
     }
 
     .text-grid {
@@ -407,7 +421,7 @@
     }
 
     .translation-info-dialog {
-      z-index: 1200;
+      z-index: 1260;
       max-width: min(26rem, calc(100vw - 2rem));
       margin: auto;
       padding: 0;
@@ -588,6 +602,183 @@
       overflow: visible;
     }
 
+    .translation-lang-mobile-btn {
+      display: none;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 0;
+      padding: 0.65rem 0.85rem;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--paper);
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .translation-lang-mobile-btn:hover {
+      border-color: rgba(199, 92, 51, 0.45);
+      background: rgba(199, 92, 51, 0.08);
+    }
+
+    .translation-lang-mobile-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .translation-lang-mobile-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .translation-lang-mobile-hint {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+    }
+
+    .translation-lang-mobile-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--paper);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .translation-lang-mobile-chev {
+      flex-shrink: 0;
+      opacity: 0.85;
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    .translation-picker-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1250;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg2);
+      padding: max(env(safe-area-inset-top), 0.85rem) max(env(safe-area-inset-right), 1.35rem)
+        max(env(safe-area-inset-bottom), 1.15rem) max(env(safe-area-inset-left), 1.35rem);
+      box-sizing: border-box;
+    }
+
+    .translation-picker-overlay[hidden] {
+      display: none !important;
+    }
+
+    .translation-picker-toolbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.15rem 0 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .translation-picker-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--paper);
+      line-height: 1.25;
+    }
+
+    .translation-picker-close {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      padding: 0;
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--paper);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .translation-picker-close:hover {
+      border-color: rgba(199, 92, 51, 0.5);
+      color: var(--accent);
+    }
+
+    .translation-picker-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.35rem 0 1.5rem;
+    }
+
+    .translation-picker-inner {
+      padding-bottom: 0.75rem;
+    }
+
+    /* Luft im Vollbild-Sprachpicker (nur #translation-picker-body) */
+    .translation-picker-inner.translation-buttons {
+      gap: 1.15rem;
+    }
+
+    .translation-picker-inner .translation-lang-group {
+      gap: 0.55rem;
+    }
+
+    .translation-picker-inner .translation-lang-label {
+      margin-top: 0.35rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .translation-picker-inner .translation-lang-group:first-child .translation-lang-label {
+      margin-top: 0;
+    }
+
+    .translation-picker-inner .translation-option-row {
+      gap: 0.55rem;
+    }
+
+    .translation-picker-inner .translation-option-main {
+      padding: 0.55rem 0.85rem;
+      font-size: 0.8rem;
+    }
+
+    .translation-picker-inner .translation-info-btn {
+      flex: 0 0 44px;
+      width: 44px;
+      min-width: 44px;
+    }
+
+    .translation-picker-inner .translation-lang-more {
+      margin-top: 0.35rem;
+      padding-top: 1rem;
+    }
+
+    .translation-picker-inner .translation-more-inner {
+      padding-top: 0.55rem;
+    }
+
+    .translation-picker-inner .translation-more-inner .translation-lang-group + .translation-lang-group {
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+    }
+
     .text-col h4 {
       margin: 0 0 0.6rem;
       font-size: 0.72rem;
@@ -652,41 +843,58 @@
 
     .aland {
       font-family: "Instrument Serif", Georgia, serif;
-      font-size: 1.35rem;
+      font-size: 1.42rem;
+      font-weight: 400;
       color: var(--accent);
-      min-width: 2.5rem;
+      min-width: 2.85rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      padding-top: 0.12rem;
+    }
+
+    .row-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      min-width: 0;
     }
 
     .row-main h2 {
       margin: 0;
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 600;
-      line-height: 1.35;
+      line-height: 1.38;
+      letter-spacing: -0.01em;
     }
 
     .row-main .sec {
-      font-size: 0.72rem;
+      font-size: 0.73rem;
       color: var(--muted);
-      margin-top: 0.2rem;
+      margin: 0;
+      line-height: 1.45;
     }
 
     .gospels {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.42rem;
       justify-content: flex-end;
+      align-items: center;
     }
 
     .pill {
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 0.25rem 0.45rem;
-      border-radius: 6px;
+      letter-spacing: 0.05em;
+      padding: 0.32rem 0.52rem;
+      border-radius: 999px;
       border: 1px solid transparent;
-      opacity: 0.28;
+      opacity: 0.32;
       white-space: nowrap;
+      line-height: 1.2;
     }
 
     .pill.on {
@@ -694,21 +902,21 @@
     }
 
     .pill.on.bold {
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
     }
 
-    .pill.mt.on { background: rgba(107, 155, 209, 0.22); border-color: var(--mt); color: #b8d4f0; }
-    .pill.mk.on { background: rgba(196, 163, 90, 0.2); border-color: var(--mk); color: #e8d4a8; }
-    .pill.lk.on { background: rgba(122, 171, 142, 0.2); border-color: var(--lk); color: #c5e8d4; }
-    .pill.jn.on { background: rgba(155, 139, 196, 0.2); border-color: var(--jn); color: #dcd0f0; }
+    .pill.mt.on { background: rgba(107, 155, 209, 0.2); border-color: rgba(107, 155, 209, 0.55); color: #c5daf3; }
+    .pill.mk.on { background: rgba(196, 163, 90, 0.18); border-color: rgba(196, 163, 90, 0.5); color: #ead8a8; }
+    .pill.lk.on { background: rgba(122, 171, 142, 0.18); border-color: rgba(122, 171, 142, 0.5); color: #cde9d8; }
+    .pill.jn.on { background: rgba(155, 139, 196, 0.18); border-color: rgba(155, 139, 196, 0.5); color: #e2d8f2; }
 
     .pill .ref {
       font-weight: 400;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 0;
       text-transform: none;
-      opacity: 0.85;
-      margin-left: 0.25rem;
+      opacity: 0.88;
+      margin-left: 0.3rem;
     }
 
     .empty {
@@ -766,10 +974,6 @@
     }
 
     @media (max-width: 720px) {
-      .row-wrap .row-head {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-      }
       .gospels { justify-content: flex-start; }
       .text-grid {
         grid-template-columns: 1fr !important;
@@ -955,6 +1159,161 @@
       }
 
     }
+
+    /* Mobile: touch targets, safe areas, layout */
+    @media (max-width: 720px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      input[type="search"],
+      select {
+        width: 100%;
+        min-width: 0;
+        font-size: 16px;
+        min-height: 44px;
+      }
+
+      .preset-wrap {
+        width: 100%;
+      }
+
+      .preset-group {
+        width: 100%;
+      }
+
+      .preset button {
+        min-height: 44px;
+        padding: 0.45rem 0.9rem;
+      }
+
+      .subnav a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+      }
+
+      .row-wrap .row-head {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        align-items: start;
+        gap: 0.5rem 0.95rem;
+        padding: 0.95rem 1.1rem;
+      }
+
+      .row-wrap .row-head .aland {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .row-wrap .row-head .row-main {
+        grid-column: 2;
+        grid-row: 1;
+        min-width: 0;
+      }
+
+      .row-wrap .row-head .row-actions {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: flex-start;
+        align-self: stretch;
+        margin-top: 0.15rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(232, 228, 220, 0.09);
+      }
+
+      .row-wrap .row-head .gospels {
+        justify-content: flex-start;
+      }
+
+      .pill {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.55rem;
+      }
+
+      .fab-stack {
+        right: max(1rem, env(safe-area-inset-right));
+        bottom: max(1rem, env(safe-area-inset-bottom));
+      }
+
+      .to-top {
+        width: 3rem;
+        height: 3rem;
+        min-width: 48px;
+        min-height: 48px;
+      }
+
+      .compare-modal {
+        padding:
+          max(0.5rem, env(safe-area-inset-top))
+          max(0.5rem, env(safe-area-inset-right))
+          max(0.75rem, env(safe-area-inset-bottom))
+          max(0.5rem, env(safe-area-inset-left));
+      }
+
+      .compare-modal-shell {
+        width: 100%;
+      }
+
+      .compare-modal-aside #compare-modal-translation-buttons {
+        display: none !important;
+      }
+
+      .translation-lang-mobile-btn {
+        display: flex;
+      }
+
+      .compare-modal-close {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        top: max(0.5rem, env(safe-area-inset-top));
+        right: max(0.5rem, env(safe-area-inset-right));
+      }
+
+      .compare-modal-header {
+        padding-right: 3rem;
+      }
+
+      .compare-modal-panel {
+        padding: 1rem max(1rem, env(safe-area-inset-right)) 1.15rem max(1rem, env(safe-area-inset-left));
+      }
+
+      .translation-option-main {
+        min-height: 44px;
+        padding: 0.5rem 0.65rem;
+        font-size: 0.8rem;
+      }
+
+      .translation-info-btn {
+        flex: 0 0 44px;
+        width: 44px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+
+      .translation-more-summary {
+        min-height: 44px;
+        padding: 0.5rem 0;
+        align-items: center;
+      }
+
+      /* Einheitliches Scrollen über das ganze Modal, nicht pro Evangelium */
+      .compare-modal .text-col-body {
+        max-height: none;
+        overflow: visible;
+      }
+
+      .translation-info-dialog {
+        max-width: min(26rem, calc(100vw - 1rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+      }
+    }
   </style>
 </head>
 <body>
@@ -1029,6 +1388,20 @@
             </svg>
             <span class="compare-modal-translations-title">Übersetzung</span>
           </div>
+          <button
+            type="button"
+            class="translation-lang-mobile-btn"
+            id="translation-lang-mobile-btn"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="translation-picker-overlay"
+          >
+            <span class="translation-lang-mobile-inner">
+              <span class="translation-lang-mobile-hint">Übersetzung</span>
+              <span class="translation-lang-mobile-label" id="translation-lang-mobile-label"></span>
+            </span>
+            <span class="translation-lang-mobile-chev" aria-hidden="true">▾</span>
+          </button>
           <div class="translation-buttons" id="compare-modal-translation-buttons"></div>
         </div>
       </aside>
@@ -1043,6 +1416,25 @@
         </header>
         <div class="text-grid compare-modal-grid" id="compare-modal-grid" data-filled="0"></div>
       </div>
+    </div>
+  </div>
+
+  <div
+    id="translation-picker-overlay"
+    class="translation-picker-overlay"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="translation-picker-title"
+  >
+    <div class="translation-picker-toolbar">
+      <h2 id="translation-picker-title" class="translation-picker-title">Übersetzung wählen</h2>
+      <button type="button" class="translation-picker-close" id="translation-picker-close" aria-label="Schließen">
+        ×
+      </button>
+    </div>
+    <div class="translation-picker-scroll">
+      <div class="translation-buttons translation-picker-inner" id="translation-picker-body"></div>
     </div>
   </div>
 
@@ -1491,6 +1883,7 @@
       function openTranslationInfoDialog(translationId) {
         const t = translationById[translationId];
         if (!t || !t.info) return;
+        closeTranslationPicker();
         const dlg = document.getElementById("translation-info-dialog");
         document.getElementById("translation-info-dialog-title").textContent = t.label;
         const body = document.getElementById("translation-info-dialog-body");
@@ -1514,10 +1907,50 @@
         }
       }
 
+      function updateMobileTranslationLabel() {
+        const lab = document.getElementById("translation-lang-mobile-label");
+        if (lab) lab.textContent = activeTranslationLabel();
+      }
+
       function syncTranslationButtons() {
-        document.querySelectorAll(".translation-buttons button[data-translation]").forEach(function (btn) {
+        document.querySelectorAll("button[data-translation]").forEach(function (btn) {
           btn.classList.toggle("active", btn.dataset.translation === activeTranslationId);
         });
+        updateMobileTranslationLabel();
+      }
+
+      function refreshTranslationUI() {
+        const html = renderTranslationButtonRows();
+        document.getElementById("compare-modal-translation-buttons").innerHTML = html;
+        document.getElementById("translation-picker-body").innerHTML = html;
+        syncTranslationButtons();
+      }
+
+      const translationPickerOverlay = document.getElementById("translation-picker-overlay");
+      const translationLangMobileBtn = document.getElementById("translation-lang-mobile-btn");
+
+      function isMobileTranslationUI() {
+        return window.matchMedia("(max-width: 720px)").matches;
+      }
+
+      function closeTranslationPicker() {
+        if (!translationPickerOverlay || translationPickerOverlay.hidden) return;
+        translationPickerOverlay.setAttribute("hidden", "");
+        if (translationLangMobileBtn) {
+          translationLangMobileBtn.setAttribute("aria-expanded", "false");
+        }
+      }
+
+      function openTranslationPicker() {
+        if (!translationPickerOverlay || !isMobileTranslationUI()) return;
+        translationPickerOverlay.removeAttribute("hidden");
+        if (translationLangMobileBtn) {
+          translationLangMobileBtn.setAttribute("aria-expanded", "true");
+        }
+        window.setTimeout(function () {
+          const c = document.getElementById("translation-picker-close");
+          if (c && typeof c.focus === "function") c.focus();
+        }, 30);
       }
 
       const compareModal = document.getElementById("compare-modal");
@@ -1528,6 +1961,7 @@
       let translationSwapSeq = 0;
 
       function closeCompareModal() {
+        closeTranslationPicker();
         const infoDlg = document.getElementById("translation-info-dialog");
         if (infoDlg && infoDlg.open && typeof infoDlg.close === "function") {
           infoDlg.close();
@@ -1579,8 +2013,29 @@
         }, 50);
       }
 
-      document.getElementById("compare-modal-translation-buttons").innerHTML =
-        renderTranslationButtonRows();
+      refreshTranslationUI();
+
+      const translationPickerCloseBtn = document.getElementById("translation-picker-close");
+      if (translationPickerCloseBtn) {
+        translationPickerCloseBtn.addEventListener("click", function () {
+          closeTranslationPicker();
+          if (translationLangMobileBtn && typeof translationLangMobileBtn.focus === "function") {
+            translationLangMobileBtn.focus();
+          }
+        });
+      }
+
+      if (translationLangMobileBtn) {
+        translationLangMobileBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!isMobileTranslationUI()) return;
+          openTranslationPicker();
+        });
+      }
+
+      window.matchMedia("(max-width: 720px)").addEventListener("change", function (ev) {
+        if (!ev.matches) closeTranslationPicker();
+      });
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
@@ -1588,6 +2043,14 @@
         if (infoDlg && infoDlg.open) {
           e.preventDefault();
           if (typeof infoDlg.close === "function") infoDlg.close();
+          return;
+        }
+        if (translationPickerOverlay && !translationPickerOverlay.hidden) {
+          e.preventDefault();
+          closeTranslationPicker();
+          if (translationLangMobileBtn && typeof translationLangMobileBtn.focus === "function") {
+            translationLangMobileBtn.focus();
+          }
           return;
         }
         if (compareModal.classList.contains("is-open")) {
@@ -1622,10 +2085,18 @@
           String(tSel.lang) !== "" &&
           PRIMARY_LANG_KEYS.indexOf(String(tSel.lang)) === -1
         ) {
-          const det = document.querySelector(".translation-lang-more");
+          const det =
+            document.querySelector("#translation-picker-body .translation-lang-more") ||
+            document.querySelector("#compare-modal-translation-buttons .translation-lang-more");
           if (det) det.open = true;
         }
         invalidateOpenPanels();
+        if (translationPickerOverlay && !translationPickerOverlay.hidden) {
+          closeTranslationPicker();
+          if (translationLangMobileBtn && typeof translationLangMobileBtn.focus === "function") {
+            translationLangMobileBtn.focus();
+          }
+        }
       });
 
       async function fillCompareGrid(grid, r) {

@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Synopse nach Aland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="data/parallels_data.js"></script>
+  <script src="data/elberfelder_data.js"></script>
+  <script src="compare_text.js?"></script>
+  <style>
+    :root {
+      --bg: #0f0e0c;
+      --bg2: #181614;
+      --paper: #e8e4dc;
+      --muted: #8a8278;
+      --accent: #c75c33;
+      --mt: #6b9bd1;
+      --mk: #c4a35a;
+      --lk: #7aab8e;
+      --jn: #9b8bc4;
+      --border: rgba(232, 228, 220, 0.12);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "DM Sans", system-ui, sans-serif;
+      font-optical-sizing: auto;
+      background: var(--bg);
+      color: var(--paper);
+      background-image:
+        radial-gradient(ellipse 120% 80% at 10% -10%, rgba(199, 92, 51, 0.12), transparent 50%),
+        radial-gradient(ellipse 80% 50% at 100% 0%, rgba(107, 155, 209, 0.08), transparent 45%);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    header {
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      line-height: 1.1;
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    header h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    header p.lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 52ch;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .stat {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      animation: rise 0.5s ease backwards;
+    }
+    .stat:nth-child(1) { animation-delay: 0.05s; }
+    .stat:nth-child(2) { animation-delay: 0.1s; }
+    .stat:nth-child(3) { animation-delay: 0.15s; }
+    .stat:nth-child(4) { animation-delay: 0.2s; }
+    .stat:nth-child(5) { animation-delay: 0.25s; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stat .n {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .stat .l {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .controls label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input[type="search"],
+    select {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--paper);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font: inherit;
+      font-size: 0.9rem;
+    }
+
+    input[type="search"] {
+      min-width: 200px;
+      flex: 1;
+    }
+
+    select {
+      max-width: 100%;
+    }
+
+    .preset-wrap {
+      flex: 1 1 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: flex-start;
+    }
+
+    .preset-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.45rem 0.65rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .preset-group-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .preset {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .preset button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--paper);
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      font: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .preset button:hover,
+    .preset button.active {
+      background: rgba(199, 92, 51, 0.15);
+      border-color: rgba(199, 92, 51, 0.45);
+    }
+
+    .count {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .row-wrap .row-head {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0.75rem 1rem;
+      align-items: center;
+      padding: 0.65rem 1rem;
+      transition: background 0.15s;
+    }
+
+    .row-wrap:hover {
+      border-color: rgba(232, 228, 220, 0.2);
+    }
+
+    .row-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .row-head {
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .row-head:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .row-head:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .row-wrap .chev {
+      font-size: 0.65rem;
+      opacity: 0.5;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+      user-select: none;
+    }
+
+    .row-head:hover .chev {
+      transform: translateX(2px);
+      opacity: 0.9;
+    }
+
+    .text-grid {
+      display: grid;
+      gap: 1rem;
+      align-items: start;
+      /* Spaltenzahl wird per JS gesetzt (nur Bücher mit Perikope) */
+    }
+
+    .translation-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .translation-lang-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .translation-lang-group + .translation-lang-group {
+      margin-top: 0.65rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .translation-lang-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+    }
+
+    .translation-option-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0.35rem;
+    }
+
+    .translation-option-main {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: auto;
+      text-align: left;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--paper);
+      border-radius: 8px;
+      padding: 0.35rem 0.5rem;
+      font: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.22s cubic-bezier(0.16, 1, 0.35, 1),
+        box-shadow 0.2s ease;
+    }
+
+    .translation-option-main:active {
+      transform: scale(0.98);
+    }
+
+    .translation-option-main:hover,
+    .translation-option-main.active {
+      background: rgba(199, 92, 51, 0.15);
+      border-color: rgba(199, 92, 51, 0.45);
+    }
+
+    .translation-option-main.active {
+      box-shadow: 0 2px 12px rgba(199, 92, 51, 0.2);
+    }
+
+    .translation-info-btn {
+      flex: 0 0 1.85rem;
+      width: 1.85rem;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .translation-info-btn:hover {
+      border-color: rgba(199, 92, 51, 0.45);
+      color: var(--accent);
+      background: rgba(199, 92, 51, 0.1);
+    }
+
+    .translation-info-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .translation-info-dialog {
+      z-index: 1200;
+      max-width: min(26rem, calc(100vw - 2rem));
+      margin: auto;
+      padding: 0;
+      border: 1px solid rgba(199, 92, 51, 0.35);
+      border-radius: 12px;
+      background: var(--bg2);
+      color: var(--paper);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+
+    .translation-info-dialog::backdrop {
+      background: rgba(5, 5, 8, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .translation-info-dialog-inner {
+      position: relative;
+      padding: 1rem 1.1rem 1.05rem;
+    }
+
+    .translation-info-dialog-x {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--paper);
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .translation-info-dialog-x:hover {
+      border-color: rgba(199, 92, 51, 0.5);
+      color: var(--accent);
+    }
+
+    .translation-info-dialog-h {
+      margin: 0 2rem 0.55rem 0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+
+    .translation-info-dialog-body {
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--paper);
+    }
+
+    .translation-info-dialog-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .translation-info-dialog-body a:hover {
+      color: #e8a080;
+    }
+
+    .compare-modal-shell {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.75rem;
+      width: min(1180px, calc(100vw - 2rem));
+      max-width: 100%;
+      box-sizing: border-box;
+      transition: transform 0.42s cubic-bezier(0.22, 1.05, 0.36, 1);
+    }
+
+    .compare-modal:not(.is-open) .compare-modal-shell {
+      transform: scale(0.94) translateY(14px);
+    }
+
+    .compare-modal.is-open .compare-modal-shell {
+      transform: scale(1) translateY(0);
+    }
+
+    .compare-modal-aside {
+      flex: 0 0 auto;
+      max-width: min(22rem, calc(100vw - 3rem));
+      transition:
+        transform 0.44s cubic-bezier(0.16, 1, 0.35, 1) 0.04s,
+        opacity 0.38s ease 0.04s;
+    }
+
+    .compare-modal:not(.is-open) .compare-modal-aside {
+      transform: translateX(-16px);
+      opacity: 0;
+    }
+
+    .compare-modal.is-open .compare-modal-aside {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .compare-modal:not(.is-open) .compare-modal-panel {
+      transform: translateX(18px);
+      opacity: 0;
+    }
+
+    .compare-modal.is-open .compare-modal-panel {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 720px) {
+      .compare-modal-shell {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .compare-modal-aside {
+        align-self: flex-start;
+        max-width: 100%;
+      }
+
+      .compare-modal:not(.is-open) .compare-modal-aside {
+        transform: translateY(-12px);
+      }
+
+      .compare-modal.is-open .compare-modal-aside {
+        transform: translateY(0);
+      }
+
+      .compare-modal:not(.is-open) .compare-modal-panel {
+        transform: translateY(16px);
+      }
+
+      .compare-modal.is-open .compare-modal-panel {
+        transform: translateY(0);
+      }
+    }
+
+    .compare-modal-translations-box {
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      max-width: 100%;
+    }
+
+    .compare-modal-translations-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .compare-modal-translations-book {
+      width: 1.45rem;
+      height: 1.45rem;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+
+    .compare-modal-translations-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+    }
+
+    .compare-modal-aside .translation-buttons {
+      max-height: min(52vh, 22rem);
+      overflow-y: auto;
+    }
+
+    .text-col h4 {
+      margin: 0 0 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+    }
+
+    .text-col.mt h4 { color: var(--mt); }
+    .text-col.mk h4 { color: var(--mk); }
+    .text-col.lk h4 { color: var(--lk); }
+    .text-col.jn h4 { color: var(--jn); }
+
+    .text-col .ref-tag {
+      display: block;
+      font-weight: 400;
+      font-size: 0.68rem;
+      letter-spacing: 0;
+      text-transform: none;
+      opacity: 0.85;
+      margin-top: 0.15rem;
+      word-break: break-word;
+    }
+
+    .text-col-body {
+      font-size: 0.82rem;
+      line-height: 1.48;
+      max-height: 70vh;
+      overflow: auto;
+    }
+
+    .verse-line {
+      margin: 0 0 0.55rem;
+    }
+
+    .verse-addr {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-right: 0.35rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .compare-note {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .text-col-empty {
+      opacity: 0.45;
+    }
+
+    .text-col .missing {
+      color: var(--muted);
+    }
+
+    .aland {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.35rem;
+      color: var(--accent);
+      min-width: 2.5rem;
+    }
+
+    .row-main h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .row-main .sec {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .gospels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.45rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      opacity: 0.28;
+      white-space: nowrap;
+    }
+
+    .pill.on {
+      opacity: 1;
+    }
+
+    .pill.on.bold {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .pill.mt.on { background: rgba(107, 155, 209, 0.22); border-color: var(--mt); color: #b8d4f0; }
+    .pill.mk.on { background: rgba(196, 163, 90, 0.2); border-color: var(--mk); color: #e8d4a8; }
+    .pill.lk.on { background: rgba(122, 171, 142, 0.2); border-color: var(--lk); color: #c5e8d4; }
+    .pill.jn.on { background: rgba(155, 139, 196, 0.2); border-color: var(--jn); color: #dcd0f0; }
+
+    .pill .ref {
+      font-weight: 400;
+      font-size: 0.62rem;
+      letter-spacing: 0;
+      text-transform: none;
+      opacity: 0.85;
+      margin-left: 0.25rem;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    footer a {
+      color: var(--accent);
+    }
+
+    footer p {
+      margin: 0 0 0.65rem;
+      max-width: 62ch;
+    }
+
+    footer p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subnav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .subnav a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+
+    .subnav a:hover {
+      color: var(--paper);
+      border-color: rgba(232, 228, 220, 0.25);
+    }
+
+    .subnav a.here {
+      color: var(--paper);
+      background: rgba(199, 92, 51, 0.12);
+      border-color: rgba(199, 92, 51, 0.35);
+    }
+
+    @media (max-width: 720px) {
+      .row-wrap .row-head {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      .gospels { justify-content: flex-start; }
+      .text-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    .fab-stack {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 1.25rem;
+      z-index: 101;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+
+    .to-top {
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--paper);
+      font-size: 1.15rem;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    }
+
+    .to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .to-top:hover {
+      border-color: rgba(199, 92, 51, 0.55);
+      color: var(--accent);
+    }
+
+    .to-top:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .compare-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.44s cubic-bezier(0.16, 1, 0.35, 1),
+        visibility 0s linear 0.44s;
+    }
+
+    .compare-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        opacity 0.44s cubic-bezier(0.16, 1, 0.35, 1),
+        visibility 0s;
+    }
+
+    .compare-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 5, 8, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .compare-modal-panel {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      max-height: min(92vh, 880px);
+      overflow: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(199, 92, 51, 0.25);
+      background: var(--bg2);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 28px 90px rgba(0, 0, 0, 0.55);
+      padding: 1.15rem 1.35rem 1.45rem;
+      transition:
+        transform 0.44s cubic-bezier(0.16, 1, 0.35, 1) 0.08s,
+        opacity 0.38s ease 0.08s;
+    }
+
+    .compare-modal-close {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.65rem;
+      z-index: 2;
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--paper);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .compare-modal-close:hover {
+      border-color: rgba(199, 92, 51, 0.5);
+      color: var(--accent);
+      background: rgba(199, 92, 51, 0.12);
+    }
+
+    .compare-modal-close:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .compare-modal-header {
+      padding-right: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .compare-modal-aland {
+      margin: 0 0 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+
+    .compare-modal-header h2 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(1.25rem, 3.5vw, 1.65rem);
+      line-height: 1.2;
+      margin: 0 0 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .compare-modal-sec {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .compare-modal-grid {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      transition: opacity 0.28s ease;
+    }
+
+    .compare-modal-grid.is-swapping {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .compare-modal,
+      .compare-modal-shell,
+      .compare-modal-aside,
+      .compare-modal-panel,
+      .compare-modal-grid,
+      .translation-option-main,
+      .translation-info-btn {
+        transition-duration: 0.01ms !important;
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="subnav">
+      <a href="index.html" class="here">Listenansicht</a>
+      <a href="kombinationen.html">Kombinationen</a>
+    </nav>
+    <header>
+      <h1>Synopse <em>nach Aland</em></h1>
+      <p class="lead"><strong>Durchsuchen, filtern, vergleichen:</strong> Diese Liste folgt der Aland-Synopse. Jede Zeile ist eine Perikope mit Verweisen auf Matthäus, Markus, Lukas und Johannes. <strong>Einen Eintrag anklicken</strong> blendet die passenden Bibeltexte ein — mit freier Wahl der Übersetzung (Deutsch) und des griechischen Urtexts (SBL oder TR).</p>
+    </header>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+      <input type="search" id="q" placeholder="Titel oder Vers suchen…" autocomplete="off" />
+      <select id="section"></select>
+      <div class="preset-wrap" id="presets"></div>
+    </div>
+
+    <div class="count" id="count"></div>
+    <div class="list" id="list"></div>
+
+    <footer>
+      <p>
+        Die Tabelle folgt der <strong>Synopsis Quattuor Evangeliorum</strong> (Kurt Aland). Die zugrunde liegende Parallelliste stammt von
+        <a href="https://www.bible-researcher.com/parallels.html" target="_blank" rel="noopener">bible-researcher.com</a>.
+      </p>
+      <p>
+        Die Bibelübersetzungen im Vergleichsfenster stammen von
+        <a href="https://www.biblesupersearch.com/" target="_blank" rel="noopener">Bible SuperSearch</a>
+        und aus dem Sammlungsprojekt
+        <a href="https://github.com/scrollmapper/bible_databases/tree/master" target="_blank" rel="noopener">scrollmapper/bible_databases</a>.
+      </p>
+      <p>
+        „Q-Kandidat“ kennzeichnet Zeilen, in denen nur Matthäus und Lukas vorkommen, nicht Markus — eine grobe Hilfe zur Zwei-Quellen-Theorie. Wo Aland mehrere Verse in einer Zelle bündelt, kann ein Vers fehlen; dann weist das Textfenster darauf hin.
+      </p>
+    </footer>
+  </div>
+
+  <div class="fab-stack">
+    <button type="button" class="to-top" id="to-top" aria-label="Nach oben scrollen" title="Nach oben">↑</button>
+  </div>
+
+  <div
+    class="compare-modal"
+    id="compare-modal"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="compare-modal-title"
+  >
+    <div class="compare-modal-backdrop" id="compare-modal-backdrop" aria-hidden="true"></div>
+    <div class="compare-modal-shell">
+      <aside class="compare-modal-aside" aria-label="Übersetzung wählen">
+        <div class="compare-modal-translations-box">
+          <div class="compare-modal-translations-head">
+            <svg
+              class="compare-modal-translations-book"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              <path d="M8 7h8M8 11h6" />
+            </svg>
+            <span class="compare-modal-translations-title">Übersetzung</span>
+          </div>
+          <div class="translation-buttons" id="compare-modal-translation-buttons"></div>
+        </div>
+      </aside>
+      <div class="compare-modal-panel">
+        <button type="button" class="compare-modal-close" id="compare-modal-close" aria-label="Schließen">
+          ×
+        </button>
+        <header class="compare-modal-header">
+          <p class="compare-modal-aland" id="compare-modal-aland"></p>
+          <h2 id="compare-modal-title"></h2>
+          <p class="compare-modal-sec" id="compare-modal-sec"></p>
+        </header>
+        <div class="text-grid compare-modal-grid" id="compare-modal-grid" data-filled="0"></div>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="translation-info-dialog" class="translation-info-dialog" aria-labelledby="translation-info-dialog-title">
+    <div class="translation-info-dialog-inner">
+      <button type="button" class="translation-info-dialog-x" id="translation-info-dialog-close" aria-label="Hinweis schließen">
+        ×
+      </button>
+      <h4 id="translation-info-dialog-title" class="translation-info-dialog-h"></h4>
+      <p id="translation-info-dialog-body" class="translation-info-dialog-body"></p>
+    </div>
+  </dialog>
+
+  <script>
+    (function () {
+      const data = window.PARALLELS_DATA;
+      if (!Array.isArray(data) || !data.length) {
+        document.getElementById("list").innerHTML =
+          '<div class="empty">Keine Daten — <code>data/parallels_data.js</code> fehlt oder enthält keine Einträge.</div>';
+        return;
+      }
+
+      function tripleSyn(r) {
+        return r.in_matthew && r.in_mark && r.in_luke;
+      }
+
+      function qStyle(r) {
+        return r.in_matthew && r.in_luke && !r.in_mark;
+      }
+
+      const statsEl = document.getElementById("stats");
+      const n = data.length;
+      const nTriple = data.filter(tripleSyn).length;
+      const nQ = data.filter(qStyle).length;
+      const nJn = data.filter((r) => r.in_john).length;
+      const nMkOnly = data.filter(
+        (r) => r.in_mark && !r.in_matthew && !r.in_luke && !r.in_john,
+      ).length;
+
+      const stats = [
+        { n, l: "Zeilen gesamt" },
+        { n: nTriple, l: "Mt + Mk + Lk" },
+        { n: nQ, l: "Q‑Kandidat (Mt+Lk, ¬Mk)" },
+        { n: nJn, l: "Mit Johannes" },
+        { n: nMkOnly, l: "nur Markus" },
+      ];
+
+      statsEl.innerHTML = stats
+        .map(
+          (s) =>
+            `<div class="stat"><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`,
+        )
+        .join("");
+
+      const sections = [...new Set(data.map((r) => r.section))].filter(Boolean);
+      const sel = document.getElementById("section");
+      sel.innerHTML =
+        '<option value="">Alle Abschnitte</option>' +
+        sections
+          .map((s) => {
+            const sample = data.find((r) => r.section === s);
+            const label = sample && sample.section_de ? sample.section_de : s;
+            return `<option value="${escapeAttr(s)}">${escapeHtml(label)}</option>`;
+          })
+          .join("");
+
+      function sgMatthew(r) {
+        return r.in_matthew && !r.in_mark && !r.in_luke;
+      }
+      function sgMark(r) {
+        return r.in_mark && !r.in_matthew && !r.in_luke;
+      }
+      function sgLuke(r) {
+        return r.in_luke && !r.in_matthew && !r.in_mark;
+      }
+      function sgJohn(r) {
+        return r.in_john && !r.in_matthew && !r.in_mark && !r.in_luke;
+      }
+
+      const presetGroups = [
+        {
+          label: "Allgemein",
+          presets: [{ id: "all", label: "Alle" }],
+        },
+        {
+          label: "Vorkommen",
+          presets: [
+            {
+              id: "has_mt",
+              label: "Mit Mt",
+              title: "Matthäus kommt in dieser Perikope vor",
+            },
+            {
+              id: "has_mk",
+              label: "Mit Mk",
+              title: "Markus kommt in dieser Perikope vor",
+            },
+            {
+              id: "has_lk",
+              label: "Mit Lk",
+              title: "Lukas kommt in dieser Perikope vor",
+            },
+            {
+              id: "has_jn",
+              label: "Mit Jn",
+              title: "Johannes kommt in dieser Perikope vor",
+            },
+          ],
+        },
+        {
+          label: "Muster",
+          presets: [
+            { id: "triple", label: "Triple (Mt+Mk+Lk)" },
+            { id: "q", label: "Q‑Kandidat" },
+            { id: "syn_only", label: "Nur Synoptiker (ohne Jn)" },
+          ],
+        },
+        {
+          label: "Sondergut",
+          presets: [
+            {
+              id: "sg_mt",
+              label: "Sondergut Mt",
+              title: "Nur Matthäus unter den drei Synoptikern (nicht in Mk/Lk)",
+            },
+            {
+              id: "sg_mk",
+              label: "Sondergut Mk",
+              title: "Nur Markus unter den drei Synoptikern (nicht in Mt/Lk)",
+            },
+            {
+              id: "sg_lk",
+              label: "Sondergut Lk",
+              title: "Nur Lukas unter den drei Synoptikern (nicht in Mt/Mk)",
+            },
+            {
+              id: "sg_jn",
+              label: "Sondergut Joh",
+              title: "Nur Johannes (keine der drei Synoptiker-Spalten)",
+            },
+          ],
+        },
+      ],
+        presetEl = document.getElementById("presets");
+      let activePreset = "all";
+
+      function presetButtonHtml(p) {
+        const tip = p.title ? ` title="${escapeAttr(p.title)}"` : "";
+        return `<button type="button" data-preset="${p.id}" class="${
+          p.id === "all" ? "active" : ""
+        }"${tip}>${p.label}</button>`;
+      }
+
+      presetEl.innerHTML = presetGroups
+        .map(
+          (g) =>
+            `<div class="preset-group"><span class="preset-group-label">${escapeHtml(
+              g.label,
+            )}</span><div class="preset">${g.presets.map(presetButtonHtml).join("")}</div></div>`,
+        )
+        .join("");
+
+      function escapeHtml(s) {
+        const d = document.createElement("div");
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      function escapeAttr(s) {
+        return s.replace(/"/g, "&quot;");
+      }
+
+      function matchesPreset(r, id) {
+        if (id === "all") return true;
+        if (id === "has_mt") return r.in_matthew;
+        if (id === "has_mk") return r.in_mark;
+        if (id === "has_lk") return r.in_luke;
+        if (id === "has_jn") return r.in_john;
+        if (id === "triple") return tripleSyn(r);
+        if (id === "q") return qStyle(r);
+        if (id === "syn_only") return !r.in_john;
+        if (id === "sg_mt") return sgMatthew(r);
+        if (id === "sg_mk") return sgMark(r);
+        if (id === "sg_lk") return sgLuke(r);
+        if (id === "sg_jn") return sgJohn(r);
+        return true;
+      }
+
+      function pill(cls, label, on, bold, ref) {
+        const r = ref ? `<span class="ref">${escapeHtml(ref)}</span>` : "";
+        return `<span class="pill ${cls} ${on ? "on" : ""} ${on && bold ? "bold" : ""}">${label}${r}</span>`;
+      }
+
+      const TRANSLATION_LANG_ORDER = [
+        { key: "de", label: "Deutsch" },
+        { key: "el", label: "Griechisch" },
+      ];
+
+      const TRANSLATIONS = [
+        {
+          id: "elberfelder_1905",
+          lang: "de",
+          label: "Elberfelder 1905",
+          path: "data/translations/DE-Deutsch/elberfelder_1905.json",
+          info:
+            "Die Elberfelder Übersetzung entstand im pietistischen Umfeld und strebt eine möglichst wörtliche Wiedergabe des hebräischen und griechischen Urtextes an. Die hier verwendete Fassung von 1905 gehört zu den klassischen, älteren Elberfelder-Texten vor den späteren großen Revisionen (ab 1961 bzw. 1985); Sprache und Schreibung sind damit typisch für die Bibeldrucke des frühen 20. Jahrhunderts.",
+          infoUrl: "https://de.wikipedia.org/wiki/Elberfelder_Bibel",
+        },
+        {
+          id: "luther_1912",
+          lang: "de",
+          label: "Luther 1912",
+          path: "data/translations/DE-Deutsch/luther_1912.json",
+          info:
+            "Die Lutherbibel von 1912 ist eine Revision der Übersetzung Martin Luthers (Grundlage 1545) und war im deutschsprachigen Protestantismus lange eine verbreitete Standardfassung, bevor neuere Gesamtausgaben und Überarbeitungen (z. B. 1984, 2017) folgten. Sie bewahrt die vertraute Luther-Sprache, angepasst an Orthographie und Wortgebrauch des ausgehenden Kaiserreichs und der Weimarer Zeit.",
+          infoUrl: "https://de.wikipedia.org/wiki/Lutherbibel",
+        },
+        {
+          id: "schlachter",
+          lang: "de",
+          label: "Schlachter 1951",
+          path: "data/translations/DE-Deutsch/schlachter.json",
+          info:
+            "Die Schlachter-Bibel geht auf Franz Eugen Schlachter zurück; die Revision von 1951 aktualisierte die Sprache gegenüber der Erstfassung von 1905 und prägte in vielen Freikirchen die Bibellektüre der zweiten Hälfte des 20. Jahrhunderts. Für Vergleiche eignet sie sich als markanter Vertreter evangelikaler Bibeltradition jener Zeit.",
+          infoUrl: "https://de.wikipedia.org/wiki/Schlachter-Bibel",
+        },
+        {
+          id: "menge",
+          lang: "de",
+          label: "Menge 1939",
+          path: "data/translations/DE-Deutsch/menge.json",
+          info:
+            "Hermann Menge erarbeitete diese Übersetzung bewusst nahe an der Lutherbibel; das Neue Testament erschien 1931, die vollständige Bibel mit Alten Testament folgte 1939 — die Jahreszahl im Namen bezieht sich auf diesen Gesamtstand vor dem Zweiten Weltkrieg. Die Menge-Bibel war im deutschsprachigen Raum eine weit verbreitete Alternative zu Luther und Elberfelder.",
+          infoUrl: "https://de.wikipedia.org/wiki/Hermann_Menge",
+        },
+        {
+          id: "zurcher_1931",
+          lang: "de",
+          label: "Zürcher 1931",
+          path: "data/translations/DE-Deutsch/zurcher_1931.json",
+          info:
+            "Die Zürcher Bibel steht in der reformierten Übersetzungstradition (Zwingli-Bibel). Die Ausgabe von 1931 repräsentiert die Zwischenkriegszeit: klare, damals moderne Sprache und die für die Schweiz typische Bibelfassung vor den späteren Überarbeitungen. Sie ist ein guter Bezugspunkt für historischen Sprachduktus der 1930er-Jahre.",
+          infoUrl: "https://de.wikipedia.org/wiki/Zürcher_Bibel",
+        },
+        {
+          id: "greek_slb",
+          lang: "el",
+          label: "Griechisch SBL",
+          path: "data/translations/greek/greek_slb.json",
+          info:
+            "Das SBL Greek New Testament (SBLGNT) ist eine kritisch edierte Ausgabe des griechischen Neuen Testaments; die erste Ausgabe erschien 2010 (Society of Biblical Literature). Der Text steht frei in elektronischer Form zur Verfügung und richtet sich an Studium, Lehre und Forschung — im Unterschied zu älteren Drucktraditionen wie dem Textus Receptus.",
+          infoUrl: "https://www.sblgnt.com/",
+        },
+        {
+          id: "greek_tr",
+          lang: "el",
+          label: "Griechisch TR",
+          path: "data/translations/greek/greek-tr.json",
+          info:
+            "Der Textus Receptus (TR) bezeichnet die im 16. Jahrhundert maßgeblich durch die Druckausgaben des Erasmus von Rotterdam (1516 ff.) und später Stephanus/Elzevir geprägte griechische Texttradition des Neuen Testaments. Er wurde lange in westlichen Bibeln verwendet und weicht in vielen Stellen von modernen kritischen Ausgaben (z. B. SBLGNT, Nestle-Aland) ab — für historische Vergleiche mit älteren deutschsprachigen Bibeln ist er oft der passende griechische Paralleltext.",
+          infoUrl: "https://de.wikipedia.org/wiki/Textus_Receptus",
+        },
+      ];
+      const translationById = Object.create(null);
+      TRANSLATIONS.forEach(function (t) {
+        translationById[t.id] = t;
+      });
+      let activeTranslationId = TRANSLATIONS[0].id;
+      const translationRawCache = Object.create(null);
+      const translationVerseCache = Object.create(null);
+
+      async function loadTranslationRaw(id) {
+        if (translationRawCache[id]) return translationRawCache[id];
+        const t = translationById[id];
+        if (!t) throw new Error("Unbekannte Übersetzung: " + id);
+        if (id === "elberfelder_1905" && Array.isArray(window.ELBERFELDER_DATA)) {
+          translationRawCache[id] = window.ELBERFELDER_DATA;
+          return translationRawCache[id];
+        }
+        const res = await fetch(t.path);
+        if (!res.ok) throw new Error("Konnte Datei nicht laden (" + t.path + ")");
+        const raw = await res.json();
+        translationRawCache[id] = raw;
+        return raw;
+      }
+
+      async function getVerseCache(id) {
+        if (translationVerseCache[id]) return translationVerseCache[id];
+        const SC = window.SYNOPTIC_COMPARE;
+        if (!SC || typeof SC.initFromTranslationData !== "function") return null;
+        const raw = await loadTranslationRaw(id);
+        const cache = SC.initFromTranslationData(raw);
+        translationVerseCache[id] = cache;
+        return cache;
+      }
+
+      function activeTranslationLabel() {
+        const t = translationById[activeTranslationId];
+        return t ? t.label : "Unbekannt";
+      }
+
+      function translationGroupLabel(langKey) {
+        if (langKey === "_") return "Sonstige";
+        const found = TRANSLATION_LANG_ORDER.find(function (g) {
+          return g.key === langKey;
+        });
+        return found ? found.label : langKey;
+      }
+
+      function renderTranslationButtonRows() {
+        const byLang = Object.create(null);
+        TRANSLATIONS.forEach(function (t) {
+          const k =
+            t.lang != null && String(t.lang) !== "" ? String(t.lang) : "_";
+          if (!byLang[k]) byLang[k] = [];
+          byLang[k].push(t);
+        });
+        const keys = [];
+        TRANSLATION_LANG_ORDER.forEach(function (g) {
+          if (byLang[g.key] && byLang[g.key].length) keys.push(g.key);
+        });
+        Object.keys(byLang)
+          .filter(function (k) {
+            return k !== "_";
+          })
+          .sort()
+          .forEach(function (k) {
+            if (keys.indexOf(k) === -1) keys.push(k);
+          });
+        if (byLang["_"] && byLang["_"].length && keys.indexOf("_") === -1) {
+          keys.push("_");
+        }
+        const chunks = [];
+        keys.forEach(function (langKey) {
+          const items = byLang[langKey];
+          if (!items || !items.length) return;
+          const grpLabel = translationGroupLabel(langKey);
+          const rows = items
+            .map(function (t) {
+              const active = t.id === activeTranslationId ? " active" : "";
+              const infoBtn = t.info
+                ? `<button type="button" class="translation-info-btn" data-translation-info="${escapeAttr(t.id)}" aria-label="Hinweis zu ${escapeAttr(t.label)}" title="Information">i</button>`
+                : "";
+              return `<div class="translation-option-row"><button type="button" data-translation="${escapeAttr(
+                t.id,
+              )}" class="translation-option-main${active}">${escapeHtml(t.label)}</button>${infoBtn}</div>`;
+            })
+            .join("");
+          chunks.push(
+            `<div class="translation-lang-group" role="group" aria-label="${escapeAttr(grpLabel)}"><div class="translation-lang-label">${escapeHtml(
+              grpLabel,
+            )}</div>${rows}</div>`,
+          );
+        });
+        return chunks.join("");
+      }
+
+      function openTranslationInfoDialog(translationId) {
+        const t = translationById[translationId];
+        if (!t || !t.info) return;
+        const dlg = document.getElementById("translation-info-dialog");
+        document.getElementById("translation-info-dialog-title").textContent = t.label;
+        const body = document.getElementById("translation-info-dialog-body");
+        body.textContent = "";
+        body.appendChild(document.createTextNode(t.info.trimEnd()));
+        if (t.infoUrl) {
+          body.appendChild(document.createTextNode(" Weitere Informationen: "));
+          const a = document.createElement("a");
+          a.href = t.infoUrl;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          var linkLabel = "Link";
+          try {
+            linkLabel = new URL(t.infoUrl).hostname.replace(/^www\./, "");
+          } catch (e) {}
+          a.textContent = linkLabel;
+          body.appendChild(a);
+        }
+        if (dlg && typeof dlg.showModal === "function") {
+          dlg.showModal();
+        }
+      }
+
+      function syncTranslationButtons() {
+        document.querySelectorAll(".translation-buttons button[data-translation]").forEach(function (btn) {
+          btn.classList.toggle("active", btn.dataset.translation === activeTranslationId);
+        });
+      }
+
+      const compareModal = document.getElementById("compare-modal");
+      const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
+      const compareModalCloseBtn = document.getElementById("compare-modal-close");
+      let compareModalRowId = null;
+      let lastFocusBeforeModal = null;
+      let translationSwapSeq = 0;
+
+      function closeCompareModal() {
+        const infoDlg = document.getElementById("translation-info-dialog");
+        if (infoDlg && infoDlg.open && typeof infoDlg.close === "function") {
+          infoDlg.close();
+        }
+        compareModal.classList.remove("is-open");
+        compareModalRowId = null;
+        translationSwapSeq += 1;
+        const grid = document.getElementById("compare-modal-grid");
+        grid.dataset.filled = "0";
+        grid.classList.remove("is-swapping");
+        grid.innerHTML = "";
+        window.setTimeout(function () {
+          compareModal.setAttribute("hidden", "");
+        }, 450);
+        document.body.style.overflow = "";
+        if (lastFocusBeforeModal && typeof lastFocusBeforeModal.focus === "function") {
+          lastFocusBeforeModal.focus();
+        }
+        lastFocusBeforeModal = null;
+      }
+
+      function openCompareModal(wrap) {
+        const id = +wrap.dataset.rowId;
+        const row = data.find(function (x) {
+          return x.row_id === id;
+        });
+        if (!row) return;
+
+        translationSwapSeq += 1;
+        compareModalRowId = id;
+        lastFocusBeforeModal = document.activeElement;
+
+        document.getElementById("compare-modal-aland").textContent = "Aland " + row.aland_no;
+        document.getElementById("compare-modal-title").textContent = row.title_de || row.title;
+        document.getElementById("compare-modal-sec").textContent = row.section_de || row.section || "";
+
+        const grid = document.getElementById("compare-modal-grid");
+        grid.dataset.filled = "0";
+        grid.classList.remove("is-swapping");
+        grid.innerHTML = "";
+
+        compareModal.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+        compareModal.classList.add("is-open");
+
+        fillCompareGrid(grid, row);
+        window.setTimeout(function () {
+          compareModalCloseBtn.focus();
+        }, 50);
+      }
+
+      document.getElementById("compare-modal-translation-buttons").innerHTML =
+        renderTranslationButtonRows();
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        const infoDlg = document.getElementById("translation-info-dialog");
+        if (infoDlg && infoDlg.open) {
+          e.preventDefault();
+          if (typeof infoDlg.close === "function") infoDlg.close();
+          return;
+        }
+        if (compareModal.classList.contains("is-open")) {
+          e.preventDefault();
+          closeCompareModal();
+        }
+      });
+
+      compareModalBackdrop.addEventListener("click", closeCompareModal);
+      compareModalCloseBtn.addEventListener("click", closeCompareModal);
+
+      document.getElementById("translation-info-dialog-close").addEventListener("click", function () {
+        const dlg = document.getElementById("translation-info-dialog");
+        if (dlg && typeof dlg.close === "function") dlg.close();
+      });
+
+      document.addEventListener("click", function (e) {
+        const infoBtn = e.target.closest("button[data-translation-info]");
+        if (infoBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          openTranslationInfoDialog(infoBtn.getAttribute("data-translation-info"));
+          return;
+        }
+        const tBtn = e.target.closest("button[data-translation]");
+        if (!tBtn) return;
+        activeTranslationId = tBtn.dataset.translation;
+        invalidateOpenPanels();
+      });
+
+      async function fillCompareGrid(grid, r) {
+        if (!grid || grid.dataset.filled === "1") return;
+        grid.innerHTML = '<p class="compare-note">Lade Übersetzung...</p>';
+
+        let cache = null;
+        const SC = window.SYNOPTIC_COMPARE;
+        try {
+          cache = await getVerseCache(activeTranslationId);
+        } catch (err) {
+          if (compareModalRowId !== r.row_id) return;
+          grid.innerHTML =
+            '<p class="compare-note">Übersetzung konnte nicht geladen werden.</p>';
+          grid.dataset.filled = "1";
+          return;
+        }
+        if (compareModalRowId !== r.row_id) return;
+        if (!cache || !SC) {
+          grid.innerHTML =
+            '<p class="compare-note">Übersetzungsdaten nicht verfügbar.</p>';
+          grid.dataset.filled = "1";
+          return;
+        }
+
+        const { idx, maxV, aliases } = cache;
+        const cols = [
+          { book: 40, label: "Matthäus", cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
+          { book: 41, label: "Markus", cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
+          { book: 42, label: "Lukas", cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
+          { book: 43, label: "Johannes", cls: "jn", inKey: "in_john", refKey: "ref_john" },
+        ];
+
+        const active = cols.filter((c) => r[c.inKey]);
+        if (!active.length) {
+          grid.innerHTML =
+            '<p class="compare-note">In dieser Zeile ist kein Evangelientext verknüpft.</p>';
+          grid.dataset.filled = "1";
+          grid.style.gridTemplateColumns = "";
+          return;
+        }
+
+        const n = active.length;
+        grid.style.gridTemplateColumns = "repeat(" + n + ", minmax(0, 1fr))";
+
+        grid.innerHTML = active
+          .map((c) => {
+            const ref = r[c.refKey] || "";
+            const body = SC.renderColumnHtml(c.book, c.label, ref, idx, maxV, aliases);
+            return `<div class="text-col ${c.cls}"><h4>${c.label}<span class="ref-tag">${escapeHtml(ref)}</span></h4><p class="compare-note">Übersetzung: ${escapeHtml(activeTranslationLabel())}</p><div class="text-col-body">${body}</div></div>`;
+          })
+          .join("");
+        grid.dataset.filled = "1";
+      }
+
+      function invalidateOpenPanels() {
+        syncTranslationButtons();
+        if (!compareModal.classList.contains("is-open") || compareModalRowId === null) {
+          return;
+        }
+        const grid = document.getElementById("compare-modal-grid");
+        if (!grid) return;
+        const seq = (translationSwapSeq += 1);
+        grid.classList.add("is-swapping");
+        window.setTimeout(function () {
+          if (seq !== translationSwapSeq) return;
+          if (!compareModal.classList.contains("is-open") || compareModalRowId === null) {
+            grid.classList.remove("is-swapping");
+            return;
+          }
+          grid.dataset.filled = "0";
+          grid.innerHTML = "";
+          const row = data.find(function (x) {
+            return x.row_id === compareModalRowId;
+          });
+          if (!row) {
+            grid.classList.remove("is-swapping");
+            return;
+          }
+          fillCompareGrid(grid, row)
+            .then(function () {
+              if (seq !== translationSwapSeq) return;
+              grid.classList.remove("is-swapping");
+            })
+            .catch(function () {
+              grid.classList.remove("is-swapping");
+            });
+        }, 140);
+      }
+
+      function renderRow(r) {
+        const title = escapeHtml(r.title_de || r.title);
+        const sec = escapeHtml(r.section_de || r.section || "");
+        return `
+          <section class="row-wrap" data-row-id="${r.row_id}">
+            <div class="row row-head" tabindex="0" role="button" aria-label="Versvergleich in Fenster öffnen">
+              <div class="aland">${r.aland_no}</div>
+              <div class="row-main">
+                <h2>${title}</h2>
+                <div class="sec">${sec}</div>
+              </div>
+              <div class="row-actions">
+                <div class="gospels">
+                  ${pill("mt", "Mt", r.in_matthew, r.bold_matthew, r.ref_matthew)}
+                  ${pill("mk", "Mk", r.in_mark, r.bold_mark, r.ref_mark)}
+                  ${pill("lk", "Lk", r.in_luke, r.bold_luke, r.ref_luke)}
+                  ${pill("jn", "Jn", r.in_john, r.bold_john, r.ref_john)}
+                </div>
+                <span class="chev" aria-hidden="true">↗</span>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function filter() {
+        const q = document.getElementById("q").value.trim().toLowerCase();
+        const sec = document.getElementById("section").value;
+
+        const out = data.filter((r) => {
+          if (!matchesPreset(r, activePreset)) return false;
+          if (sec && r.section !== sec) return false;
+          if (!q) return true;
+          const hay = [
+            r.title,
+            r.title_de,
+            r.section,
+            r.section_de,
+            r.ref_matthew,
+            r.ref_mark,
+            r.ref_luke,
+            r.ref_john,
+            String(r.aland_no),
+          ]
+            .join(" ")
+            .toLowerCase();
+          return hay.includes(q);
+        });
+
+        document.getElementById("count").textContent =
+          out.length + " von " + n + " Zeilen" + (activePreset !== "all" ? " (Filter aktiv)" : "");
+
+        const list = document.getElementById("list");
+        if (!out.length) {
+          list.innerHTML = '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
+          return;
+        }
+        list.innerHTML = out.map(renderRow).join("");
+      }
+
+      const listEl = document.getElementById("list");
+      listEl.addEventListener("click", (e) => {
+        const head = e.target.closest(".row-head");
+        if (!head) return;
+        const wrap = head.closest(".row-wrap");
+        if (!wrap) return;
+        openCompareModal(wrap);
+      });
+
+      listEl.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        const head = e.target.closest(".row-head");
+        if (!head) return;
+        e.preventDefault();
+        const wrap = head.closest(".row-wrap");
+        if (wrap) openCompareModal(wrap);
+      });
+
+      document.getElementById("q").addEventListener("input", filter);
+      document.getElementById("section").addEventListener("change", filter);
+
+      presetEl.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-preset]");
+        if (!b) return;
+        activePreset = b.dataset.preset;
+        presetEl.querySelectorAll("button").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.preset === activePreset);
+        });
+        filter();
+      });
+
+      filter();
+      getVerseCache(activeTranslationId).catch(function () {
+        // Erstes Laden kann bei lokalen file://-Setups scheitern; wir zeigen den Fehler erst im Panel.
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const btn = document.getElementById("to-top");
+      if (!btn) return;
+      function sync() {
+        btn.classList.toggle("visible", window.scrollY > 200);
+      }
+      window.addEventListener("scroll", sync, { passive: true });
+      sync();
+      btn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    })();
+  </script>
+</body>
+</html>

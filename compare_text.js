@@ -37,6 +37,14 @@
   }
 
   function normalizeTranslationData(raw) {
+    if (raw == null) return [];
+    if (typeof raw === "object" && !Array.isArray(raw)) {
+      if (Array.isArray(raw.verses)) {
+        raw = raw.verses;
+      } else if (Array.isArray(raw.books)) {
+        raw = raw.books;
+      }
+    }
     if (!Array.isArray(raw) || !raw.length) return [];
     const first = raw[0] || {};
 

@@ -179,6 +179,15 @@
       infoUrl: "https://de.wikipedia.org/wiki/Hermann_Menge",
     },
     {
+      id: "leonberger_na28",
+      lang: "de",
+      label: "Leonberger Bibel (NA28)",
+      path: "data/translations/german/leonberger_na28.json",
+      info:
+        "Die Leonberger Bibel ist eine urtextnahe deutschsprachige Übersetzung, die für digitale Nutzung und verschiedene Formate konzipiert ist und laufend überarbeitet wird. Diese Datei entspricht dem Neuen Testament nach dem kritischen Text der 28. Auflage von Nestle-Aland (NA28). Übersetzt wird wörtlich und konsequent bei Schlüsselbegriffen („Konstanz“); es gibt eine alternative NT-Linie nach dem byzantinischen Text (z. B. Robinson-Pierpont). Im Gesamtprojekt dient für das Alte Testament u. a. die Zürcher Bibel (1942) als Grundlage — hier ist nur das NT (NA28) enthalten.",
+      infoUrl: "https://bibelberater.de/bibeluebersetzung/leonberger-bibel/",
+    },
+    {
       id: "offene_bibel_studienausgabe",
       lang: "de",
       label: "Offene Bibel (Studienausgabe)",
@@ -186,6 +195,15 @@
       info:
         "Die Offene Bibel ist ein gemeinschaftliches deutschsprachiges Übersetzungsprojekt; die Studienausgabe verbindet einen verständlichen Wortlaut mit Hinweisen zur Textgestalt. Der Text eignet sich für Vergleiche mit älteren und wörtlicheren deutschen Bibeln.",
       infoUrl: "https://de.wikipedia.org/wiki/Offene_Bibel",
+    },
+    {
+      id: "neue_2015",
+      lang: "de",
+      label: "NeÜ 2015",
+      path: "data/translations/german/neue_2015.json",
+      info:
+        "Neue evangelistische Übersetzung (NeÜ, 2015): moderne evangelikale Bibel. Keine freie Lizenz; nach üblicher Darstellung erlaubt der Autor Karl-Heinz Vanheiden kostenlosen Download und Nutzung in Bibelprogrammen. Text wie die Bibelsammler-Ausgabe (GitHub bibel/NeUe).",
+      infoUrl: "https://de.wikipedia.org/wiki/Neue_evangelistische_%C3%9Cbersetzung",
     },
     {
       id: "elberfelder_1905",
@@ -206,15 +224,6 @@
       infoUrl: "https://de.wikipedia.org/wiki/Lutherbibel",
     },
     {
-      id: "schlachter",
-      lang: "de",
-      label: "Schlachter 1951",
-      path: "data/translations/german/schlachter.json",
-      info:
-        "Die Schlachter-Bibel geht auf Franz Eugen Schlachter zurück; die Revision von 1951 aktualisierte die Sprache gegenüber der Erstfassung von 1905 und prägte in vielen Freikirchen die Bibellektüre der zweiten Hälfte des 20. Jahrhunderts. Für Vergleiche eignet sie sich als markanter Vertreter evangelikaler Bibeltradition jener Zeit.",
-      infoUrl: "https://de.wikipedia.org/wiki/Schlachter-Bibel",
-    },
-    {
       id: "zurcher_1931",
       lang: "de",
       label: "Zürcher 1931",
@@ -222,6 +231,15 @@
       info:
         "Die Zürcher Bibel steht in der reformierten Übersetzungstradition (Zwingli-Bibel). Die Ausgabe von 1931 repräsentiert die Zwischenkriegszeit: klare, damals moderne Sprache und die für die Schweiz typische Bibelfassung vor den späteren Überarbeitungen. Sie ist ein guter Bezugspunkt für historischen Sprachduktus der 1930er-Jahre.",
       infoUrl: "https://de.wikipedia.org/wiki/Zürcher_Bibel",
+    },
+    {
+      id: "volxbibel_nt",
+      lang: "de",
+      label: "Volxbibel (NT)",
+      path: "data/translations/german/volxbibel_nt.json",
+      info:
+        "Die Volxbibel ist eine freie, moderne Bibelübersetzung in Umgangssprache (Projekt u. a. um Martin Dreyer und die Jesus Freaks, seit 2005). Der Text entsteht gemeinschaftlich und wird unter einer Creative-Commons-Lizenz veröffentlicht. In dieser App ist das Neue Testament eingebunden.",
+      infoUrl: "https://de.wikipedia.org/wiki/Volxbibel",
     },
     {
       id: "greek_slb",
@@ -269,13 +287,13 @@
       infoUrl: "https://fr.wikipedia.org/wiki/Bible_Segond",
     },
     {
-      id: "riveduta_1990",
+      id: "riveduta_1927",
       lang: "it",
-      label: "Riveduta 1990",
-      path: "data/translations/italian/riveduta_1990.json",
+      label: "Riveduta 1927",
+      path: "data/translations/italian/riveduta_1927.json",
       info:
-        "La Bibbia Riveduta in edizione aggiornata (circa 1990) si basa sulla tradizione protestante italiana della Riveduta del 1927; lingua e ortografia riflettono l’italiano del tardo Novecento.",
-      infoUrl: "https://it.wikipedia.org/wiki/Bibbia_Riveduta",
+        "La Riveduta del 1927 è una traduzione protestante italiana della tradizione della Bibbia Riveduta; lessico e sintassi riflettono l’italiano del primo Novecento. La Nuova Riveduta (es. 1994) è un’edizione separata e tutelata — qui è usata solo la fase 1927 in pubblico dominio.",
+      infoUrl: "https://ebible.org/ita1927/",
     },
     {
       id: "sparv",
@@ -289,10 +307,10 @@
     {
       id: "vulgate",
       lang: "la",
-      label: "Vulgata",
-      path: "data/translations/latin/Vulgate.json",
+      label: "Vulgata Clementina",
+      path: "data/translations/latin/VulgClementine.json",
       info:
-        "Lateinische Vulgata (üblicherweise Hieronymus zugeschrieben): Jahrhunderte lang die maßgebliche lateinische Bibel in der abendländischen Kirche. Für historische und liturgische Bezüge.",
+        "Clementinische Vulgata: lateinische Bibel in der von Papst Clemens VIII. bestätigten Fassung (Sixto-Clementina, 1592); verbreitete katholische Referenz vor modernen Neuausgaben.",
       infoUrl: "https://de.wikipedia.org/wiki/Vulgata",
     },
   ];

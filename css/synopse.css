@@ -41,7 +41,7 @@ body {
 }
 
 .wrap {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 2.5rem max(1.25rem, env(safe-area-inset-right)) 4rem max(1.25rem, env(safe-area-inset-left));
   padding-bottom: max(4rem, calc(4rem + env(safe-area-inset-bottom)));
@@ -163,6 +163,100 @@ select {
   font-size: 0.85rem;
   color: var(--muted);
   margin-bottom: 0.75rem;
+}
+
+/* Obere Zeile: Filter links, Venn rechts; darunter Liste in voller Breite */
+.top-filter-venn {
+  margin-bottom: 0.5rem;
+}
+
+.filter-venn-row {
+  display: grid;
+  gap: 1.25rem 1.35rem;
+  align-items: stretch;
+}
+
+.filter-col {
+  min-width: 0;
+}
+
+.venn-aside {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(24, 22, 20, 0.75);
+  padding: 0.75rem 0.65rem 0.5rem;
+}
+
+.venn-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 1.35rem;
+  padding-bottom: 1.1rem;
+}
+
+.venn-aside .venn-lbl {
+  position: absolute;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.venn-aside .venn-lbl-mt {
+  top: 0;
+  left: 6%;
+  color: rgba(107, 155, 209, 0.95);
+}
+
+.venn-aside .venn-lbl-mk {
+  top: 0;
+  right: 6%;
+  color: rgba(196, 163, 90, 0.95);
+}
+
+.venn-aside .venn-lbl-lk {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(122, 171, 142, 0.95);
+}
+
+#venn-chart {
+  width: 100%;
+  min-height: 200px;
+}
+
+#venn-chart svg {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+}
+
+.venn-fallback {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.45;
+}
+
+@media (min-width: 960px) {
+  .filter-venn-row {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+  }
+
+  /* Eine Spalte, wenn das Venn-Aside fehlt (z. B. temporär in index.html auskommentiert) */
+  .filter-venn-row:has(> .filter-col:only-child) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.list-section {
+  margin-top: 0.35rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--border);
 }
 
 .list {
@@ -945,6 +1039,78 @@ footer p {
 
 footer p:last-child {
   margin-bottom: 0;
+}
+
+/* Seite „Quellen & Lizenzen“ */
+.sources-page h2 {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.35rem;
+  margin: 2rem 0 0.85rem;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.sources-page h2:first-of-type {
+  margin-top: 0.5rem;
+}
+
+.sources-page .src-intro {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 68ch;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.sources-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-bottom: 0.25rem;
+}
+
+.sources-page th,
+.sources-page td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sources-page th {
+  background: var(--bg2);
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sources-page td:first-child {
+  font-weight: 600;
+  color: var(--paper);
+  min-width: 8.5rem;
+}
+
+.sources-page td a {
+  color: var(--accent);
+  word-break: break-word;
+}
+
+.sources-page .src-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0.5rem 0 1.5rem;
+  max-width: 72ch;
+}
+
+.sources-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -0.15rem;
+  padding-bottom: 0.35rem;
 }
 
 .subnav {

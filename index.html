@@ -16,20 +16,43 @@
     <nav class="subnav">
       <a href="index.html" class="here">Listenansicht</a>
       <a href="kombinationen.html">Kombinationen</a>
+      <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
     </nav>
     <header>
       <h1>Synopse <em>nach Aland</em></h1>
       <p class="lead"><strong>Durchsuchen, filtern, vergleichen:</strong> Diese Liste folgt der Aland-Synopse. Jede Zeile ist eine Perikope mit Verweisen auf Matthäus, Markus, Lukas und Johannes. <strong>Einen Eintrag anklicken</strong> blendet die passenden Bibeltexte ein — mit freier Wahl der Übersetzung (Deutsch) und des griechischen Urtexts (SBL).</p>
     </header>
 
-    <div class="controls">
-      <input type="search" id="q" placeholder="Titel oder Vers suchen…" autocomplete="off" />
-      <select id="section"></select>
-      <div class="preset-wrap" id="presets"></div>
-    </div>
+    <section class="top-filter-venn" aria-label="Filter und synoptische Übersicht">
+      <div class="filter-venn-row">
+        <div class="filter-col">
+          <div class="controls">
+            <input type="search" id="q" placeholder="Titel oder Vers suchen…" autocomplete="off" />
+            <select id="section"></select>
+            <div class="preset-wrap" id="presets"></div>
+          </div>
+        </div>
+        <!-- TEMP: Venn-Diagramm auf der Startseite wieder aktivieren — Block + unten d3/venn/synoptic_venn-Skripte einbinden
+        <aside class="venn-aside" aria-label="Venn-Diagramm Synoptiker">
+          <div class="venn-wrap">
+            <span class="venn-lbl venn-lbl-mt">Matthäus</span>
+            <span class="venn-lbl venn-lbl-mk">Markus</span>
+            <span class="venn-lbl venn-lbl-lk">Lukas</span>
+            <div
+              id="venn-chart"
+              role="img"
+              aria-label="Venn-Diagramm: Perikopen je Schnittmenge bei Matthäus, Markus und Lukas"
+            ></div>
+          </div>
+        </aside>
+        -->
+      </div>
+    </section>
 
-    <div class="count" id="count"></div>
-    <div class="list" id="list"></div>
+    <section class="list-section" aria-label="Perikopenliste">
+      <div class="count" id="count"></div>
+      <div class="list" id="list"></div>
+    </section>
 
     <footer>
       <p>
@@ -43,11 +66,15 @@
         <a href="https://github.com/scrollmapper/bible_databases/tree/master" target="_blank" rel="noopener">scrollmapper/bible_databases</a>
         (u. a. Offene Bibel Studienausgabe). Ergänzend:
         <a href="https://worldenglish.bible/" target="_blank" rel="noopener">World English Bible</a>
-        und die italienische Riveduta nach
-        <a href="https://github.com/seven1m/open-bibles" target="_blank" rel="noopener">seven1m/open-bibles</a>.
+        und die italienische Riveduta 1927 (Public Domain) nach
+        <a href="https://ebible.org/ita1927/" target="_blank" rel="noopener">eBible.org · ita1927</a>.
       </p>
       <p>
         „Q-Kandidat“ kennzeichnet Zeilen, in denen nur Matthäus und Lukas vorkommen, nicht Markus — eine grobe Hilfe zur Zwei-Quellen-Theorie. Wo Aland mehrere Verse in einer Zelle bündelt, kann ein Vers fehlen; dann weist das Textfenster darauf hin.
+      </p>
+      <p>
+        Vollständige Übersicht zu Datenquellen, Bibeltexten und Lizenzen:
+        <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>.
       </p>
     </footer>
   </div>
@@ -149,5 +176,10 @@
   <script src="data/elberfelder_data.js"></script>
   <script src="compare_text.js"></script>
   <script src="js/synopse.js"></script>
+  <!-- TEMP: mit Venn-Block oben zusammen wieder aktivieren
+  <script src="lib/d3.v4.min.js"></script>
+  <script src="lib/venn.min.js"></script>
+  <script src="js/synoptic_venn.js"></script>
+  -->
 </body>
 </html>

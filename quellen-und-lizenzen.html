@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0f0e0c" />
+  <title>Quellen & Lizenzen · Synopse nach Aland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/synopse.css" />
+</head>
+<body>
+  <div class="wrap sources-page">
+    <nav class="subnav">
+      <a href="index.html">Listenansicht</a>
+      <a href="kombinationen.html">Kombinationen</a>
+      <a href="quellen-und-lizenzen.html" class="here">Quellen & Lizenzen</a>
+    </nav>
+
+    <header>
+      <h1>Quellen <em>&amp; Lizenzen</em></h1>
+      <p class="lead">
+        Übersicht über Datengrundlagen, Bibeltexte und Software dieser Website. Die Angaben zu Lizenzen stellen eine orientierende Zusammenfassung dar und ersetzen keine
+        Rechtsberatung; maßgeblich sind jeweils die Bedingungen der Originalquellen.
+      </p>
+    </header>
+
+    <p class="src-intro">
+      Die Synopse folgt der wissenschaftlichen <strong>Synopsis Quattuor Evangeliorum</strong> (Kurt Aland). Die strukturelle Zuordnung der Perikopen (welches Evangelium wo
+      vorkommt) ist kein vollständiger Bibeltext, sondern eine Parallelliste mit Verweisen — vergleichbar den Tabellen in der Aland-Synopse.
+    </p>
+
+    <h2>Strukturdaten &amp; Hilfsdateien</h2>
+    <div class="sources-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Inhalt</th>
+            <th>Herkunft</th>
+            <th>Lizenz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Parallelliste (Synopse)</td>
+            <td>
+              Vergleich mit der bei
+              <a href="https://www.bible-researcher.com/parallels.html" target="_blank" rel="noopener">bible-researcher.com</a>
+              dokumentierten HTML-Tabelle der Parallelperikopen (Synopsis nach Aland); strukturelle Aufbereitung für diese App.
+            </td>
+            <td>Strukturdaten (kein Bibeltext). Synopse-Aland: wie üblich wissenschaftlich zitieren.</td>
+          </tr>
+          <tr>
+            <td>Venn-Rohdaten</td>
+            <td>Aus derselben Perikopenstruktur abgeleitete Booleans (Matthäus, Markus, Lukas, Johannes) für das Mengendiagramm.</td>
+            <td>Wie Parallelliste.</td>
+          </tr>
+          <tr>
+            <td>Vergleichslogik</td>
+            <td>Eigenes JavaScript im Projekt; lädt Übersetzungsdaten und setzt Verse in Bezug zur Synopse.</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src-note">
+      Hinweis: Wo Aland mehrere Verse in einer Zelle bündelt, kann im Textfenster einzelne Verse fehlen — das Verhalten ist in der App beschrieben.
+    </p>
+
+    <h2>Bibelübersetzungen &amp; Textfassungen (Auswahl in der App)</h2>
+    <div class="sources-scroll">
+      <table class="src-bibel">
+        <thead>
+          <tr>
+            <th>Bezeichnung in der App</th>
+            <th>Herkunft</th>
+            <th>Lizenz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Menge 1939</td>
+            <td>
+              Hermann Menge; u. a.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>,
+              <a href="https://www.biblesupersearch.com/" target="_blank" rel="noopener">Bible SuperSearch</a>,
+              <a href="https://www.bibleserver.com/" target="_blank" rel="noopener">bibleserver.com</a>.
+            </td>
+            <td>
+              <strong>Public Domain.</strong> Nachweis u. a.
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=GerMenge" target="_blank" rel="noopener">CrossWire GerMenge</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>Leonberger Bibel (NA28)</td>
+            <td>
+              <a href="https://www.causamundi.de/" target="_blank" rel="noopener">Causa Mundi</a> ·
+              <a href="https://github.com/bibel/leo-na28" target="_blank" rel="noopener">github.com/bibel/leo-na28</a> ·
+              <a href="https://bibel.github.io/leo-na28/" target="_blank" rel="noopener">bibel.github.io/leo-na28</a> ·
+              <a href="https://bibelberater.de/bibeluebersetzung/leonberger-bibel/" target="_blank" rel="noopener">Hintergrund</a>
+            </td>
+            <td><strong>CC BY-NC-ND</strong> (Verlag/Projekt).</td>
+          </tr>
+          <tr>
+            <td>Offene Bibel (Studienausgabe)</td>
+            <td>
+              <a href="https://offene-bibel.de/" target="_blank" rel="noopener">offene-bibel.de</a> ·
+              <a href="https://github.com/bibel/OffBibLF" target="_blank" rel="noopener">github.com/bibel/OffBibLF</a> ·
+              <a href="https://bibel.github.io/OffBibLF/" target="_blank" rel="noopener">bibel.github.io/OffBibLF</a> (Lesefassung) ·
+              <a href="https://bibel.github.io/" target="_blank" rel="noopener">bibel.github.io</a> (weitere deutschsprachige Bibeln)
+            </td>
+            <td><strong>CC BY-SA 3.0</strong> (Projekt).</td>
+          </tr>
+          <tr>
+            <td>NeÜ 2015</td>
+            <td>
+              <a href="https://github.com/bibel/NeUe" target="_blank" rel="noopener">github.com/bibel/NeUe</a> ·
+              <a href="https://bibel.github.io/NeUe/" target="_blank" rel="noopener">bibel.github.io/NeUe</a>
+            </td>
+            <td>
+              <strong>Keine freie Lizenz</strong> (nicht PD/CC). Vanheiden erlaubt u. a. kostenlosen Download und Bibelprogramm-Nutzung; Verbreitung sonst nach Rechteinhaber / Anbieter.
+            </td>
+          </tr>
+          <tr>
+            <td>Elberfelder 1905</td>
+            <td>
+              Historische Fassung; u. a.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>,
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=GerElb1905" target="_blank" rel="noopener">CrossWire GerElb1905</a>.
+            </td>
+            <td>
+              <strong>Public Domain.</strong>
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=GerElb1905" target="_blank" rel="noopener">CrossWire GerElb1905</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Luther 1912</td>
+            <td>
+              U. a.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>,
+              <a href="https://ebible.org/details.php?id=deu1912" target="_blank" rel="noopener">eBible.org (deu1912)</a>.
+            </td>
+            <td>
+              <strong>Public Domain.</strong>
+              <a href="https://ebible.org/details.php?id=deu1912" target="_blank" rel="noopener">eBible deu1912</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Zürcher 1931</td>
+            <td>
+              <a href="https://www.sermon-online.de/" target="_blank" rel="noopener">sermon-online.de</a> ·
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=GerZurcher" target="_blank" rel="noopener">CrossWire GerZurcher</a> (Zürcher 1931) ·
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>
+            </td>
+            <td>
+              <strong>Public Domain.</strong>
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=GerZurcher" target="_blank" rel="noopener">CrossWire GerZurcher</a>
+              · Neuauflage TVZ: eigenes Werk.
+            </td>
+          </tr>
+          <tr>
+            <td>Volxbibel (NT)</td>
+            <td>
+              <a href="https://www.volxbibel.de/" target="_blank" rel="noopener">volxbibel.de</a> ·
+              <a href="https://github.com/bibel/Volxbibel" target="_blank" rel="noopener">github.com/bibel/Volxbibel</a> ·
+              <a href="https://bibel.github.io/Volxbibel/" target="_blank" rel="noopener">bibel.github.io/Volxbibel</a>
+            </td>
+            <td><strong>CC BY-NC-ND</strong> (Projekt). Nur NT.</td>
+          </tr>
+          <tr>
+            <td>SBL Greek NT</td>
+            <td>
+              <a href="https://www.sblgnt.com/" target="_blank" rel="noopener">Society of Biblical Literature</a> ·
+              <a href="https://www.sblgnt.com/download/" target="_blank" rel="noopener">Download</a>
+            </td>
+            <td>
+              <strong>CC BY 4.0</strong> ·
+              <a href="https://www.sblgnt.com/license/" target="_blank" rel="noopener">License</a>
+            </td>
+          </tr>
+          <tr>
+            <td>English KJV</td>
+            <td>
+              Öffentliche Bibelkorpora (z. B.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>).
+            </td>
+            <td><strong>Public Domain</strong> (u. a. USA; Blayney 1769).</td>
+          </tr>
+          <tr>
+            <td>English ASV</td>
+            <td>
+              U. a.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>.
+            </td>
+            <td><strong>Public Domain</strong> (USA, 1901).</td>
+          </tr>
+          <tr>
+            <td>English WEB</td>
+            <td>
+              <a href="https://worldenglish.bible/" target="_blank" rel="noopener">worldenglish.bible</a>
+            </td>
+            <td><strong>Public Domain</strong> (Projekt).</td>
+          </tr>
+          <tr>
+            <td>Louis Segond 1910</td>
+            <td>
+              U. a.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>,
+              <a href="https://ebible.org/details.php?id=fraLSG" target="_blank" rel="noopener">eBible.org (fraLSG)</a>.
+            </td>
+            <td>
+              <strong>Public Domain.</strong>
+              <a href="https://ebible.org/details.php?id=fraLSG" target="_blank" rel="noopener">eBible fraLSG</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Riveduta 1927</td>
+            <td>
+              <a href="https://ebible.org/ita1927/" target="_blank" rel="noopener">eBible.org · Riveduta Bibbia 1927</a>
+              (Online-Lesen, Downloads; gleicher Textbestand wie die JSON-Datei im Projekt).
+            </td>
+            <td>
+              <strong>Public Domain</strong> (eBible ita1927). Nuova Riveduta (z. B. 1994): andere Ausgabe, geschützt.
+            </td>
+          </tr>
+          <tr>
+            <td>Reina-Valera 1909</td>
+            <td>
+              U. a.
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>,
+              <a href="https://ebible.org/details.php?id=spaRV1909" target="_blank" rel="noopener">eBible.org (spaRV1909)</a>.
+            </td>
+            <td>
+              <strong>Public Domain.</strong>
+              <a href="https://ebible.org/details.php?id=spaRV1909" target="_blank" rel="noopener">eBible spaRV1909</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Vulgata Clementina</td>
+            <td>
+              Textbestand wie
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=VulgClementine" target="_blank" rel="noopener">CrossWire VulgClementine</a>
+              (Clementinische Vulgata); u. a. vergleichbar mit Korpora aus
+              <a href="https://github.com/scrollmapper/bible_databases" target="_blank" rel="noopener">scrollmapper/bible_databases</a>.
+            </td>
+            <td>
+              Text: <strong>Public Domain</strong>. Edition z. B.
+              <a href="https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=VulgClementine" target="_blank" rel="noopener">VulgClementine</a> (PD).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src-note">
+      Viele Texte wurden aus Sammelrepositories übernommen. Eine übersichtliche Sammlung deutschsprachiger Bibeln online und zum Download bietet u. a.
+      <a href="https://bibel.github.io/" target="_blank" rel="noopener">bibel.github.io</a> (Bibelsammler / Quadro-HTML u. a.). Für Weiterverwendung jeweils die Lizenz der
+      gewählten Ausgabe prüfen.
+    </p>
+
+    <h2>Schriftart &amp; Diagramm (griechischer Text)</h2>
+    <div class="sources-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Komponente</th>
+            <th>Herkunft</th>
+            <th>Lizenz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SBL Greek (TTF)</td>
+            <td>
+              Zum SBL Greek New Testament gehörende Schrift; Verteilung über
+              <a href="https://www.sblgnt.com/download/" target="_blank" rel="noopener">sblgnt.com/download</a>
+            </td>
+            <td>SBLGNT-Lizenz; Schrift wie auf der SBL-Seite angegeben.</td>
+          </tr>
+          <tr>
+            <td>d3.js v4</td>
+            <td><a href="https://github.com/d3/d3" target="_blank" rel="noopener">github.com/d3/d3</a></td>
+            <td><strong>ISC</strong></td>
+          </tr>
+          <tr>
+            <td>venn.js</td>
+            <td><a href="https://github.com/benfred/venn.js" target="_blank" rel="noopener">github.com/benfred/venn.js</a></td>
+            <td><strong>MIT</strong> (Repo)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>
+        <a href="index.html">Zurück zur Listenansicht</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

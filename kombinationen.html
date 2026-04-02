@@ -46,7 +46,7 @@
     }
 
     .wrap {
-      max-width: 900px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 2.5rem max(1.25rem, env(safe-area-inset-right)) 4rem max(1.25rem, env(safe-area-inset-left));
       padding-bottom: max(4rem, calc(4rem + env(safe-area-inset-bottom)));
@@ -283,6 +283,7 @@
     <nav class="subnav">
       <a href="index.html">Listenansicht</a>
       <a href="kombinationen.html" class="here">Kombinationen</a>
+      <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
     </nav>
     <header>
       <h1>Wer kommt <em>wo</em> vor?</h1>
@@ -293,20 +294,24 @@
       </p>
     </header>
 
-    <div class="legend">
-      <span class="mt"><i></i> Matthäus</span>
-      <span class="mk"><i></i> Markus</span>
-      <span class="lk"><i></i> Lukas</span>
-      <span class="jn"><i></i> Johannes</span>
-    </div>
+    <div class="kombi-layout">
+      <div class="kombi-main">
+        <div class="legend">
+          <span class="mt"><i></i> Matthäus</span>
+          <span class="mk"><i></i> Markus</span>
+          <span class="lk"><i></i> Lukas</span>
+          <span class="jn"><i></i> Johannes</span>
+        </div>
 
-    <div class="table-head">
-      <span class="dots-label">Mt · Mk · Lk · Jn</span>
-      <span>Bezeichnung</span>
-      <span style="text-align:right">n</span>
-      <span>Anteil</span>
+        <div class="table-head">
+          <span class="dots-label">Mt · Mk · Lk · Jn</span>
+          <span>Bezeichnung</span>
+          <span style="text-align:right">n</span>
+          <span>Anteil</span>
+        </div>
+        <div class="rows" id="rows"></div>
+      </div>
     </div>
-    <div class="rows" id="rows"></div>
   </div>
 
   <button type="button" class="to-top" id="to-top" aria-label="Nach oben scrollen" title="Nach oben">↑</button>

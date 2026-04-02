@@ -9,12 +9,16 @@
     matthaeus: 40,
     matthaus: 40,
     matthäus: 40,
+    matteo: 40,
     mark: 41,
     markus: 41,
+    marco: 41,
     luke: 42,
     lukas: 42,
+    luca: 42,
     john: 43,
     johannes: 43,
+    giovanni: 43,
   };
 
   function normalizeBookName(name) {

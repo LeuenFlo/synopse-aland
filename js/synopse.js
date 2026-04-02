@@ -340,7 +340,15 @@
     }
     const res = await fetch(t.path);
     if (!res.ok) throw new Error("Konnte Datei nicht laden (" + t.path + ")");
-    const raw = await res.json();
+    const text = await res.text();
+    let raw;
+    try {
+      raw = JSON.parse(text.replace(/^\uFEFF/, ""));
+    } catch (parseErr) {
+      throw new Error(
+        "Ungültiges JSON in " + t.path + (parseErr && parseErr.message ? ": " + parseErr.message : ""),
+      );
+    }
     translationRawCache[id] = raw;
     return raw;
   }
@@ -743,11 +751,16 @@
       cache = await getVerseCache(activeTranslationId);
     } catch (err) {
       if (compareModalRowId !== r.row_id) return;
+      const detail =
+        err && err.message
+          ? " " + err.message
+          : "";
       grid.innerHTML =
         '<p class="compare-note">' +
         (activeTranslationIsSourceText()
           ? "Der griechische Text konnte nicht geladen werden."
           : "Übersetzung konnte nicht geladen werden.") +
+        escapeHtml(detail) +
         "</p>";
       grid.dataset.filled = "1";
       return;

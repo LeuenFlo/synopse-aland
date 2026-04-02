@@ -348,6 +348,51 @@ select {
   border-top: 1px solid var(--border);
 }
 
+.translation-lang-fold {
+  display: block;
+}
+
+.translation-lang-fold + .translation-lang-fold {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+}
+
+.translation-lang-fold-summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.35rem 0 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.translation-lang-fold-summary::-webkit-details-marker {
+  display: none;
+}
+
+.translation-lang-fold-summary::before {
+  content: "▸";
+  display: inline-block;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  opacity: 0.85;
+  font-size: 0.75rem;
+  margin-right: 0.15rem;
+}
+
+.translation-lang-fold[open] > .translation-lang-fold-summary::before {
+  transform: rotate(90deg);
+}
+
+.translation-lang-fold-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.15rem 0 0.25rem 0.1rem;
+}
+
 .translation-lang-more {
   margin-top: 0.65rem;
   padding-top: 0.65rem;
@@ -385,6 +430,59 @@ select {
   transform: rotate(90deg);
 }
 
+/* Stufen: Griechisch / weitere Sprachen erst nach Aufklappen */
+.translation-reveal {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+}
+
+.translation-reveal-summary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  padding: 0.4rem 0;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.translation-reveal-summary::-webkit-details-marker {
+  display: none;
+}
+
+.translation-reveal-summary::before {
+  content: "▸";
+  display: inline-block;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  opacity: 0.85;
+  font-size: 0.75rem;
+  margin-right: 0.15rem;
+}
+
+.translation-reveal[open] > .translation-reveal-summary::before {
+  transform: rotate(90deg);
+}
+
+.translation-reveal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 0.35rem;
+}
+
+.translation-reveal-body > .translation-lang-fold:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .translation-more-inner {
   padding-top: 0.35rem;
 }
@@ -401,6 +499,31 @@ select {
   text-transform: uppercase;
   letter-spacing: 0.07em;
   color: var(--muted);
+}
+
+.translation-lang-fold-summary .translation-lang-label {
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.translation-lang-label--with-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.translation-lang-mark--emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.38rem;
+  height: 1.38rem;
+  font-size: 0.78rem;
+  line-height: 1;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.22);
 }
 
 .translation-lang-label--urtext {
@@ -424,6 +547,28 @@ select {
   border: 1px solid rgba(199, 92, 51, 0.4);
   border-radius: 5px;
   background: rgba(199, 92, 51, 0.08);
+}
+
+.translation-lang-label--gummi {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.translation-lang-gummi-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.72rem;
+  line-height: 1;
+  color: rgba(196, 140, 168, 0.98);
+  border: 1px solid rgba(196, 140, 168, 0.45);
+  border-radius: 8px;
+  background: rgba(196, 140, 168, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .translation-option-row {
@@ -809,17 +954,17 @@ select {
   gap: 1.15rem;
 }
 
-.translation-picker-inner .translation-lang-group {
+.translation-picker-inner .translation-lang-fold-body {
   gap: 0.55rem;
 }
 
 .translation-picker-inner .translation-lang-label {
-  margin-top: 0.35rem;
-  margin-bottom: 0.1rem;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-.translation-picker-inner .translation-lang-group:first-child .translation-lang-label {
-  margin-top: 0;
+.translation-picker-inner .translation-lang-fold:first-child .translation-lang-fold-summary {
+  padding-top: 0;
 }
 
 .translation-picker-inner .translation-option-row {
@@ -840,6 +985,15 @@ select {
 .translation-picker-inner .translation-lang-more {
   margin-top: 0.35rem;
   padding-top: 1rem;
+}
+
+.translation-picker-inner .translation-reveal {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+}
+
+.translation-picker-inner .translation-reveal-body {
+  padding-top: 0.5rem;
 }
 
 .translation-picker-inner .translation-more-inner {

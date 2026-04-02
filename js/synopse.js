@@ -157,16 +157,24 @@
 
   const TRANSLATION_LANG_ORDER = [
     { key: "de", label: "Deutsch" },
-    { key: "en", label: "Englisch" },
-    { key: "fr", label: "Französisch" },
-    { key: "it", label: "Italienisch" },
-    { key: "es", label: "Spanisch" },
-    { key: "la", label: "Latein" },
+    { key: "gs", label: "Gummi Schwerter" },
+    { key: "en", label: "English" },
+    { key: "fr", label: "Français" },
+    { key: "it", label: "Italiano" },
+    { key: "es", label: "Español" },
+    { key: "la", label: "Latina" },
     { key: "el", label: "Griechisch · Urtext" },
   ];
 
-  /** Immer sichtbar; alle übrigen Sprachen unter „Weitere Sprachen“. */
-  const PRIMARY_LANG_KEYS = ["de", "el"];
+  /** Emoji / Symbol je Sprachgruppe (neben dem Klapp-Titel). */
+  const LANG_CATEGORY_MARK = {
+    de: "\u{1F1E9}\u{1F1EA}",
+    en: "\u{1F1EC}\u{1F1E7}",
+    fr: "\u{1F1EB}\u{1F1F7}",
+    it: "\u{1F1EE}\u{1F1F9}",
+    es: "\u{1F1EA}\u{1F1F8}",
+    la: "\u{1F4DC}",
+  };
 
   const TRANSLATIONS = [
     {
@@ -181,7 +189,7 @@
     {
       id: "leonberger_na28",
       lang: "de",
-      label: "Leonberger Bibel (NA28)",
+      label: "Leonberger Bibel 2015",
       path: "data/translations/german/leonberger_na28.json",
       info:
         "Die Leonberger Bibel ist eine urtextnahe deutschsprachige Übersetzung, die für digitale Nutzung und verschiedene Formate konzipiert ist und laufend überarbeitet wird. Diese Datei entspricht dem Neuen Testament nach dem kritischen Text der 28. Auflage von Nestle-Aland (NA28). Übersetzt wird wörtlich und konsequent bei Schlüsselbegriffen („Konstanz“); es gibt eine alternative NT-Linie nach dem byzantinischen Text (z. B. Robinson-Pierpont). Im Gesamtprojekt dient für das Alte Testament u. a. die Zürcher Bibel (1942) als Grundlage — hier ist nur das NT (NA28) enthalten.",
@@ -190,20 +198,11 @@
     {
       id: "offene_bibel_studienausgabe",
       lang: "de",
-      label: "Offene Bibel (Studienausgabe)",
+      label: "Offene Bibel (in Arbeit)",
       path: "data/translations/german/offene_bibel_studienausgabe.json",
       info:
         "Die Offene Bibel ist ein gemeinschaftliches deutschsprachiges Übersetzungsprojekt; die Studienausgabe verbindet einen verständlichen Wortlaut mit Hinweisen zur Textgestalt. Der Text eignet sich für Vergleiche mit älteren und wörtlicheren deutschen Bibeln.",
       infoUrl: "https://de.wikipedia.org/wiki/Offene_Bibel",
-    },
-    {
-      id: "neue_2015",
-      lang: "de",
-      label: "NeÜ 2015",
-      path: "data/translations/german/neue_2015.json",
-      info:
-        "Neue evangelistische Übersetzung (NeÜ, 2015): moderne evangelikale Bibel. Keine freie Lizenz; nach üblicher Darstellung erlaubt der Autor Karl-Heinz Vanheiden kostenlosen Download und Nutzung in Bibelprogrammen. Text wie die Bibelsammler-Ausgabe (GitHub bibel/NeUe).",
-      infoUrl: "https://de.wikipedia.org/wiki/Neue_evangelistische_%C3%9Cbersetzung",
     },
     {
       id: "elberfelder_1905",
@@ -234,21 +233,39 @@
     },
     {
       id: "volxbibel_nt",
-      lang: "de",
-      label: "Volxbibel (NT)",
+      lang: "gs",
+      label: "Volxbibel 2012",
       path: "data/translations/german/volxbibel_nt.json",
       info:
-        "Die Volxbibel ist eine freie, moderne Bibelübersetzung in Umgangssprache (Projekt u. a. um Martin Dreyer und die Jesus Freaks, seit 2005). Der Text entsteht gemeinschaftlich und wird unter einer Creative-Commons-Lizenz veröffentlicht. In dieser App ist das Neue Testament eingebunden.",
+        "Die Volxbibel ist eine freie, moderne Bibelübersetzung in Umgangssprache (Projekt u. a. um Martin Dreyer und die Jesus Freaks, seit 2005). Der Text entsteht gemeinschaftlich und wird unter einer Creative-Commons-Lizenz veröffentlicht. In dieser App ist das Neue Testament eingebunden (Stand NT 4.0, wie bei der 2012 veröffentlichten Gesamtausgabe).",
       infoUrl: "https://de.wikipedia.org/wiki/Volxbibel",
     },
     {
       id: "greek_slb",
       lang: "el",
-      label: "SBL Greek NT",
+      label: "SBL GNT (textkritisch)",
       path: "data/translations/greek/greek_slb.json",
       info:
         "Das SBL Greek New Testament (SBLGNT) ist eine kritisch edierte Ausgabe des griechischen Neuen Testaments; die erste Ausgabe erschien 2010 (Society of Biblical Literature). Der Text steht frei in elektronischer Form zur Verfügung und richtet sich an Studium, Lehre und Forschung.",
       infoUrl: "https://www.sblgnt.com/",
+    },
+    {
+      id: "byz_2013",
+      lang: "el",
+      label: "Byz 2013 (Robinson–Pierpont)",
+      path: "data/translations/greek/byz_2013.json",
+      info:
+        "The New Testament in the Original Greek: Byzantine Textform (2013), herausgegeben von Maurice A. Robinson und William G. Pierpont — kurz: Robinson–Pierpont Byzantine Text (Revision 2013). „Byzantine Textform“ meint den Mehrheitstext (Majority Text) der griechischen Handschriften: den Text, der in den meisten byzantinischen Manuskripten überliefert ist. Das ist keine Ausgabe des Textus Receptus: Der TR basiert auf wenigen späten Handschriften und historisch gewachsenen Drucktraditionen (Erasmus → Stephanus → Beza → Elzevir) und enthält u. a. in der Offenbarung Rückübersetzungen aus dem Lateinischen; die Byzantine Textform 2013 hingegen basiert auf systematischer Auswertung vieler Handschriften und versucht, den Mehrheitstext wissenschaftlich zu rekonstruieren — konfessionell nicht „überliefert“, sondern kritisch erstellt. Typisch unterscheiden sich Byz und TR u. a. bei der Johannesoffenbarung, bei einigen längeren Lesarten und in Orthographie sowie Wortstellung; Byz wirkt oft gleichmäßiger, der TR historisch gewachsen, aber textkritisch uneinheitlicher. In Software wird Byz 2013 gern genutzt, weil der Text frei verfügbar, konsistent und der Manuskriptmehrheit nahe ist — gut für Vergleiche und textkritische Werkzeuge.",
+      infoUrl: "https://en.wikipedia.org/wiki/Byzantine_text-type",
+    },
+    {
+      id: "web",
+      lang: "en",
+      label: "English WEB",
+      path: "data/translations/english/WEB.json",
+      info:
+        "The World English Bible (WEB) is a modern English translation in the public domain, derived in part from the American Standard Version (1901). It is widely used for digital distribution and comparison.",
+      infoUrl: "https://worldenglish.bible/",
     },
     {
       id: "kjv",
@@ -267,15 +284,6 @@
       info:
         "American Standard Version (1901): englische Übersetzung mit wörtlicher Ausrichtung, historisch wichtige protestantische Standardbibel vor der modernen Flut an Übersetzungen. Gut vergleichbar mit der KJV-Tradition.",
       infoUrl: "https://en.wikipedia.org/wiki/American_Standard_Version",
-    },
-    {
-      id: "web",
-      lang: "en",
-      label: "English WEB",
-      path: "data/translations/english/WEB.json",
-      info:
-        "The World English Bible (WEB) is a modern English translation in the public domain, derived in part from the American Standard Version (1901). It is widely used for digital distribution and comparison.",
-      infoUrl: "https://worldenglish.bible/",
     },
     {
       id: "segond_1910",
@@ -358,8 +366,14 @@
   }
 
   function compareModalColumnMetaHtml() {
+    if (activeTranslationId === "byz_2013") {
+      return '<p class="compare-note compare-note--urtext">byzantinischer Mehrheitstext (Byz 2013)</p>';
+    }
+    if (activeTranslationId === "greek_slb") {
+      return '<p class="compare-note compare-note--urtext">textkritische Ausgabe (SBL GNT)</p>';
+    }
     if (activeTranslationIsSourceText()) {
-      return '<p class="compare-note compare-note--urtext">kritische Edition (SBLGNT)</p>';
+      return '<p class="compare-note compare-note--urtext">griechischer Referenztext</p>';
     }
     return '<p class="compare-note">Übersetzung: ' + escapeHtml(activeTranslationLabel()) + "</p>";
   }
@@ -370,6 +384,46 @@
       return g.key === langKey;
     });
     return found ? found.label : langKey;
+  }
+
+  /** Überschrift-Zeile pro Sprachklappe: Logo + Name. */
+  function renderLangCategoryLabelRow(langKey, grpLabel) {
+    if (langKey === "el") {
+      return (
+        `<div class="translation-lang-label translation-lang-label--urtext"><span class="translation-lang-urtext-mark" aria-hidden="true">Σ</span><span>${escapeHtml(
+          grpLabel,
+        )}</span></div>`
+      );
+    }
+    if (langKey === "gs") {
+      return (
+        `<div class="translation-lang-label translation-lang-label--gummi"><span class="translation-lang-gummi-mark" aria-hidden="true">\u{1F5E1}</span><span>${escapeHtml(
+          grpLabel,
+        )}</span></div>`
+      );
+    }
+    const mark = LANG_CATEGORY_MARK[langKey];
+    if (mark) {
+      return (
+        `<div class="translation-lang-label translation-lang-label--with-mark"><span class="translation-lang-mark translation-lang-mark--emoji translation-lang-mark--${escapeAttr(
+          langKey,
+        )}" aria-hidden="true">${mark}</span><span>${escapeHtml(grpLabel)}</span></div>`
+      );
+    }
+    return `<div class="translation-lang-label">${escapeHtml(grpLabel)}</div>`;
+  }
+
+  /** Deutsch (de + gs) und Griechisch direkt; übrige Sprachen hinter „Weitere Übersetzungen“. */
+  function partitionLangKeysForTiers(keys) {
+    const tierDe = [];
+    const tierEl = [];
+    const tierMore = [];
+    keys.forEach(function (k) {
+      if (k === "de" || k === "gs") tierDe.push(k);
+      else if (k === "el") tierEl.push(k);
+      else tierMore.push(k);
+    });
+    return { tierDe: tierDe, tierEl: tierEl, tierMore: tierMore };
   }
 
   function renderTranslationButtonRows() {
@@ -396,17 +450,14 @@
       keys.push("_");
     }
 
+    const tiers = partitionLangKeysForTiers(keys);
+
     function renderOneLanguageGroup(langKey) {
       const items = byLang[langKey];
       if (!items || !items.length) return "";
       const grpLabel = translationGroupLabel(langKey);
-      const labelRow =
-        langKey === "el"
-          ? `<div class="translation-lang-label translation-lang-label--urtext"><span class="translation-lang-urtext-mark" aria-hidden="true">Σ</span><span>${escapeHtml(
-              grpLabel,
-            )}</span></div>`
-          : `<div class="translation-lang-label">${escapeHtml(grpLabel)}</div>`;
-      const rows = items
+      const labelRow = renderLangCategoryLabelRow(langKey, grpLabel);
+      const optionRowsHtml = items
         .map(function (t) {
           const active = t.id === activeTranslationId ? " active" : "";
           const infoBtn = t.info
@@ -417,37 +468,43 @@
           )}" class="translation-option-main${active}">${escapeHtml(t.label)}</button>${infoBtn}</div>`;
         })
         .join("");
-      return `<div class="translation-lang-group" role="group" aria-label="${escapeAttr(grpLabel)}">${labelRow}${rows}</div>`;
+      const isOpen = items.some(function (t) {
+        return t.id === activeTranslationId;
+      });
+      const openAttr = isOpen ? " open" : "";
+      return (
+        `<details class="translation-lang-fold"${openAttr} data-lang-key="${escapeAttr(langKey)}">` +
+        `<summary class="translation-lang-fold-summary">${labelRow}</summary>` +
+        `<div class="translation-lang-fold-body" role="group" aria-label="${escapeAttr(grpLabel)}">` +
+        optionRowsHtml +
+        `</div></details>`
+      );
     }
 
-    const primaryChunks = [];
-    const secondaryChunks = [];
-    keys.forEach(function (langKey) {
+    const chunks = [];
+    tiers.tierDe.forEach(function (langKey) {
       const html = renderOneLanguageGroup(langKey);
-      if (!html) return;
-      if (PRIMARY_LANG_KEYS.indexOf(langKey) !== -1) {
-        primaryChunks.push(html);
-      } else {
-        secondaryChunks.push(html);
-      }
+      if (html) chunks.push(html);
     });
-
-    let out = primaryChunks.join("");
-    if (secondaryChunks.length) {
-      const tAct = translationById[activeTranslationId];
-      const secondaryOpen =
-        tAct &&
-        tAct.lang != null &&
-        String(tAct.lang) !== "" &&
-        PRIMARY_LANG_KEYS.indexOf(String(tAct.lang)) === -1;
-      out +=
-        '<details class="translation-lang-more"' +
-        (secondaryOpen ? " open" : "") +
-        '><summary class="translation-more-summary">Weitere Sprachen</summary><div class="translation-more-inner">' +
-        secondaryChunks.join("") +
-        "</div></details>";
+    tiers.tierEl.forEach(function (langKey) {
+      const html = renderOneLanguageGroup(langKey);
+      if (html) chunks.push(html);
+    });
+    if (tiers.tierMore.length) {
+      const inner = tiers.tierMore
+        .map(renderOneLanguageGroup)
+        .filter(Boolean)
+        .join("");
+      if (inner) {
+        chunks.push(
+          `<details class="translation-reveal translation-reveal--more-lang">` +
+            `<summary class="translation-reveal-summary">Weitere Übersetzungen</summary>` +
+            `<div class="translation-reveal-body">${inner}</div>` +
+            `</details>`,
+        );
+      }
     }
-    return out;
+    return chunks.join("");
   }
 
   function openTranslationInfoDialog(translationId) {
@@ -485,6 +542,12 @@
   function syncTranslationButtons() {
     document.querySelectorAll("button[data-translation]").forEach(function (btn) {
       btn.classList.toggle("active", btn.dataset.translation === activeTranslationId);
+    });
+    document.querySelectorAll(".translation-lang-fold").forEach(function (det) {
+      det.open = !!det.querySelector("button[data-translation].active");
+    });
+    document.querySelectorAll(".translation-reveal").forEach(function (det) {
+      det.open = !!det.querySelector("button[data-translation].active");
     });
     updateMobileTranslationLabel();
   }
@@ -657,18 +720,6 @@
     const tBtn = e.target.closest("button[data-translation]");
     if (!tBtn) return;
     activeTranslationId = tBtn.dataset.translation;
-    const tSel = translationById[activeTranslationId];
-    if (
-      tSel &&
-      tSel.lang != null &&
-      String(tSel.lang) !== "" &&
-      PRIMARY_LANG_KEYS.indexOf(String(tSel.lang)) === -1
-    ) {
-      const det =
-        document.querySelector("#translation-picker-body .translation-lang-more") ||
-        document.querySelector("#compare-modal-translation-buttons .translation-lang-more");
-      if (det) det.open = true;
-    }
     invalidateOpenPanels();
     if (translationPickerOverlay && !translationPickerOverlay.hidden) {
       closeTranslationPicker();

@@ -31,7 +31,9 @@
       for (const [k, v] of Object.entries(NAME_TO_BOOK)) {
         if (n === k || n.startsWith(k + " ")) return v;
       }
+      return null;
     }
+    // Nur wenn der Datensatz keine Buchnamen hat (reine NT-Reihenfolge Mt–Joh)
     if (fallbackIndex >= 0 && fallbackIndex <= 3) return 40 + fallbackIndex;
     return null;
   }

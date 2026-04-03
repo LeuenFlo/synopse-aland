@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("synopse-theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
+  <title>Perikope suchen · Synopse der vier Evangelien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/synopse.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="compare-home-header compare-home-header--liste">
+      <div class="compare-home-header__text">
+        <h1>Perikope suchen</h1>
+      </div>
+      <div class="compare-home-header__actions">
+        <div class="compare-home-theme">
+          <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
+          <button
+            type="button"
+            class="theme-switch"
+            role="switch"
+            aria-checked="false"
+            data-theme-toggle
+            aria-labelledby="theme-mode-label"
+          >
+            <span class="theme-switch__thumb" aria-hidden="true"></span>
+          </button>
+        </div>
+        <a href="index.html" class="compare-home-cta">Zur Hauptseite</a>
+      </div>
+    </header>
+
+    <section class="top-filter-venn" aria-label="Filter und synoptische Übersicht">
+      <div class="filter-venn-row">
+        <div class="filter-col">
+          <div class="filter-toolbar" id="filter-accordion">
+            <div class="filter-toolbar-search">
+              <input
+                type="search"
+                id="q"
+                aria-label="Suche nach Ereignistitel oder Versstelle"
+                placeholder="Ereignistitel oder Versstelle…"
+                autocomplete="off"
+              />
+            </div>
+            <details class="filter-acc-panel" name="filter-acc" data-filter-kind="presets">
+              <summary
+                class="filter-acc-summary filter-acc-summary--toolbar"
+                title="Filter nach Evangelien öffnen oder schließen"
+              >
+                <span class="filter-acc-btn-label">Filter</span>
+              </summary>
+              <div class="filter-acc-body filter-acc-body--presets">
+                <div class="preset-wrap" id="presets"></div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="list-section" aria-label="Perikopenliste">
+      <div class="section-list-heading" id="section-list-heading" hidden>
+        <h2 class="section-list-heading__title" id="section-list-heading-title"></h2>
+        <a href="liste.html" class="section-list-heading__all" id="section-list-heading-clear" hidden>Alle Ereignisse</a>
+      </div>
+      <div class="count" id="count"></div>
+      <div class="list" id="list"></div>
+    </section>
+
+    <footer>
+      <p>
+        <a href="index.html">Zum Vergleich</a>
+        ·
+        <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
+      </p>
+      <p>
+        Die Tabelle folgt der <strong>Synopsis Quattuor Evangeliorum</strong> (Kurt Aland). Die zugrunde liegende Parallelliste stammt von
+        <a href="https://www.bible-researcher.com/parallels.html" target="_blank" rel="noopener">bible-researcher.com</a>.
+      </p>
+      <p>
+        „Q-Kandidaten“ kennzeichnet Zeilen, in denen nur Matthäus und Lukas vorkommen, nicht Markus — eine grobe Hilfe zur Zwei-Quellen-Theorie. Wo Aland mehrere Verse in einer Zelle bündelt, kann ein Vers fehlen; dann weist das Textfenster darauf hin.
+      </p>
+    </footer>
+  </div>
+
+  <div class="fab-stack">
+    <button type="button" class="scroll-top-fab" id="scroll-top-fab" aria-label="Nach oben scrollen" title="Nach oben">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M18 15l-6-6-6 6" />
+      </svg>
+    </button>
+    <button type="button" class="filter-reset-fab" id="filter-reset-fab" aria-label="Filter zurücksetzen" title="Filter zurücksetzen">×</button>
+  </div>
+
+  <div
+    class="compare-modal"
+    id="compare-modal"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="compare-modal-title"
+  >
+    <div class="compare-modal-backdrop" id="compare-modal-backdrop" aria-hidden="true"></div>
+    <div class="compare-modal-shell">
+      <section class="compare-translations-bar translation-toolbar-wrap" aria-label="Lesetexte">
+        <div class="translation-toolbar">
+          <div class="translation-toolbar__pickers compare-modal-translations-box compare-translations-box--wide">
+            <div class="translation-buttons translation-buttons--lang-strip" id="compare-modal-translation-buttons"></div>
+          </div>
+        </div>
+      </section>
+      <div class="compare-modal-panel" id="compare-modal-panel">
+        <button type="button" class="compare-modal-close" id="compare-modal-close" aria-label="Schließen">
+          ×
+        </button>
+        <header class="compare-modal-header">
+          <p class="compare-modal-aland" id="compare-modal-aland"></p>
+          <h2 id="compare-modal-title"></h2>
+          <p class="compare-modal-sec" id="compare-modal-sec"></p>
+        </header>
+        <div class="text-grid compare-modal-grid" id="compare-modal-grid" data-filled="0"></div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="translation-picker-overlay"
+    class="translation-picker-overlay"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="translation-picker-title"
+  >
+    <div class="translation-picker-toolbar">
+      <h2 id="translation-picker-title" class="translation-picker-title">Alle Lesetexte</h2>
+      <button type="button" class="translation-picker-close" id="translation-picker-close" aria-label="Schließen">
+        ×
+      </button>
+    </div>
+    <div class="translation-picker-scroll">
+      <div class="translation-buttons translation-picker-inner" id="translation-picker-body"></div>
+    </div>
+  </div>
+
+  <dialog id="translation-info-dialog" class="translation-info-dialog" aria-labelledby="translation-info-dialog-title">
+    <div class="translation-info-dialog-inner">
+      <button type="button" class="translation-info-dialog-x" id="translation-info-dialog-close" aria-label="Hinweis schließen">
+        ×
+      </button>
+      <h4 id="translation-info-dialog-title" class="translation-info-dialog-h"></h4>
+      <p id="translation-info-dialog-body" class="translation-info-dialog-body"></p>
+    </div>
+  </dialog>
+
+  <script src="js/theme.js" defer></script>
+  <script src="data/parallels_data.js"></script>
+  <script src="data/elberfelder_data.js"></script>
+  <script src="compare_text.js"></script>
+  <script src="js/synopse.js"></script>
+</body>
+</html>

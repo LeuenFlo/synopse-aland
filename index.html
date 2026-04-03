@@ -3,144 +3,88 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#0f0e0c" />
-  <title>Synopse nach Aland</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("synopse-theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
+  <title>Synopse der vier Evangelien</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/synopse.css" />
 </head>
-<body>
-  <div class="wrap">
-    <nav class="subnav">
-      <a href="index.html" class="here">Listenansicht</a>
-      <a href="kombinationen.html">Kombinationen</a>
-      <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
-    </nav>
-    <header>
-      <h1>Synopse <em>nach Aland</em></h1>
-      <p class="lead"><strong>Durchsuchen, filtern, vergleichen:</strong> Diese Liste folgt der Aland-Synopse. Jede Zeile ist eine Perikope mit Verweisen auf Matthäus, Markus, Lukas und Johannes. <strong>Einen Eintrag anklicken</strong> blendet die passenden Bibeltexte ein — mit freier Wahl der Übersetzung (Deutsch) und des griechischen Textes (z. B. SBL GNT, textkritisch, oder Byzantinische Textform 2013).</p>
+<body class="compare-home">
+  <div class="wrap compare-home-wrap">
+    <header class="compare-home-header">
+      <div class="compare-home-header__text">
+        <div class="compare-home-title-row">
+          <div class="compare-home-title-heading">
+            <h1>Synopse der vier Evangelien</h1>
+            <button
+              type="button"
+              class="compare-home-info-btn"
+              id="compare-home-info-btn"
+              aria-label="Hinweise, Navigation und Quellen"
+              title="Hinweise, Navigation und Quellen"
+            >
+              i
+            </button>
+          </div>
+          <div class="compare-home-theme">
+            <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
+            <button
+              type="button"
+              class="theme-switch"
+              role="switch"
+              aria-checked="false"
+              data-theme-toggle
+              aria-labelledby="theme-mode-label"
+            >
+              <span class="theme-switch__thumb" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <a href="liste.html" class="compare-home-cta compare-home-cta--search" aria-label="Perikope suchen">
+        <svg class="compare-home-cta__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7" />
+          <path d="M20 20l-3.2-3.2" />
+        </svg>
+        <span>Perikope suchen</span>
+      </a>
     </header>
 
-    <section class="top-filter-venn" aria-label="Filter und synoptische Übersicht">
-      <div class="filter-venn-row">
-        <div class="filter-col">
-          <div class="controls">
-            <input type="search" id="q" placeholder="Titel oder Vers suchen…" autocomplete="off" />
-            <select id="section"></select>
-            <div class="preset-wrap" id="presets"></div>
+    <main class="compare-home-main" id="compare-home-main" aria-label="Perikopenvergleich">
+      <div class="compare-home-shell">
+        <section class="compare-translations-bar translation-toolbar-wrap translation-toolbar-wrap--home" aria-label="Lesetexte">
+          <div class="translation-toolbar">
+            <div class="translation-toolbar__pickers compare-modal-translations-box compare-translations-box--wide">
+              <div class="translation-buttons translation-buttons--lang-strip" id="compare-main-translation-buttons"></div>
+            </div>
           </div>
+        </section>
+        <div class="compare-modal-panel compare-main-panel" id="compare-main-panel">
+          <header class="compare-modal-header compare-main-header">
+            <p class="compare-modal-aland" id="compare-main-aland"></p>
+            <h2 id="compare-main-title"></h2>
+            <p class="compare-modal-sec" id="compare-main-sec"></p>
+          </header>
+          <div class="text-grid compare-modal-grid compare-main-grid" id="compare-main-grid" data-filled="0"></div>
         </div>
-        <!-- TEMP: Venn-Diagramm auf der Startseite wieder aktivieren — Block + unten d3/venn/synoptic_venn-Skripte einbinden
-        <aside class="venn-aside" aria-label="Venn-Diagramm Synoptiker">
-          <div class="venn-wrap">
-            <span class="venn-lbl venn-lbl-mt">Matthäus</span>
-            <span class="venn-lbl venn-lbl-mk">Markus</span>
-            <span class="venn-lbl venn-lbl-lk">Lukas</span>
-            <div
-              id="venn-chart"
-              role="img"
-              aria-label="Venn-Diagramm: Perikopen je Schnittmenge bei Matthäus, Markus und Lukas"
-            ></div>
-          </div>
-        </aside>
-        -->
       </div>
-    </section>
-
-    <section class="list-section" aria-label="Perikopenliste">
-      <div class="count" id="count"></div>
-      <div class="list" id="list"></div>
-    </section>
-
-    <footer>
-      <p>
-        Die Tabelle folgt der <strong>Synopsis Quattuor Evangeliorum</strong> (Kurt Aland). Die zugrunde liegende Parallelliste stammt von
-        <a href="https://www.bible-researcher.com/parallels.html" target="_blank" rel="noopener">bible-researcher.com</a>.
-      </p>
-      <p>
-        Die Bibelübersetzungen im Vergleichsfenster stammen von
-        <a href="https://www.biblesupersearch.com/" target="_blank" rel="noopener">Bible SuperSearch</a>
-        und aus dem Sammlungsprojekt
-        <a href="https://github.com/scrollmapper/bible_databases/tree/master" target="_blank" rel="noopener">scrollmapper/bible_databases</a>
-        (u. a. Offene Bibel in Arbeit). Ergänzend:
-        <a href="https://worldenglish.bible/" target="_blank" rel="noopener">World English Bible</a>
-        und die italienische Riveduta 1927 (Public Domain) nach
-        <a href="https://ebible.org/ita1927/" target="_blank" rel="noopener">eBible.org · ita1927</a>.
-      </p>
-      <p>
-        „Q-Kandidat“ kennzeichnet Zeilen, in denen nur Matthäus und Lukas vorkommen, nicht Markus — eine grobe Hilfe zur Zwei-Quellen-Theorie. Wo Aland mehrere Verse in einer Zelle bündelt, kann ein Vers fehlen; dann weist das Textfenster darauf hin.
-      </p>
-      <p>
-        Vollständige Übersicht zu Datenquellen, Bibeltexten und Lizenzen:
-        <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>.
-      </p>
-    </footer>
-  </div>
-
-  <div class="fab-stack">
-    <button type="button" class="to-top" id="to-top" aria-label="Nach oben scrollen" title="Nach oben">↑</button>
-  </div>
-
-  <div
-    class="compare-modal"
-    id="compare-modal"
-    hidden
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="compare-modal-title"
-  >
-    <div class="compare-modal-backdrop" id="compare-modal-backdrop" aria-hidden="true"></div>
-    <div class="compare-modal-shell">
-      <aside class="compare-modal-aside" aria-label="Textauswahl">
-        <div class="compare-modal-translations-box">
-          <div class="compare-modal-translations-head">
-            <svg
-              class="compare-modal-translations-book"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-              <path d="M8 7h8M8 11h6" />
-            </svg>
-            <span class="compare-modal-translations-title">Textauswahl</span>
-          </div>
-          <button
-            type="button"
-            class="translation-lang-mobile-btn"
-            id="translation-lang-mobile-btn"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            aria-controls="translation-picker-overlay"
-          >
-            <span class="translation-lang-mobile-inner">
-              <span class="translation-lang-mobile-hint">Textauswahl</span>
-              <span class="translation-lang-mobile-label" id="translation-lang-mobile-label"></span>
-            </span>
-            <span class="translation-lang-mobile-chev" aria-hidden="true">▾</span>
-          </button>
-          <div class="translation-buttons" id="compare-modal-translation-buttons"></div>
-        </div>
-      </aside>
-      <div class="compare-modal-panel" id="compare-modal-panel">
-        <button type="button" class="compare-modal-close" id="compare-modal-close" aria-label="Schließen">
-          ×
-        </button>
-        <header class="compare-modal-header">
-          <p class="compare-modal-aland" id="compare-modal-aland"></p>
-          <h2 id="compare-modal-title"></h2>
-          <p class="compare-modal-sec" id="compare-modal-sec"></p>
-        </header>
-        <div class="text-grid compare-modal-grid" id="compare-modal-grid" data-filled="0"></div>
-      </div>
-    </div>
+    </main>
   </div>
 
   <div
@@ -152,7 +96,7 @@
     aria-labelledby="translation-picker-title"
   >
     <div class="translation-picker-toolbar">
-      <h2 id="translation-picker-title" class="translation-picker-title">Textauswahl</h2>
+      <h2 id="translation-picker-title" class="translation-picker-title">Alle Lesetexte</h2>
       <button type="button" class="translation-picker-close" id="translation-picker-close" aria-label="Schließen">
         ×
       </button>
@@ -172,14 +116,35 @@
     </div>
   </dialog>
 
+  <dialog id="site-info-dialog" class="translation-info-dialog site-info-dialog" aria-labelledby="site-info-dialog-title">
+    <div class="translation-info-dialog-inner site-info-dialog-inner">
+      <button type="button" class="translation-info-dialog-x" id="site-info-dialog-close" aria-label="Schließen">×</button>
+      <header class="site-info-dialog__head">
+        <h4 id="site-info-dialog-title" class="translation-info-dialog-h site-info-dialog__title">Die Aland-Synopse</h4>
+        <p class="site-info-dialog__kicker">Synopsis Quattuor Evangeliorum</p>
+      </header>
+      <div class="site-info-intro">
+        <p>
+          Kurt Alands <strong>Synopsis Quattuor Evangeliorum</strong> ordnet die vier Evangelien <strong>parallel nach Perikopen</strong>: dieselbe Erzählung steht in
+          einer Zeile nebeneinander, leere Felder zeigen, wo ein Text fehlt. So werden Übereinstimmungen und Unterschiede zwischen Matthäus, Markus, Lukas und Johannes
+          übersichtlich vergleichbar — die übliche Grundlage synoptischer Arbeit.
+        </p>
+        <p>
+          Diese Website nutzt dieselbe <strong>Perikopenstruktur</strong> für den Lesetext-Vergleich und folgt der Synopsis nach <strong>Kurt Aland</strong>.
+        </p>
+      </div>
+      <footer class="site-info-footer">
+        <p class="site-info-footer__links">
+          <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
+        </p>
+      </footer>
+    </div>
+  </dialog>
+
+  <script src="js/theme.js" defer></script>
   <script src="data/parallels_data.js"></script>
   <script src="data/elberfelder_data.js"></script>
   <script src="compare_text.js"></script>
   <script src="js/synopse.js"></script>
-  <!-- TEMP: mit Venn-Block oben zusammen wieder aktivieren
-  <script src="lib/d3.v4.min.js"></script>
-  <script src="lib/venn.min.js"></script>
-  <script src="js/synoptic_venn.js"></script>
-  -->
 </body>
 </html>

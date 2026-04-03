@@ -3,9 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#0f0e0c" />
-  <title>Quellen & Lizenzen · Synopse nach Aland</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("synopse-theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
+  <title>Quellen &amp; Lizenzen · Synopse der vier Evangelien</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
@@ -13,18 +27,31 @@
 </head>
 <body>
   <div class="wrap sources-page">
-    <nav class="subnav">
-      <a href="index.html">Listenansicht</a>
-      <a href="kombinationen.html">Kombinationen</a>
-      <a href="quellen-und-lizenzen.html" class="here">Quellen & Lizenzen</a>
-    </nav>
-
-    <header>
-      <h1>Quellen <em>&amp; Lizenzen</em></h1>
-      <p class="lead">
-        Übersicht über Datengrundlagen, Bibeltexte und Software dieser Website. Die Angaben zu Lizenzen stellen eine orientierende Zusammenfassung dar und ersetzen keine
-        Rechtsberatung; maßgeblich sind jeweils die Bedingungen der Originalquellen.
-      </p>
+    <header class="compare-home-header">
+      <div class="compare-home-header__text">
+        <h1>Synopse der vier Evangelien</h1>
+        <p class="sources-page-kicker">Quellen &amp; Lizenzen</p>
+        <p class="lead">
+          Übersicht über Datengrundlagen, Bibeltexte und Software dieser Website. Die Angaben zu Lizenzen stellen eine orientierende Zusammenfassung dar und ersetzen keine
+          Rechtsberatung; maßgeblich sind jeweils die Bedingungen der Originalquellen.
+        </p>
+      </div>
+      <div class="compare-home-header__actions">
+        <div class="compare-home-theme">
+          <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
+          <button
+            type="button"
+            class="theme-switch"
+            role="switch"
+            aria-checked="false"
+            data-theme-toggle
+            aria-labelledby="theme-mode-label"
+          >
+            <span class="theme-switch__thumb" aria-hidden="true"></span>
+          </button>
+        </div>
+        <a href="index.html" class="compare-home-cta">Zur Hauptseite</a>
+      </div>
     </header>
 
     <p class="src-intro">
@@ -293,9 +320,12 @@
 
     <footer>
       <p>
-        <a href="index.html">Zurück zur Listenansicht</a>
+        <a href="index.html">Zur Hauptseite</a>
+        ·
+        <a href="liste.html">Liste</a>
       </p>
     </footer>
   </div>
+  <script src="js/theme.js" defer></script>
 </body>
 </html>

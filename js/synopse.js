@@ -1,8 +1,17 @@
 (function () {
   const data = window.PARALLELS_DATA;
+  const listEl = document.getElementById("list");
+  const isCompareHome = document.body.classList.contains("compare-home");
+
   if (!Array.isArray(data) || !data.length) {
-    document.getElementById("list").innerHTML =
+    const msg =
       '<div class="empty">Keine Daten — <code>data/parallels_data.js</code> fehlt oder enthält keine Einträge.</div>';
+    if (listEl) {
+      listEl.innerHTML = msg;
+    } else {
+      const mg = document.getElementById("compare-main-grid");
+      if (mg) mg.innerHTML = msg;
+    }
     return;
   }
 
@@ -16,17 +25,19 @@
 
   const n = data.length;
 
-  const sections = [...new Set(data.map((r) => r.section))].filter(Boolean);
-  const sel = document.getElementById("section");
-  sel.innerHTML =
-    '<option value="">Alle Abschnitte</option>' +
-    sections
-      .map((s) => {
-        const sample = data.find((r) => r.section === s);
-        const label = sample && sample.section_de ? sample.section_de : s;
-        return `<option value="${escapeAttr(s)}">${escapeHtml(label)}</option>`;
-      })
-      .join("");
+  /** Abschnitte in Datenreihenfolge (nicht alphabetisch). */
+  const sectionsOrdered = [];
+  const sectionSeen = new Set();
+  for (let i = 0; i < data.length; i++) {
+    const s = data[i].section;
+    if (s && !sectionSeen.has(s)) {
+      sectionSeen.add(s);
+      sectionsOrdered.push(s);
+    }
+  }
+
+  /** Aktiver Aland-Abschnitt (interner Schlüssel) — nur per \`?section=\` gesetzt, kein eigenes UI. */
+  let activeSection = "";
 
   function sgMatthew(r) {
     return r.in_matthew && !r.in_mark && !r.in_luke;
@@ -43,40 +54,48 @@
 
   const presetGroups = [
     {
-      label: "Allgemein",
-      presets: [{ id: "all", label: "Alle" }],
-    },
-    {
-      label: "Vorkommen",
+      label: "Kommt in der Perikope vor",
       presets: [
         {
           id: "has_mt",
-          label: "Mit Mt",
-          title: "Matthäus kommt in dieser Perikope vor",
+          label: "Matthäus",
+          title: "Nur Zeilen, in denen Matthäus vorkommt",
         },
         {
           id: "has_mk",
-          label: "Mit Mk",
-          title: "Markus kommt in dieser Perikope vor",
+          label: "Markus",
+          title: "Nur Zeilen, in denen Markus vorkommt",
         },
         {
           id: "has_lk",
-          label: "Mit Lk",
-          title: "Lukas kommt in dieser Perikope vor",
+          label: "Lukas",
+          title: "Nur Zeilen, in denen Lukas vorkommt",
         },
         {
           id: "has_jn",
-          label: "Mit Jn",
-          title: "Johannes kommt in dieser Perikope vor",
+          label: "Johannes",
+          title: "Nur Zeilen, in denen das Johannesevangelium vorkommt",
         },
       ],
     },
     {
-      label: "Muster",
+      label: "Muster & Synopse",
       presets: [
-        { id: "triple", label: "Triple (Mt+Mk+Lk)" },
-        { id: "q", label: "Q‑Kandidat" },
-        { id: "syn_only", label: "Nur Synoptiker (ohne Jn)" },
+        {
+          id: "triple",
+          label: "In allen Synoptikern",
+          title: "Matthäus, Markus und Lukas zugleich (keine reine Joh-Perikope)",
+        },
+        {
+          id: "q",
+          label: "Q-Kandidaten",
+          title: "Nur Matthäus und Lukas, nicht Markus (typisches Q-Muster)",
+        },
+        {
+          id: "syn_only",
+          label: "Ohne Johannes-Evangelium",
+          title: "Die Johannes-Spalte ist in dieser Perikope leer (nur Mt/Mk/Lk)",
+        },
       ],
     },
     {
@@ -84,45 +103,182 @@
       presets: [
         {
           id: "sg_mt",
-          label: "Sondergut Mt",
-          title: "Nur Matthäus unter den drei Synoptikern (nicht in Mk/Lk)",
+          label: "Matthäus",
+          title: "Nur bei Matthäus, bei Markus und Lukas diese Perikope nicht",
         },
         {
           id: "sg_mk",
-          label: "Sondergut Mk",
-          title: "Nur Markus unter den drei Synoptikern (nicht in Mt/Lk)",
+          label: "Markus",
+          title: "Nur bei Markus, bei Matthäus und Lukas nicht",
         },
         {
           id: "sg_lk",
-          label: "Sondergut Lk",
-          title: "Nur Lukas unter den drei Synoptikern (nicht in Mt/Mk)",
+          label: "Lukas",
+          title: "Nur bei Lukas, bei Matthäus und Markus nicht",
         },
         {
           id: "sg_jn",
-          label: "Sondergut Joh",
-          title: "Nur Johannes (keine der drei Synoptiker-Spalten)",
+          label: "Johannes",
+          title: "Nur im Johannesevangelium, bei keinem der drei Synoptiker",
         },
       ],
     },
-  ],
-    presetEl = document.getElementById("presets");
+  ];
+  const presetEl = document.getElementById("presets");
   let activePreset = "all";
+  /** Nach Deep-Link (?section=…) erste Trefferzeile ins Sichtfeld scrollen. */
+  let scrollListToFirst = false;
+
+  function syncPresetButtonActiveState() {
+    if (!presetEl) return;
+    presetEl.querySelectorAll("button[data-preset]").forEach(function (btn) {
+      btn.classList.toggle("active", btn.dataset.preset === activePreset);
+    });
+  }
+
+  function syncListFabs() {
+    const filterBtn = document.getElementById("filter-reset-fab");
+    const scrollBtn = document.getElementById("scroll-top-fab");
+    const qEl = document.getElementById("q");
+    const q = qEl && qEl.value.trim();
+    const dirty = activePreset !== "all" || !!q || !!activeSection;
+    if (filterBtn) filterBtn.classList.toggle("visible", dirty);
+    if (scrollBtn) scrollBtn.classList.toggle("visible", window.scrollY > 200);
+  }
+
+  function resetAllListFilters() {
+    activePreset = "all";
+    activeSection = "";
+    const qEl = document.getElementById("q");
+    if (qEl) qEl.value = "";
+    syncPresetButtonActiveState();
+    document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
+      panel.open = false;
+    });
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.delete("section");
+      const next = u.pathname + (u.search ? u.search : "") + (u.hash || "");
+      window.history.replaceState({}, "", next);
+    } catch (e) {
+      /* ignore */
+    }
+    filter();
+    syncListFabs();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function presetButtonHtml(p) {
     const tip = p.title ? ` title="${escapeAttr(p.title)}"` : "";
     return `<button type="button" data-preset="${p.id}" class="${
-      p.id === "all" ? "active" : ""
+      p.id === activePreset ? "active" : ""
     }"${tip}>${p.label}</button>`;
   }
 
-  presetEl.innerHTML = presetGroups
-    .map(
-      (g) =>
-        `<div class="preset-group"><span class="preset-group-label">${escapeHtml(
-          g.label,
-        )}</span><div class="preset">${g.presets.map(presetButtonHtml).join("")}</div></div>`,
-    )
-    .join("");
+  if (presetEl) {
+    presetEl.innerHTML = presetGroups
+      .map(
+        (g) =>
+          `<div class="preset-group"><span class="preset-group-label">${escapeHtml(
+            g.label,
+          )}</span><div class="preset">${g.presets.map(presetButtonHtml).join("")}</div></div>`,
+      )
+      .join("");
+  }
+
+  const sectionListHeadingEl = document.getElementById("section-list-heading");
+  const sectionListHeadingTitleEl = document.getElementById("section-list-heading-title");
+  const sectionListHeadingClearEl = document.getElementById("section-list-heading-clear");
+
+  function updateSectionListHeading() {
+    if (!sectionListHeadingEl || !sectionListHeadingTitleEl) return;
+    const sec = activeSection;
+    if (!sec) {
+      sectionListHeadingEl.hidden = true;
+      sectionListHeadingTitleEl.textContent = "";
+      if (sectionListHeadingClearEl) {
+        sectionListHeadingClearEl.hidden = true;
+      }
+      return;
+    }
+    const sample = data.find((r) => r.section === sec);
+    const label = sample && sample.section_de ? sample.section_de : sec;
+    sectionListHeadingTitleEl.textContent = label;
+    sectionListHeadingEl.hidden = false;
+    if (sectionListHeadingClearEl) {
+      sectionListHeadingClearEl.hidden = false;
+    }
+  }
+
+  document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
+    panel.addEventListener("toggle", function () {
+      if (panel.open) {
+        const qEl = document.getElementById("q");
+        if (qEl) qEl.value = "";
+        document.querySelectorAll(".filter-acc-panel").forEach(function (other) {
+          if (other !== panel) other.open = false;
+        });
+        filter();
+        return;
+      }
+      const kind = panel.getAttribute("data-filter-kind");
+      if (kind === "presets" && presetEl) {
+        activePreset = "all";
+        syncPresetButtonActiveState();
+      }
+      filter();
+    });
+  });
+
+  const filterToolbar = document.getElementById("filter-accordion");
+  const filterPresetsPanel = document.querySelector(
+    '.filter-acc-panel[data-filter-kind="presets"]',
+  );
+  const filterPresetsLabel = document.querySelector(".filter-acc-btn-label");
+  const filterPresetsBody = filterPresetsPanel
+    ? filterPresetsPanel.querySelector(".filter-acc-body--presets")
+    : null;
+
+  function syncFilterPresetsLabel() {
+    if (!filterPresetsLabel || !filterPresetsPanel) return;
+    filterPresetsLabel.textContent = filterPresetsPanel.open ? "Filter schließen" : "Filter";
+  }
+
+  /** Entspricht CSS --filter-gap (Abstand Toolbar-Zeile → Dropdown). */
+  function getFilterGapPx() {
+    const fs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const raw = getComputedStyle(document.documentElement).getPropertyValue("--filter-gap").trim();
+    const rem = /^([\d.]+)rem$/.exec(raw);
+    if (rem) return parseFloat(rem[1], 10) * fs;
+    const px = /^([\d.]+)px$/.exec(raw);
+    if (px) return parseFloat(px[1], 10);
+    return 10;
+  }
+
+  /** Platz unter der Toolbar, damit das absolut positionierte Panel die Liste nicht überdeckt.
+   *  margin-bottom (nicht padding): sonst wächst die Toolbar-Höhe und top:100% für das Panel verschiebt sich. */
+  function updateFilterToolbarReserveSpace() {
+    if (!filterToolbar || !filterPresetsPanel) return;
+    if (!filterPresetsPanel.open || !filterPresetsBody) {
+      filterToolbar.style.marginBottom = "";
+      return;
+    }
+    filterToolbar.style.marginBottom = filterPresetsBody.offsetHeight + getFilterGapPx() + "px";
+  }
+
+  if (filterPresetsPanel) {
+    filterPresetsPanel.addEventListener("toggle", function () {
+      syncFilterPresetsLabel();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(updateFilterToolbarReserveSpace);
+      });
+    });
+    syncFilterPresetsLabel();
+    window.addEventListener("resize", updateFilterToolbarReserveSpace);
+    if (filterPresetsBody && typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(updateFilterToolbarReserveSpace).observe(filterPresetsBody);
+    }
+  }
 
   function escapeHtml(s) {
     const d = document.createElement("div");
@@ -157,7 +313,6 @@
 
   const TRANSLATION_LANG_ORDER = [
     { key: "de", label: "Deutsch" },
-    { key: "gs", label: "Gummi Schwerter" },
     { key: "en", label: "English" },
     { key: "fr", label: "Français" },
     { key: "it", label: "Italiano" },
@@ -165,16 +320,6 @@
     { key: "la", label: "Latina" },
     { key: "el", label: "Griechisch · Urtext" },
   ];
-
-  /** Emoji / Symbol je Sprachgruppe (neben dem Klapp-Titel). */
-  const LANG_CATEGORY_MARK = {
-    de: "\u{1F1E9}\u{1F1EA}",
-    en: "\u{1F1EC}\u{1F1E7}",
-    fr: "\u{1F1EB}\u{1F1F7}",
-    it: "\u{1F1EE}\u{1F1F9}",
-    es: "\u{1F1EA}\u{1F1F8}",
-    la: "\u{1F4DC}",
-  };
 
   const TRANSLATIONS = [
     {
@@ -233,7 +378,7 @@
     },
     {
       id: "volxbibel_nt",
-      lang: "gs",
+      lang: "de",
       label: "Volxbibel 2012",
       path: "data/translations/german/volxbibel_nt.json",
       info:
@@ -262,6 +407,7 @@
       id: "web",
       lang: "en",
       label: "English WEB",
+      labelLong: "World English Bible (WEB)",
       path: "data/translations/english/WEB.json",
       info:
         "The World English Bible (WEB) is a modern English translation in the public domain, derived in part from the American Standard Version (1901). It is widely used for digital distribution and comparison.",
@@ -271,6 +417,7 @@
       id: "kjv",
       lang: "en",
       label: "English KJV",
+      labelLong: "King James Version (KJV, 1769)",
       path: "data/translations/english/KJV.json",
       info:
         "King James Version (1769): weit verbreitete englische Bibelübersetzung, sprachlich der frühneuzeitlichen Tradition verbunden. Für Vergleiche mit deutschsprachigen und anderen europäischen Texten geeignet.",
@@ -280,6 +427,7 @@
       id: "asv",
       lang: "en",
       label: "English ASV",
+      labelLong: "American Standard Version (ASV, 1901)",
       path: "data/translations/english/ASV.json",
       info:
         "American Standard Version (1901): englische Übersetzung mit wörtlicher Ausrichtung, historisch wichtige protestantische Standardbibel vor der modernen Flut an Übersetzungen. Gut vergleichbar mit der KJV-Tradition.",
@@ -326,7 +474,96 @@
   TRANSLATIONS.forEach(function (t) {
     translationById[t.id] = t;
   });
-  let activeTranslationId = TRANSLATIONS[0].id;
+
+  /** Schnellauswahl: Deutsch (Elberfelder) + Griechisch (SBL GNT textkritisch) */
+  const QUICK_TRANSLATION_DE = "elberfelder_1905";
+  const QUICK_TRANSLATION_EL = "greek_slb";
+
+  function isQuickPairTranslationId(id) {
+    return id === QUICK_TRANSLATION_DE || id === QUICK_TRANSLATION_EL;
+  }
+
+  /** Bis zu zwei zusätzliche Schnelltasten (neben Elb./Gr.); Reihenfolge = Anheften-Reihenfolge */
+  const PINNED_QUICK_STORAGE_KEY = "synopse-pinned-quick-translations";
+  const PINNED_QUICK_LEGACY_KEY = "synopse-pinned-quick-translation";
+  const MAX_PINNED_QUICK_TRANSLATIONS = 2;
+
+  let pinnedQuickTranslationIds = [];
+
+  function sanitizePinnedQuickIds(arr) {
+    const seen = Object.create(null);
+    const out = [];
+    (arr || []).forEach(function (id) {
+      if (!id || seen[id] || !translationById[id] || isQuickPairTranslationId(id)) return;
+      seen[id] = true;
+      out.push(id);
+    });
+    return out.slice(0, MAX_PINNED_QUICK_TRANSLATIONS);
+  }
+
+  function loadPinnedQuickTranslations() {
+    try {
+      const raw = localStorage.getItem(PINNED_QUICK_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          pinnedQuickTranslationIds = sanitizePinnedQuickIds(parsed);
+          return;
+        }
+      }
+      const legacy = localStorage.getItem(PINNED_QUICK_LEGACY_KEY);
+      if (legacy && translationById[legacy] && !isQuickPairTranslationId(legacy)) {
+        pinnedQuickTranslationIds = [legacy];
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function persistPinnedQuickTranslations() {
+    try {
+      localStorage.setItem(PINNED_QUICK_STORAGE_KEY, JSON.stringify(pinnedQuickTranslationIds));
+      localStorage.removeItem(PINNED_QUICK_LEGACY_KEY);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  /**
+   * Nicht-Elb./Gr.-Auswahl: anheften (max. 2; bei Überlauf ältesten Eintrag verdrängen).
+   */
+  function notePinnedTranslationChoice(id) {
+    if (isQuickPairTranslationId(id) || !translationById[id]) return;
+    if (pinnedQuickTranslationIds.indexOf(id) !== -1) return;
+    if (pinnedQuickTranslationIds.length < MAX_PINNED_QUICK_TRANSLATIONS) {
+      pinnedQuickTranslationIds.push(id);
+    } else {
+      pinnedQuickTranslationIds.shift();
+      pinnedQuickTranslationIds.push(id);
+    }
+    persistPinnedQuickTranslations();
+  }
+
+  function removePinnedQuickTranslation(id) {
+    pinnedQuickTranslationIds = pinnedQuickTranslationIds.filter(function (x) {
+      return x !== id;
+    });
+    persistPinnedQuickTranslations();
+    if (activeTranslationId === id) {
+      activeTranslationId = QUICK_TRANSLATION_DE;
+    }
+  }
+
+  loadPinnedQuickTranslations();
+  try {
+    if (localStorage.getItem(PINNED_QUICK_LEGACY_KEY) && pinnedQuickTranslationIds.length) {
+      persistPinnedQuickTranslations();
+    }
+  } catch (e) {
+    /* ignore */
+  }
+
+  let activeTranslationId = QUICK_TRANSLATION_DE;
   const translationRawCache = Object.create(null);
   const translationVerseCache = Object.create(null);
 
@@ -368,6 +605,13 @@
     return t ? t.label : "Unbekannt";
   }
 
+  /** Längere Bezeichnung für Hinweis „Übersetzung: …“ und Karten in der Auswahl (falls labelLong gesetzt) */
+  function activeTranslationVerboseLabel() {
+    const t = translationById[activeTranslationId];
+    if (!t) return "Unbekannt";
+    return t.labelLong || t.label;
+  }
+
   function activeTranslationIsSourceText() {
     const t = translationById[activeTranslationId];
     return !!(t && String(t.lang) === "el");
@@ -378,12 +622,12 @@
       return '<p class="compare-note compare-note--urtext">byzantinischer Mehrheitstext (Byz 2013)</p>';
     }
     if (activeTranslationId === "greek_slb") {
-      return '<p class="compare-note compare-note--urtext">textkritische Ausgabe (SBL GNT)</p>';
+      return '<p class="compare-note compare-note--urtext">textkritische Ausgabe der Society of Biblical Literature</p>';
     }
     if (activeTranslationIsSourceText()) {
       return '<p class="compare-note compare-note--urtext">griechischer Referenztext</p>';
     }
-    return '<p class="compare-note">Übersetzung: ' + escapeHtml(activeTranslationLabel()) + "</p>";
+    return '<p class="compare-note">Übersetzung: ' + escapeHtml(activeTranslationVerboseLabel()) + "</p>";
   }
 
   function translationGroupLabel(langKey) {
@@ -394,125 +638,159 @@
     return found ? found.label : langKey;
   }
 
-  /** Überschrift-Zeile pro Sprachklappe: Logo + Name. */
-  function renderLangCategoryLabelRow(langKey, grpLabel) {
-    if (langKey === "el") {
-      return (
-        `<div class="translation-lang-label translation-lang-label--urtext"><span class="translation-lang-urtext-mark" aria-hidden="true">Σ</span><span>${escapeHtml(
-          grpLabel,
-        )}</span></div>`
-      );
-    }
-    if (langKey === "gs") {
-      return (
-        `<div class="translation-lang-label translation-lang-label--gummi"><span class="translation-lang-gummi-mark" aria-hidden="true">\u{1F5E1}</span><span>${escapeHtml(
-          grpLabel,
-        )}</span></div>`
-      );
-    }
-    const mark = LANG_CATEGORY_MARK[langKey];
-    if (mark) {
-      return (
-        `<div class="translation-lang-label translation-lang-label--with-mark"><span class="translation-lang-mark translation-lang-mark--emoji translation-lang-mark--${escapeAttr(
-          langKey,
-        )}" aria-hidden="true">${mark}</span><span>${escapeHtml(grpLabel)}</span></div>`
-      );
-    }
-    return `<div class="translation-lang-label">${escapeHtml(grpLabel)}</div>`;
-  }
-
-  /** Deutsch (de + gs) und Griechisch direkt; übrige Sprachen hinter „Weitere Übersetzungen“. */
-  function partitionLangKeysForTiers(keys) {
-    const tierDe = [];
-    const tierEl = [];
-    const tierMore = [];
-    keys.forEach(function (k) {
-      if (k === "de" || k === "gs") tierDe.push(k);
-      else if (k === "el") tierEl.push(k);
-      else tierMore.push(k);
-    });
-    return { tierDe: tierDe, tierEl: tierEl, tierMore: tierMore };
-  }
-
-  function renderTranslationButtonRows() {
+  function getTranslationsByLang() {
     const byLang = Object.create(null);
     TRANSLATIONS.forEach(function (t) {
-      const k =
-        t.lang != null && String(t.lang) !== "" ? String(t.lang) : "_";
+      const k = t.lang != null && String(t.lang) !== "" ? String(t.lang) : "_";
       if (!byLang[k]) byLang[k] = [];
       byLang[k].push(t);
     });
-    const keys = [];
-    TRANSLATION_LANG_ORDER.forEach(function (g) {
-      if (byLang[g.key] && byLang[g.key].length) keys.push(g.key);
+    return byLang;
+  }
+
+  /** Kompakte Leiste: Elberfelder, Griechisch, bis zu zwei angeheftete Übersetzungen (mit ×), Weitere */
+  function renderTranslationQuickStrip() {
+    let extraHtml = "";
+    pinnedQuickTranslationIds.forEach(function (pinId) {
+      const t = translationById[pinId];
+      if (!t || isQuickPairTranslationId(pinId)) return;
+      extraHtml +=
+        '<div class="translation-quick__pin-wrap">' +
+        '<button type="button" class="translation-quick__btn translation-quick__btn--extra" data-translation="' +
+        escapeAttr(t.id) +
+        '" title="' +
+        escapeAttr(t.label) +
+        '">' +
+        '<span class="translation-quick__primary">' +
+        escapeHtml(t.label) +
+        "</span>" +
+        "</button>" +
+        '<button type="button" class="translation-quick__unpin" data-remove-pinned-translation="' +
+        escapeAttr(t.id) +
+        '" aria-label="' +
+        escapeAttr(t.label + " aus Schnellwahl entfernen") +
+        '" title="Aus Schnellwahl entfernen">×</button>' +
+        "</div>";
     });
-    Object.keys(byLang)
-      .filter(function (k) {
-        return k !== "_";
-      })
-      .sort()
-      .forEach(function (k) {
-        if (keys.indexOf(k) === -1) keys.push(k);
-      });
-    if (byLang["_"] && byLang["_"].length && keys.indexOf("_") === -1) {
-      keys.push("_");
-    }
+    return (
+      '<div class="translation-quick" role="group" aria-label="Lesetext wählen">' +
+      '<button type="button" class="translation-quick__btn" data-translation="' +
+      escapeAttr(QUICK_TRANSLATION_DE) +
+      '">' +
+      '<span class="translation-quick__primary">Elberfelder 1905</span>' +
+      "</button>" +
+      '<button type="button" class="translation-quick__btn" data-translation="' +
+      escapeAttr(QUICK_TRANSLATION_EL) +
+      '">' +
+      '<span class="translation-quick__primary">Griechisch (SBL)</span>' +
+      "</button>" +
+      extraHtml +
+      '<button type="button" class="translation-quick__more" data-open-translation-picker ' +
+      'aria-haspopup="dialog" aria-expanded="false" aria-controls="translation-picker-overlay">' +
+      "Weitere Übersetzungen" +
+      "</button>" +
+      "</div>"
+    );
+  }
 
-    const tiers = partitionLangKeysForTiers(keys);
+  /** Vollständige Übersicht im Overlay: drei Bereiche — Deutsch, Alte Sprachen, Weitere Sprachen */
+  function renderTranslationPickerFull() {
+    const byLang = getTranslationsByLang();
+    const MODERN_LANG_KEYS = ["en", "fr", "it", "es"];
+    const ANCIENT_LANG_KEYS = ["el", "la"];
 
-    function renderOneLanguageGroup(langKey) {
-      const items = byLang[langKey];
-      if (!items || !items.length) return "";
-      const grpLabel = translationGroupLabel(langKey);
-      const labelRow = renderLangCategoryLabelRow(langKey, grpLabel);
-      const optionRowsHtml = items
-        .map(function (t) {
-          const active = t.id === activeTranslationId ? " active" : "";
-          const infoBtn = t.info
-            ? `<button type="button" class="translation-info-btn" data-translation-info="${escapeAttr(t.id)}" aria-label="Hinweis zu ${escapeAttr(t.label)}" title="Information">i</button>`
-            : "";
-          return `<div class="translation-option-row"><button type="button" data-translation="${escapeAttr(
+    function renderOneCard(t) {
+      const active = t.id === activeTranslationId ? " active" : "";
+      const infoBtn = t.info
+        ? `<button type="button" class="translation-info-btn" data-translation-info="${escapeAttr(
             t.id,
-          )}" class="translation-option-main${active}">${escapeHtml(t.label)}</button>${infoBtn}</div>`;
-        })
-        .join("");
-      const isOpen = items.some(function (t) {
-        return t.id === activeTranslationId;
-      });
-      const openAttr = isOpen ? " open" : "";
+          )}" aria-label="Hinweis zu ${escapeAttr(t.label)}" title="Kurzinfo">i</button>`
+        : "";
       return (
-        `<details class="translation-lang-fold"${openAttr} data-lang-key="${escapeAttr(langKey)}">` +
-        `<summary class="translation-lang-fold-summary">${labelRow}</summary>` +
-        `<div class="translation-lang-fold-body" role="group" aria-label="${escapeAttr(grpLabel)}">` +
-        optionRowsHtml +
-        `</div></details>`
+        `<div class="translation-picker-row">` +
+        `<button type="button" class="translation-picker-card${active}" data-translation="${escapeAttr(t.id)}">` +
+        `<span class="translation-picker-card__name">${escapeHtml(t.labelLong || t.label)}</span>` +
+        `</button>${infoBtn}</div>`
       );
     }
 
-    const chunks = [];
-    tiers.tierDe.forEach(function (langKey) {
-      const html = renderOneLanguageGroup(langKey);
-      if (html) chunks.push(html);
-    });
-    tiers.tierEl.forEach(function (langKey) {
-      const html = renderOneLanguageGroup(langKey);
-      if (html) chunks.push(html);
-    });
-    if (tiers.tierMore.length) {
-      const inner = tiers.tierMore
-        .map(renderOneLanguageGroup)
-        .filter(Boolean)
-        .join("");
-      if (inner) {
-        chunks.push(
-          `<details class="translation-reveal translation-reveal--more-lang">` +
-            `<summary class="translation-reveal-summary">Weitere Übersetzungen</summary>` +
-            `<div class="translation-reveal-body">${inner}</div>` +
-            `</details>`,
-        );
-      }
+    function sectionForLang(langKey, title) {
+      const items = byLang[langKey];
+      if (!items || !items.length) return "";
+      const cards = items.map(renderOneCard).join("");
+      const gid = langKey === "_" ? "sonstige" : langKey;
+      return (
+        `<section class="translation-picker-group" aria-labelledby="tp-g-${escapeAttr(gid)}">` +
+        `<h3 class="translation-picker-group__title" id="tp-g-${escapeAttr(gid)}">${escapeHtml(title)}</h3>` +
+        `<div class="translation-picker-grid">${cards}</div>` +
+        `</section>`
+      );
     }
-    return chunks.join("");
+
+    function gridOnlyForLang(langKey) {
+      const items = byLang[langKey];
+      if (!items || !items.length) return "";
+      return items.map(renderOneCard).join("");
+    }
+
+    function megaSection(megaId, megaTitle, innerHtml) {
+      const body = String(innerHtml || "").trim();
+      if (!body) return "";
+      return (
+        `<section class="translation-picker-mega" aria-labelledby="tp-mega-${escapeAttr(megaId)}">` +
+        `<h2 class="translation-picker-mega__title" id="tp-mega-${escapeAttr(megaId)}">${escapeHtml(megaTitle)}</h2>` +
+        `<div class="translation-picker-mega__body">${body}</div>` +
+        `</section>`
+      );
+    }
+
+    const blocks = [];
+
+    const deGrid = gridOnlyForLang("de");
+    if (deGrid) {
+      blocks.push(
+        megaSection("de", "Deutsche Übersetzungen", `<div class="translation-picker-grid">${deGrid}</div>`),
+      );
+    }
+
+    let ancientInner = "";
+    ANCIENT_LANG_KEYS.forEach(function (k) {
+      const title =
+        k === "el"
+          ? "Griechisch"
+          : k === "la"
+            ? "Latein"
+            : translationGroupLabel(k);
+      ancientInner += sectionForLang(k, title);
+    });
+    if (ancientInner) {
+      blocks.push(megaSection("ancient", "Alte Sprachen", ancientInner));
+    }
+
+    let modernInner = "";
+    MODERN_LANG_KEYS.forEach(function (k) {
+      const block = sectionForLang(k, translationGroupLabel(k));
+      if (block) modernInner += block;
+    });
+    Object.keys(byLang)
+      .filter(function (k) {
+        if (k === "_" || k === "de") return false;
+        if (ANCIENT_LANG_KEYS.indexOf(k) !== -1) return false;
+        return MODERN_LANG_KEYS.indexOf(k) === -1;
+      })
+      .sort()
+      .forEach(function (langKey) {
+        const block = sectionForLang(langKey, translationGroupLabel(langKey));
+        if (block) modernInner += block;
+      });
+    if (byLang["_"] && byLang["_"].length) {
+      modernInner += sectionForLang("_", "Sonstige");
+    }
+    if (modernInner) {
+      blocks.push(megaSection("more", "Weitere Sprachen", modernInner));
+    }
+
+    return `<div class="translation-picker-overview translation-picker-overview--mega">${blocks.join("")}</div>`;
   }
 
   function openTranslationInfoDialog(translationId) {
@@ -520,7 +798,7 @@
     if (!t || !t.info) return;
     closeTranslationPicker();
     const dlg = document.getElementById("translation-info-dialog");
-    document.getElementById("translation-info-dialog-title").textContent = t.label;
+    document.getElementById("translation-info-dialog-title").textContent = t.labelLong || t.label;
     const body = document.getElementById("translation-info-dialog-body");
     body.textContent = "";
     body.appendChild(document.createTextNode(t.info.trimEnd()));
@@ -551,64 +829,104 @@
     document.querySelectorAll("button[data-translation]").forEach(function (btn) {
       btn.classList.toggle("active", btn.dataset.translation === activeTranslationId);
     });
-    document.querySelectorAll(".translation-lang-fold").forEach(function (det) {
-      det.open = !!det.querySelector("button[data-translation].active");
-    });
-    document.querySelectorAll(".translation-reveal").forEach(function (det) {
+    document.querySelectorAll(".translation-lang-pick").forEach(function (det) {
       det.open = !!det.querySelector("button[data-translation].active");
     });
     updateMobileTranslationLabel();
   }
 
+  /** Schnellleiste neu aufbauen (z. B. zusätzlicher Button bei Sonder-Auswahl) */
+  function refreshQuickStripOnly() {
+    const quickHtml = renderTranslationQuickStrip();
+    const modalBtns = document.getElementById("compare-modal-translation-buttons");
+    const mainBtns = document.getElementById("compare-main-translation-buttons");
+    if (modalBtns) modalBtns.innerHTML = quickHtml;
+    if (mainBtns) mainBtns.innerHTML = quickHtml;
+  }
+
   function refreshTranslationUI() {
-    const html = renderTranslationButtonRows();
-    document.getElementById("compare-modal-translation-buttons").innerHTML = html;
-    document.getElementById("translation-picker-body").innerHTML = html;
+    refreshQuickStripOnly();
+    const pickerBody = document.getElementById("translation-picker-body");
+    if (pickerBody) pickerBody.innerHTML = renderTranslationPickerFull();
     syncTranslationButtons();
   }
 
   const translationPickerOverlay = document.getElementById("translation-picker-overlay");
-  const translationLangMobileBtn = document.getElementById("translation-lang-mobile-btn");
+  let translationPickerCloseTimer = null;
 
-  function isMobileTranslationUI() {
-    return window.matchMedia("(max-width: 720px)").matches;
+  function getTranslationMoreButtons() {
+    return document.querySelectorAll("[data-open-translation-picker]");
   }
 
   function closeTranslationPicker() {
-    if (!translationPickerOverlay || translationPickerOverlay.hidden) return;
-    translationPickerOverlay.setAttribute("hidden", "");
-    if (translationLangMobileBtn) {
-      translationLangMobileBtn.setAttribute("aria-expanded", "false");
+    if (!translationPickerOverlay || translationPickerOverlay.hasAttribute("hidden")) return;
+    getTranslationMoreButtons().forEach(function (btn) {
+      btn.setAttribute("aria-expanded", "false");
+    });
+    translationPickerOverlay.classList.remove("is-visible");
+    if (translationPickerCloseTimer) {
+      clearTimeout(translationPickerCloseTimer);
+      translationPickerCloseTimer = null;
+    }
+    translationPickerCloseTimer = window.setTimeout(function () {
+      translationPickerCloseTimer = null;
+      translationPickerOverlay.setAttribute("hidden", "");
+    }, 380);
+  }
+
+  function focusTranslationQuickControl() {
+    const more = document.querySelector("[data-open-translation-picker]");
+    if (more && typeof more.focus === "function") {
+      more.focus();
     }
   }
 
   function openTranslationPicker() {
-    if (!translationPickerOverlay || !isMobileTranslationUI()) return;
-    translationPickerOverlay.removeAttribute("hidden");
-    if (translationLangMobileBtn) {
-      translationLangMobileBtn.setAttribute("aria-expanded", "true");
+    if (!translationPickerOverlay) return;
+    if (translationPickerCloseTimer) {
+      clearTimeout(translationPickerCloseTimer);
+      translationPickerCloseTimer = null;
     }
+    const pickerBody = document.getElementById("translation-picker-body");
+    if (pickerBody) {
+      pickerBody.innerHTML = renderTranslationPickerFull();
+      syncTranslationButtons();
+    }
+    translationPickerOverlay.classList.remove("is-visible");
+    translationPickerOverlay.removeAttribute("hidden");
+    getTranslationMoreButtons().forEach(function (btn) {
+      btn.setAttribute("aria-expanded", "true");
+    });
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        translationPickerOverlay.classList.add("is-visible");
+      });
+    });
     window.setTimeout(function () {
       const c = document.getElementById("translation-picker-close");
       if (c && typeof c.focus === "function") c.focus();
-    }, 30);
+    }, 120);
   }
 
   const compareModal = document.getElementById("compare-modal");
   const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
   const compareModalCloseBtn = document.getElementById("compare-modal-close");
   let compareModalRowId = null;
+  let compareMainRowId = null;
   let lastFocusBeforeModal = null;
   let translationSwapSeq = 0;
 
   function syncGreekScriptClass() {
-    const panel = document.getElementById("compare-modal-panel");
-    if (!panel) return;
     const t = translationById[activeTranslationId];
-    panel.classList.toggle("is-greek-script", !!(t && String(t.lang) === "el"));
+    const greek = !!(t && String(t.lang) === "el");
+    const modalPanel = document.getElementById("compare-modal-panel");
+    const mainPanel = document.getElementById("compare-main-panel");
+    if (modalPanel) modalPanel.classList.toggle("is-greek-script", greek);
+    if (mainPanel) mainPanel.classList.toggle("is-greek-script", greek);
   }
 
   function closeCompareModal() {
+    if (!compareModal) return;
     closeTranslationPicker();
     const infoDlg = document.getElementById("translation-info-dialog");
     if (infoDlg && infoDlg.open && typeof infoDlg.close === "function") {
@@ -620,9 +938,11 @@
     compareModalRowId = null;
     translationSwapSeq += 1;
     const grid = document.getElementById("compare-modal-grid");
-    grid.dataset.filled = "0";
-    grid.classList.remove("is-swapping");
-    grid.innerHTML = "";
+    if (grid) {
+      grid.dataset.filled = "0";
+      grid.classList.remove("is-swapping");
+      grid.innerHTML = "";
+    }
     window.setTimeout(function () {
       compareModal.setAttribute("hidden", "");
     }, 450);
@@ -634,6 +954,7 @@
   }
 
   function openCompareModal(wrap) {
+    if (!compareModal) return;
     const id = +wrap.dataset.rowId;
     const row = data.find(function (x) {
       return x.row_id === id;
@@ -644,11 +965,15 @@
     compareModalRowId = id;
     lastFocusBeforeModal = document.activeElement;
 
-    document.getElementById("compare-modal-aland").textContent = "Aland " + row.aland_no;
-    document.getElementById("compare-modal-title").textContent = row.title_de || row.title;
-    document.getElementById("compare-modal-sec").textContent = row.section_de || row.section || "";
+    const alandEl = document.getElementById("compare-modal-aland");
+    const titleEl = document.getElementById("compare-modal-title");
+    const secEl = document.getElementById("compare-modal-sec");
+    if (alandEl) alandEl.textContent = "Aland " + row.aland_no;
+    if (titleEl) titleEl.textContent = row.title_de || row.title;
+    if (secEl) secEl.textContent = row.section_de || row.section || "";
 
     const grid = document.getElementById("compare-modal-grid");
+    if (!grid) return;
     grid.dataset.filled = "0";
     grid.classList.remove("is-swapping");
     grid.innerHTML = "";
@@ -657,10 +982,30 @@
     document.body.style.overflow = "hidden";
     compareModal.classList.add("is-open");
 
-    fillCompareGrid(grid, row);
-    window.setTimeout(function () {
-      compareModalCloseBtn.focus();
-    }, 50);
+    fillCompareGrid(grid, row, "modal");
+    if (compareModalCloseBtn) {
+      window.setTimeout(function () {
+        compareModalCloseBtn.focus();
+      }, 50);
+    }
+  }
+
+  function openCompareMainForRow(row) {
+    if (!row) return;
+    const grid = document.getElementById("compare-main-grid");
+    if (!grid) return;
+    translationSwapSeq += 1;
+    compareMainRowId = row.row_id;
+    const alandEl = document.getElementById("compare-main-aland");
+    const titleEl = document.getElementById("compare-main-title");
+    const secEl = document.getElementById("compare-main-sec");
+    if (alandEl) alandEl.textContent = "Aland " + row.aland_no;
+    if (titleEl) titleEl.textContent = row.title_de || row.title;
+    if (secEl) secEl.textContent = row.section_de || row.section || "";
+    grid.dataset.filled = "0";
+    grid.classList.remove("is-swapping");
+    grid.innerHTML = "";
+    fillCompareGrid(grid, row, "main");
   }
 
   refreshTranslationUI();
@@ -669,26 +1014,18 @@
   if (translationPickerCloseBtn) {
     translationPickerCloseBtn.addEventListener("click", function () {
       closeTranslationPicker();
-      if (translationLangMobileBtn && typeof translationLangMobileBtn.focus === "function") {
-        translationLangMobileBtn.focus();
-      }
+      focusTranslationQuickControl();
     });
   }
-
-  if (translationLangMobileBtn) {
-    translationLangMobileBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      if (!isMobileTranslationUI()) return;
-      openTranslationPicker();
-    });
-  }
-
-  window.matchMedia("(max-width: 720px)").addEventListener("change", function (ev) {
-    if (!ev.matches) closeTranslationPicker();
-  });
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    const siteInfoDlg = document.getElementById("site-info-dialog");
+    if (siteInfoDlg && siteInfoDlg.open) {
+      e.preventDefault();
+      if (typeof siteInfoDlg.close === "function") siteInfoDlg.close();
+      return;
+    }
     const infoDlg = document.getElementById("translation-info-dialog");
     if (infoDlg && infoDlg.open) {
       e.preventDefault();
@@ -698,26 +1035,56 @@
     if (translationPickerOverlay && !translationPickerOverlay.hidden) {
       e.preventDefault();
       closeTranslationPicker();
-      if (translationLangMobileBtn && typeof translationLangMobileBtn.focus === "function") {
-        translationLangMobileBtn.focus();
-      }
+      focusTranslationQuickControl();
       return;
     }
-    if (compareModal.classList.contains("is-open")) {
+    if (compareModal && compareModal.classList.contains("is-open")) {
       e.preventDefault();
       closeCompareModal();
     }
   });
 
-  compareModalBackdrop.addEventListener("click", closeCompareModal);
-  compareModalCloseBtn.addEventListener("click", closeCompareModal);
+  if (compareModalBackdrop) {
+    compareModalBackdrop.addEventListener("click", closeCompareModal);
+  }
+  if (compareModalCloseBtn) {
+    compareModalCloseBtn.addEventListener("click", closeCompareModal);
+  }
 
   document.getElementById("translation-info-dialog-close").addEventListener("click", function () {
     const dlg = document.getElementById("translation-info-dialog");
     if (dlg && typeof dlg.close === "function") dlg.close();
   });
 
+  const siteInfoDialog = document.getElementById("site-info-dialog");
+  const siteInfoBtn = document.getElementById("compare-home-info-btn");
+  const siteInfoClose = document.getElementById("site-info-dialog-close");
+  if (siteInfoBtn && siteInfoDialog) {
+    siteInfoBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (typeof siteInfoDialog.showModal === "function") siteInfoDialog.showModal();
+    });
+  }
+  if (siteInfoClose && siteInfoDialog) {
+    siteInfoClose.addEventListener("click", function () {
+      if (typeof siteInfoDialog.close === "function") siteInfoDialog.close();
+    });
+  }
+
   document.addEventListener("click", function (e) {
+    const unpinBtn = e.target.closest("[data-remove-pinned-translation]");
+    if (unpinBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      removePinnedQuickTranslation(unpinBtn.getAttribute("data-remove-pinned-translation"));
+      invalidateOpenPanels();
+      return;
+    }
+    if (e.target.closest("[data-open-translation-picker]")) {
+      e.preventDefault();
+      openTranslationPicker();
+      return;
+    }
     const infoBtn = e.target.closest("button[data-translation-info]");
     if (infoBtn) {
       e.preventDefault();
@@ -728,16 +1095,29 @@
     const tBtn = e.target.closest("button[data-translation]");
     if (!tBtn) return;
     activeTranslationId = tBtn.dataset.translation;
+    if (!isQuickPairTranslationId(activeTranslationId)) {
+      notePinnedTranslationChoice(activeTranslationId);
+    }
     invalidateOpenPanels();
     if (translationPickerOverlay && !translationPickerOverlay.hidden) {
       closeTranslationPicker();
-      if (translationLangMobileBtn && typeof translationLangMobileBtn.focus === "function") {
-        translationLangMobileBtn.focus();
-      }
+      focusTranslationQuickControl();
     }
   });
 
-  async function fillCompareGrid(grid, r) {
+  function isCompareRowActive(r, which) {
+    if (which === "main") return compareMainRowId === r.row_id;
+    return compareModalRowId === r.row_id;
+  }
+
+  function triggerCompareGridReveal(grid) {
+    if (!grid) return;
+    grid.classList.remove("compare-grid--reveal");
+    void grid.offsetWidth;
+    grid.classList.add("compare-grid--reveal");
+  }
+
+  async function fillCompareGrid(grid, r, which) {
     syncGreekScriptClass();
     if (!grid || grid.dataset.filled === "1") return;
     grid.innerHTML =
@@ -750,7 +1130,7 @@
     try {
       cache = await getVerseCache(activeTranslationId);
     } catch (err) {
-      if (compareModalRowId !== r.row_id) return;
+      if (!isCompareRowActive(r, which)) return;
       const detail =
         err && err.message
           ? " " + err.message
@@ -763,15 +1143,17 @@
         escapeHtml(detail) +
         "</p>";
       grid.dataset.filled = "1";
+      triggerCompareGridReveal(grid);
       return;
     }
-    if (compareModalRowId !== r.row_id) return;
+    if (!isCompareRowActive(r, which)) return;
     if (!cache || !SC) {
       grid.innerHTML =
         '<p class="compare-note">' +
         (activeTranslationIsSourceText() ? "Keine Textdaten verfügbar." : "Übersetzungsdaten nicht verfügbar.") +
         "</p>";
       grid.dataset.filled = "1";
+      triggerCompareGridReveal(grid);
       return;
     }
 
@@ -789,6 +1171,7 @@
         '<p class="compare-note">In dieser Zeile ist kein Evangelientext verknüpft.</p>';
       grid.dataset.filled = "1";
       grid.style.gridTemplateColumns = "";
+      triggerCompareGridReveal(grid);
       return;
     }
 
@@ -804,33 +1187,42 @@
       })
       .join("");
     grid.dataset.filled = "1";
+    triggerCompareGridReveal(grid);
   }
 
-  function invalidateOpenPanels() {
-    syncTranslationButtons();
-    if (!compareModal.classList.contains("is-open") || compareModalRowId === null) {
-      return;
-    }
-    const grid = document.getElementById("compare-modal-grid");
-    if (!grid) return;
+  function refillCompareGrid(which) {
+    const gridId = which === "modal" ? "compare-modal-grid" : "compare-main-grid";
+    const rowId = which === "modal" ? compareModalRowId : compareMainRowId;
+    const grid = document.getElementById(gridId);
+    if (!grid || rowId === null) return;
     const seq = (translationSwapSeq += 1);
     grid.classList.add("is-swapping");
     window.setTimeout(function () {
       if (seq !== translationSwapSeq) return;
-      if (!compareModal.classList.contains("is-open") || compareModalRowId === null) {
+      const modalOk =
+        which === "modal" &&
+        compareModal &&
+        compareModal.classList.contains("is-open") &&
+        compareModalRowId !== null;
+      const mainOk = which === "main" && compareMainRowId !== null;
+      if (which === "modal" && !modalOk) {
+        grid.classList.remove("is-swapping");
+        return;
+      }
+      if (which === "main" && !mainOk) {
         grid.classList.remove("is-swapping");
         return;
       }
       grid.dataset.filled = "0";
       grid.innerHTML = "";
       const row = data.find(function (x) {
-        return x.row_id === compareModalRowId;
+        return x.row_id === rowId;
       });
       if (!row) {
         grid.classList.remove("is-swapping");
         return;
       }
-      fillCompareGrid(grid, row)
+      fillCompareGrid(grid, row, which)
         .then(function () {
           if (seq !== translationSwapSeq) return;
           grid.classList.remove("is-swapping");
@@ -839,6 +1231,40 @@
           grid.classList.remove("is-swapping");
         });
     }, 140);
+  }
+
+  function invalidateOpenPanels() {
+    refreshQuickStripOnly();
+    syncTranslationButtons();
+    if (compareModal && compareModal.classList.contains("is-open") && compareModalRowId !== null) {
+      refillCompareGrid("modal");
+    }
+    if (compareMainRowId !== null) {
+      refillCompareGrid("main");
+    }
+  }
+
+  function triggerListReveal() {
+    if (!listEl) return;
+    listEl.classList.remove("list--reveal");
+    void listEl.offsetWidth;
+    listEl.classList.add("list--reveal");
+  }
+
+  function pulseCountLine() {
+    const el = document.getElementById("count");
+    if (!el) return;
+    el.classList.remove("count--pulse");
+    void el.offsetWidth;
+    el.classList.add("count--pulse");
+    el.addEventListener(
+      "animationend",
+      function onEnd() {
+        el.classList.remove("count--pulse");
+        el.removeEventListener("animationend", onEnd);
+      },
+      { once: true },
+    );
   }
 
   function renderRow(r) {
@@ -866,8 +1292,10 @@
   }
 
   function filter() {
-    const q = document.getElementById("q").value.trim().toLowerCase();
-    const sec = document.getElementById("section").value;
+    if (!listEl) return;
+    const qEl = document.getElementById("q");
+    const q = (qEl && qEl.value ? qEl.value : "").trim().toLowerCase();
+    const sec = activeSection;
 
     const out = data.filter((r) => {
       if (!matchesPreset(r, activePreset)) return false;
@@ -889,63 +1317,136 @@
       return hay.includes(q);
     });
 
-    document.getElementById("count").textContent =
-      out.length + " von " + n + " Zeilen" + (activePreset !== "all" ? " (Filter aktiv)" : "");
+    const countEl = document.getElementById("count");
+    if (countEl) {
+      countEl.textContent =
+        out.length + " von " + n + " Zeilen" + (activePreset !== "all" ? " (Filter aktiv)" : "");
+    }
+    pulseCountLine();
 
-    const list = document.getElementById("list");
+    updateSectionListHeading();
+
     if (!out.length) {
-      list.innerHTML = '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
+      listEl.innerHTML = '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
+      scrollListToFirst = false;
+      triggerListReveal();
+      syncListFabs();
       return;
     }
-    list.innerHTML = out.map(renderRow).join("");
+    listEl.innerHTML = out.map(renderRow).join("");
+    triggerListReveal();
+    if (scrollListToFirst && out.length) {
+      scrollListToFirst = false;
+      const heading = document.getElementById("section-list-heading");
+      const firstRow = listEl.querySelector(".row-wrap");
+      const scrollTarget =
+        heading && !heading.hidden ? heading : firstRow;
+      if (scrollTarget) {
+        window.requestAnimationFrame(function () {
+          scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    }
+    syncListFabs();
   }
 
-  const listEl = document.getElementById("list");
-  listEl.addEventListener("click", (e) => {
-    const head = e.target.closest(".row-head");
-    if (!head) return;
-    const wrap = head.closest(".row-wrap");
-    if (!wrap) return;
-    openCompareModal(wrap);
-  });
-
-  listEl.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    const head = e.target.closest(".row-head");
-    if (!head) return;
-    e.preventDefault();
-    const wrap = head.closest(".row-wrap");
-    if (wrap) openCompareModal(wrap);
-  });
-
-  document.getElementById("q").addEventListener("input", filter);
-  document.getElementById("section").addEventListener("change", filter);
-
-  presetEl.addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-preset]");
-    if (!b) return;
-    activePreset = b.dataset.preset;
-    presetEl.querySelectorAll("button").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.preset === activePreset);
+  if (listEl) {
+    listEl.addEventListener("click", (e) => {
+      const head = e.target.closest(".row-head");
+      if (!head) return;
+      const wrap = head.closest(".row-wrap");
+      if (!wrap) return;
+      openCompareModal(wrap);
     });
-    filter();
-  });
 
-  filter();
+    listEl.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const head = e.target.closest(".row-head");
+      if (!head) return;
+      e.preventDefault();
+      const wrap = head.closest(".row-wrap");
+      if (wrap) openCompareModal(wrap);
+    });
+  }
+
+  const qInput = document.getElementById("q");
+  if (qInput) {
+    qInput.addEventListener("input", filter);
+    qInput.addEventListener("focus", function () {
+      activePreset = "all";
+      syncPresetButtonActiveState();
+      activeSection = "";
+      document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
+        panel.open = false;
+      });
+      filter();
+    });
+  }
+
+  if (presetEl) {
+    presetEl.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-preset]");
+      if (!b) return;
+      activePreset = b.dataset.preset;
+      syncPresetButtonActiveState();
+      filter();
+    });
+  }
+
+  const DEFAULT_ALAND_NO = 18;
+  if (listEl) {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const secFromUrl = params.get("section");
+      if (secFromUrl && sectionsOrdered.includes(secFromUrl)) {
+        activeSection = secFromUrl;
+        activePreset = "all";
+        syncPresetButtonActiveState();
+        scrollListToFirst = true;
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    filter();
+  }
+
+  if (listEl) {
+    const resetFab = document.getElementById("filter-reset-fab");
+    const scrollTopFab = document.getElementById("scroll-top-fab");
+    window.addEventListener("scroll", syncListFabs, { passive: true });
+    syncListFabs();
+    if (resetFab) resetFab.addEventListener("click", resetAllListFilters);
+    if (scrollTopFab) {
+      scrollTopFab.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  }
+
+  if (isCompareHome) {
+    let aland = DEFAULT_ALAND_NO;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get("aland");
+      if (raw != null && raw !== "") {
+        const n = parseInt(raw, 10);
+        if (!Number.isNaN(n)) aland = n;
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    let row = data.find(function (r) {
+      return r.aland_no === aland;
+    });
+    if (!row) {
+      row = data.find(function (r) {
+        return r.aland_no === DEFAULT_ALAND_NO;
+      });
+    }
+    if (row) openCompareMainForRow(row);
+  }
+
   getVerseCache(activeTranslationId).catch(function () {
     // Erstes Laden kann bei lokalen file://-Setups scheitern; wir zeigen den Fehler erst im Panel.
-  });
-})();
-
-(function () {
-  const btn = document.getElementById("to-top");
-  if (!btn) return;
-  function sync() {
-    btn.classList.toggle("visible", window.scrollY > 200);
-  }
-  window.addEventListener("scroll", sync, { passive: true });
-  sync();
-  btn.addEventListener("click", function () {
-    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 })();

@@ -39,6 +39,288 @@
   /** Aktiver Aland-Abschnitt (interner Schlüssel) — nur per \`?section=\` gesetzt, kein eigenes UI. */
   let activeSection = "";
 
+  function normalizeForSearch(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function getRowSearchText(row) {
+    return normalizeForSearch(
+      [
+        row.aland_no,
+        row.title,
+        row.title_de,
+        row.section,
+        row.section_de,
+        row.ref_matthew,
+        row.ref_mark,
+        row.ref_luke,
+        row.ref_john,
+      ].join(" "),
+    );
+  }
+
+  function rowIncludesAllTerms(row, terms) {
+    const hay = getRowSearchText(row);
+    return terms.every(function (term) {
+      return hay.includes(normalizeForSearch(term));
+    });
+  }
+
+  function rowIncludesAnyTerm(row, terms) {
+    const hay = getRowSearchText(row);
+    return terms.some(function (term) {
+      return hay.includes(normalizeForSearch(term));
+    });
+  }
+
+  function rowTitleIncludesAnyTerm(row, terms) {
+    const hay = normalizeForSearch([row.title, row.title_de].join(" "));
+    return terms.some(function (term) {
+      return hay.includes(normalizeForSearch(term));
+    });
+  }
+
+  function rowSectionStartsWith(row, prefix) {
+    return String(row.section_de || row.section || "").startsWith(prefix);
+  }
+
+  const explorerTopicGroups = [
+    {
+      label: "Vorbereitung und Herkunft Jesu",
+      items: [
+        {
+          id: "birth-childhood",
+          label: "Geburt und Kindheit",
+          matcher: function (row) {
+            return rowSectionStartsWith(row, "2.") || rowTitleIncludesAnyTerm(row, ["prolog"]);
+          },
+        },
+        {
+          id: "john-baptist",
+          label: "Auftreten von Johannes dem Täufer",
+          matcher: function (row) {
+            return rowIncludesAllTerms(row, ["johannes"]) && rowIncludesAnyTerm(row, ["täufer", "bußpredigt", "messianische", "fragenden"]);
+          },
+        },
+        {
+          id: "baptism",
+          label: "Taufe Jesu",
+          matcher: function (row) {
+            return rowIncludesAllTerms(row, ["taufe", "jesu"]);
+          },
+        },
+        {
+          id: "temptation",
+          label: "Versuchung in der Wüste",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["versuchung"]);
+          },
+        },
+      ],
+    },
+    {
+      label: "Öffentliches Wirken in Galiläa",
+      items: [
+        {
+          id: "calling-disciples",
+          label: "Berufung der Jünger",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["berufung der jünger", "berufung der ersten jünger", "auswahl der zwölf", "sendung der zwölf"]);
+          },
+        },
+        {
+          id: "kingdom-preaching",
+          label: "Predigt vom Reich Gottes",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["predigt", "reich gottes", "lehre in der synagoge", "wirken in galiläa", "predigtreise"]);
+          },
+        },
+        {
+          id: "parables",
+          label: "Gleichnisse",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["gleichnis"]);
+          },
+        },
+        {
+          id: "wonders-healings",
+          label: "Wunder und Heilungen",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, [
+              "heilung",
+              "heilt",
+              "reinigung",
+              "auferweckung",
+              "besessene",
+              "besessenen",
+              "blind",
+              "sturm beschwichtigt",
+              "wunderbarer fischfang",
+              "taubstummen",
+            ]);
+          },
+        },
+      ],
+    },
+    {
+      label: "Weg nach Jerusalem",
+      items: [
+        {
+          id: "religious-conflict",
+          label: "Widerstand durch religiöse Autoritäten",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, [
+              "pharisäer",
+              "schriftgelehrte",
+              "hohepriester",
+              "beelzebul",
+              "vollmacht",
+              "auseinandersetzung mit den juden",
+              "wehe den schriftgelehrten",
+            ]);
+          },
+        },
+        {
+          id: "discipleship-discourses",
+          label: "Lehrreden über Nachfolge",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, [
+              "nachfolge",
+              "jüngerschaft",
+              "wer euch hört",
+              "wahre größe",
+              "will jemand mir nachkommen",
+              "demut",
+            ]);
+          },
+        },
+        {
+          id: "passion-predictions",
+          label: "Ankündigungen des Leidens",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["leiden voraus", "leidensankündigung", "dritte leidensankündigung", "sagt sein leiden"]);
+          },
+        },
+      ],
+    },
+    {
+      label: "Wirken in Jerusalem",
+      items: [
+        {
+          id: "entry-jerusalem",
+          label: "Einzug in Jerusalem",
+          matcher: function (row) {
+            return rowIncludesAllTerms(row, ["einzug", "jerusalem"]);
+          },
+        },
+        {
+          id: "temple-cleansing",
+          label: "Tempelreinigung",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["tempelreinigung"]);
+          },
+        },
+        {
+          id: "controversies",
+          label: "Streitgespräche",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, [
+              "frage nach",
+              "zur kaisermünze",
+              "große gebot",
+              "davids sohn",
+              "vollmacht",
+              "wehe den schriftgelehrten",
+              "weingärtnern",
+            ]);
+          },
+        },
+        {
+          id: "eschatological-discourses",
+          label: "Endzeitreden (Synoptiker)",
+          matcher: function (row) {
+            return rowSectionStartsWith(row, "14.") || rowIncludesAnyTerm(row, ["menschensohnes", "wachet", "feigenbaum", "verwüstung", "ende"]);
+          },
+        },
+      ],
+    },
+    {
+      label: "Passion (Leiden und Tod)",
+      items: [
+        {
+          id: "last-supper",
+          label: "Letztes Abendmahl",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["letzte abendmahl"]);
+          },
+        },
+        {
+          id: "arrest",
+          label: "Gefangennahme",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["getsemane", "festnahme", "sanhedrin", "petrus verleugnung"]);
+          },
+        },
+        {
+          id: "trial-crucifixion",
+          label: "Verhör und Kreuzigung",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, [
+              "pilatus",
+              "herodes",
+              "kreuzigung",
+              "golgatha",
+              "tod jesu",
+              "grablegung",
+              "barabbas",
+            ]);
+          },
+        },
+      ],
+    },
+    {
+      label: "Auferstehung und Erscheinungen",
+      items: [
+        {
+          id: "empty-tomb",
+          label: "Leeres Grab",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["frauen am grab", "wache am grab", "leeres grab"]);
+          },
+        },
+        {
+          id: "appearances",
+          label: "Erscheinungen des Auferstandenen",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["erscheint", "emmaus", "see tiberias", "erscheinungen jesu"]);
+          },
+        },
+        {
+          id: "mission-disciples",
+          label: "Sendung der Jünger",
+          matcher: function (row) {
+            return rowIncludesAnyTerm(row, ["große auftrag", "schluss des matthäus", "schluss des lukas", "himmelfahrt"]);
+          },
+        },
+      ],
+    },
+  ];
+  const explorerTopics = explorerTopicGroups.flatMap(function (group) {
+    return group.items.map(function (item) {
+      return Object.assign({ groupLabel: group.label }, item);
+    });
+  });
+  const explorerTopicById = new Map(
+    explorerTopics.map(function (topic) {
+      return [topic.id, topic];
+    }),
+  );
+  let explorerActiveTopicId = "";
+  let lastFocusBeforeExplorer = null;
+
   function sgMatthew(r) {
     return r.in_matthew && !r.in_mark && !r.in_luke;
   }
@@ -165,6 +447,15 @@
 
   function updateSectionListHeading() {
     if (!sectionListHeadingEl || !sectionListHeadingTitleEl) return;
+    const explorerTopic = explorerTopicById.get(explorerActiveTopicId);
+    if (explorerTopic) {
+      sectionListHeadingTitleEl.textContent = explorerTopic.groupLabel + " · " + explorerTopic.label;
+      sectionListHeadingEl.hidden = false;
+      if (sectionListHeadingClearEl) {
+        sectionListHeadingClearEl.hidden = false;
+      }
+      return;
+    }
     const sec = activeSection;
     if (!sec) {
       sectionListHeadingEl.hidden = true;
@@ -1012,6 +1303,71 @@
     }
   }
 
+  const explorerEl = document.getElementById("event-explorer");
+  const explorerBackdrop = document.getElementById("event-explorer-backdrop");
+  const explorerOpenBtn = document.getElementById("event-explorer-open");
+  const explorerCloseBtn = document.getElementById("event-explorer-close");
+  const explorerTopicBarEl = document.getElementById("event-explorer-topicbar");
+  const explorerMenuEl = document.getElementById("event-explorer-menu");
+
+  function renderExplorerMenu() {
+    if (!explorerMenuEl) return;
+    const visibleGroups = explorerTopicGroups
+      .map(function (group) {
+        const items = group.items
+          .map(function (item) {
+            const count = data.filter(item.matcher).length;
+            return `<button type="button" class="event-explorer__item${
+              item.id === explorerActiveTopicId ? " is-active" : ""
+            }" data-explorer-topic="${escapeAttr(item.id)}">
+              <span class="event-explorer__item-label">${escapeHtml(item.label)}</span>
+              <span class="event-explorer__item-count">${count}</span>
+            </button>`;
+          })
+          .join("");
+        if (!items) return "";
+        return `<section class="event-explorer__group">
+          <h3 class="event-explorer__group-title">${escapeHtml(group.label)}</h3>
+          <div class="event-explorer__group-items">${items}</div>
+        </section>`;
+      })
+      .filter(Boolean);
+    if (explorerTopicBarEl) {
+      explorerTopicBarEl.innerHTML = "";
+    }
+    explorerMenuEl.innerHTML = visibleGroups.join("");
+  }
+
+  function closeExplorer() {
+    if (!explorerEl) return;
+    explorerEl.classList.remove("is-open");
+    window.setTimeout(function () {
+      explorerEl.setAttribute("hidden", "");
+    }, 220);
+    if (!compareModal || !compareModal.classList.contains("is-open")) {
+      document.body.style.overflow = "";
+    }
+    if (lastFocusBeforeExplorer && typeof lastFocusBeforeExplorer.focus === "function") {
+      lastFocusBeforeExplorer.focus();
+    }
+    lastFocusBeforeExplorer = null;
+  }
+
+  function resetExplorerSelection() {
+    explorerActiveTopicId = "";
+    renderExplorerMenu();
+    filter();
+  }
+
+  function openExplorer() {
+    if (!explorerEl) return;
+    lastFocusBeforeExplorer = document.activeElement;
+    explorerEl.removeAttribute("hidden");
+    document.body.style.overflow = "hidden";
+    explorerEl.classList.add("is-open");
+    renderExplorerMenu();
+  }
+
   function openCompareMainForRow(row) {
     if (!row) return;
     const grid = document.getElementById("compare-main-grid");
@@ -1091,6 +1447,11 @@
       e.preventDefault();
       closeTranslationPicker();
       focusTranslationQuickControl();
+      return;
+    }
+    if (explorerEl && explorerEl.classList.contains("is-open")) {
+      e.preventDefault();
+      closeExplorer();
       return;
     }
     if (exampleLayer && !exampleLayer.hidden) {
@@ -1380,10 +1741,12 @@
     const qEl = document.getElementById("q");
     const q = (qEl && qEl.value ? qEl.value : "").trim().toLowerCase();
     const sec = activeSection;
+    const explorerTopic = explorerTopicById.get(explorerActiveTopicId) || null;
 
     const out = data.filter((r) => {
       if (!matchesPreset(r, activePreset)) return false;
       if (sec && r.section !== sec) return false;
+      if (explorerTopic && !explorerTopic.matcher(r)) return false;
       if (!q) return true;
       const hay = [
         r.title,
@@ -1404,7 +1767,11 @@
     const countEl = document.getElementById("count");
     if (countEl) {
       countEl.textContent =
-        out.length + " von " + n + " Zeilen" + (activePreset !== "all" ? " (Filter aktiv)" : "");
+        out.length +
+        " von " +
+        n +
+        " Zeilen" +
+        (activePreset !== "all" || explorerTopic ? " (Filter aktiv)" : "");
     }
     pulseCountLine();
 
@@ -1464,6 +1831,42 @@
         panel.open = false;
       });
       filter();
+    });
+  }
+
+  if (explorerOpenBtn) {
+    explorerOpenBtn.addEventListener("click", openExplorer);
+  }
+
+  if (explorerCloseBtn) {
+    explorerCloseBtn.addEventListener("click", function () {
+      resetExplorerSelection();
+      closeExplorer();
+    });
+  }
+
+  if (explorerBackdrop) {
+    explorerBackdrop.addEventListener("click", function () {
+      resetExplorerSelection();
+      closeExplorer();
+    });
+  }
+
+  if (explorerMenuEl) {
+    explorerMenuEl.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-explorer-topic]");
+      if (!btn) return;
+      explorerActiveTopicId = btn.dataset.explorerTopic || "";
+      filter();
+      closeExplorer();
+      const heading = document.getElementById("section-list-heading");
+      const firstRow = listEl ? listEl.querySelector(".row-wrap") : null;
+      const scrollTarget = heading && !heading.hidden ? heading : firstRow;
+      if (scrollTarget) {
+        window.requestAnimationFrame(function () {
+          scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
     });
   }
 

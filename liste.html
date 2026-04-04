@@ -60,6 +60,15 @@
                 autocomplete="off"
               />
             </div>
+            <button
+              type="button"
+              class="explorer-launch-btn"
+              id="event-explorer-open"
+              aria-haspopup="dialog"
+              aria-controls="event-explorer"
+            >
+              Explorer
+            </button>
             <details class="filter-acc-panel" name="filter-acc" data-filter-kind="presets">
               <summary
                 class="filter-acc-summary filter-acc-summary--toolbar"
@@ -111,6 +120,35 @@
         <path d="M18 15l-6-6-6 6" />
       </svg>
     </button>
+  </div>
+
+  <div
+    class="event-explorer"
+    id="event-explorer"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="event-explorer-title"
+  >
+    <div class="event-explorer__backdrop" id="event-explorer-backdrop" aria-hidden="true"></div>
+    <section class="event-explorer__panel">
+      <div class="event-explorer__toolbar">
+        <div>
+          <p class="event-explorer__eyebrow">Ereignisse entdecken</p>
+          <h2 id="event-explorer-title" class="event-explorer__title">Explorer</h2>
+        </div>
+        <button type="button" class="event-explorer__close" id="event-explorer-close" aria-label="Explorer schließen">
+          ×
+        </button>
+      </div>
+
+      <p class="event-explorer__hint">
+        Wähle direkt ein Unterkapitel. Die Treffer erscheinen anschließend unten in der Listenansicht.
+      </p>
+
+      <div class="event-explorer__topicbar" id="event-explorer-topicbar"></div>
+      <div class="event-explorer__menu" id="event-explorer-menu"></div>
+    </section>
   </div>
 
   <div

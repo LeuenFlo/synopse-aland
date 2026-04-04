@@ -27,54 +27,94 @@
 </head>
 <body class="compare-home">
   <div class="wrap compare-home-wrap">
-    <header class="compare-home-header">
-      <div class="compare-home-header__text">
-        <div class="compare-home-title-row">
-          <div class="compare-home-title-heading">
-            <h1>Synopse der vier Evangelien</h1>
-            <button
-              type="button"
-              class="compare-home-info-btn"
-              id="compare-home-info-btn"
-              aria-label="Hinweise, Navigation und Quellen"
-              title="Hinweise, Navigation und Quellen"
-            >
-              i
-            </button>
-          </div>
-          <div class="compare-home-theme">
-            <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
-            <button
-              type="button"
-              class="theme-switch"
-              role="switch"
-              aria-checked="false"
-              data-theme-toggle
-              aria-labelledby="theme-mode-label"
-            >
-              <span class="theme-switch__thumb" aria-hidden="true"></span>
-            </button>
-          </div>
+    <header class="compare-home-header compare-home-header--landing">
+      <button
+        type="button"
+        class="compare-home-info-btn"
+        id="compare-home-info-btn"
+        aria-label="Hinweise, Navigation und Quellen"
+        title="Hinweise, Navigation und Quellen"
+      >
+        i
+      </button>
+      <h1 class="compare-home-header__mark">Synopse der vier Evangelien</h1>
+      <div class="compare-home-header__right">
+        <div class="compare-home-theme">
+          <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
+          <button
+            type="button"
+            class="theme-switch"
+            role="switch"
+            aria-checked="false"
+            data-theme-toggle
+            aria-labelledby="theme-mode-label"
+          >
+            <span class="theme-switch__thumb" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
-      <a href="liste.html" class="compare-home-cta compare-home-cta--search" aria-label="Perikope suchen">
-        <svg class="compare-home-cta__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-          <circle cx="11" cy="11" r="7" />
-          <path d="M20 20l-3.2-3.2" />
-        </svg>
-        <span>Perikope suchen</span>
-      </a>
     </header>
 
     <main class="compare-home-main" id="compare-home-main" aria-label="Perikopenvergleich">
       <div class="compare-home-shell">
-        <section class="compare-translations-bar translation-toolbar-wrap translation-toolbar-wrap--home" aria-label="Lesetexte">
-          <div class="translation-toolbar">
-            <div class="translation-toolbar__pickers compare-modal-translations-box compare-translations-box--wide">
-              <div class="translation-buttons translation-buttons--lang-strip" id="compare-main-translation-buttons"></div>
+        <section
+          class="compare-home-hero"
+          id="einleitung"
+          aria-labelledby="compare-home-intro-heading"
+        >
+          <div class="compare-home-hero__inner">
+            <h2 class="compare-home-hero__title" id="compare-home-intro-heading">
+              Die Gute Botschaft - aus vier Perspektiven
+            </h2>
+            <div class="compare-home-hero__sub">
+              <p>Viele Ereignisse tauchen in mehreren Evangelien auf, aber nie ganz identisch.</p>
+              <p>Hier kannst du diese Texte nebeneinanderlegen und ihre Gemeinsamkeiten und Unterschiede entdecken.</p>
+            </div>
+            <div class="compare-home-hero__actions">
+              <a href="liste.html" class="compare-home-pill compare-home-pill--primary">
+                <svg class="compare-home-pill__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M20 20l-3.2-3.2" />
+                </svg>
+                Perikope suchen
+              </a>
+              <button type="button" class="compare-home-pill compare-home-pill--ghost" id="compare-home-open-example">
+                Beispiel ansehen
+              </button>
             </div>
           </div>
         </section>
+
+        <section class="compare-home-info-bar" aria-label="Erklärung">
+          <p></p><strong>Perikopen</strong> sind einzelne Abschnitte aus den Evangelien.</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div
+    id="beispiel"
+    class="compare-home-example-layer"
+    hidden
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="compare-home-example-heading"
+  >
+    <button
+      type="button"
+      class="compare-home-example-layer__backdrop"
+      id="compare-home-example-backdrop"
+      aria-label="Beispiel schließen"
+    ></button>
+    <div class="compare-home-example-layer__sheet">
+      <header class="compare-home-example-layer__head">
+        <h2 class="compare-home-example__heading" id="compare-home-example-heading">Beispielperikope</h2>
+        <button type="button" class="compare-home-example-layer__close" id="compare-home-example-close" aria-label="Schließen">
+          ×
+        </button>
+      </header>
+      <div class="compare-home-example-layer__body">
         <div class="compare-modal-panel compare-main-panel" id="compare-main-panel">
           <header class="compare-modal-header compare-main-header">
             <p class="compare-modal-aland" id="compare-main-aland"></p>
@@ -84,7 +124,7 @@
           <div class="text-grid compare-modal-grid compare-main-grid" id="compare-main-grid" data-filled="0"></div>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 
   <div

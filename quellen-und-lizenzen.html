@@ -27,7 +27,25 @@
 </head>
 <body>
   <div class="wrap sources-page">
-    <header class="compare-home-header">
+    <header class="compare-home-header sources-page__header">
+      <div class="sources-page__header-bar">
+        <a href="index.html" class="liste-nav-back">← Zur Startseite</a>
+        <div class="compare-home-header__right">
+          <div class="compare-home-theme">
+            <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
+            <button
+              type="button"
+              class="theme-switch"
+              role="switch"
+              aria-checked="false"
+              data-theme-toggle
+              aria-labelledby="theme-mode-label"
+            >
+              <span class="theme-switch__thumb" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="compare-home-header__text">
         <h1>Synopse der vier Evangelien</h1>
         <p class="sources-page-kicker">Quellen &amp; Lizenzen</p>
@@ -35,22 +53,6 @@
           Übersicht über Datengrundlagen, Bibeltexte und Software dieser Website. Die Angaben zu Lizenzen stellen eine orientierende Zusammenfassung dar und ersetzen keine
           Rechtsberatung; maßgeblich sind jeweils die Bedingungen der Originalquellen.
         </p>
-      </div>
-      <div class="compare-home-header__actions">
-        <div class="compare-home-theme">
-          <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
-          <button
-            type="button"
-            class="theme-switch"
-            role="switch"
-            aria-checked="false"
-            data-theme-toggle
-            aria-labelledby="theme-mode-label"
-          >
-            <span class="theme-switch__thumb" aria-hidden="true"></span>
-          </button>
-        </div>
-        <a href="index.html" class="compare-home-cta">Zur Hauptseite</a>
       </div>
     </header>
 

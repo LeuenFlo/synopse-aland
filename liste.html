@@ -25,13 +25,12 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/synopse.css" />
 </head>
-<body>
-  <div class="wrap">
-    <header class="compare-home-header compare-home-header--liste">
-      <div class="compare-home-header__text">
-        <h1>Perikope suchen</h1>
-      </div>
-      <div class="compare-home-header__actions">
+<body class="liste-page">
+  <div class="wrap liste-page-wrap">
+    <header class="compare-home-header compare-home-header--landing liste-page__header">
+      <a href="index.html" class="liste-nav-back">← Startseite</a>
+      <h1 class="compare-home-header__mark">Perikope suchen</h1>
+      <div class="compare-home-header__right">
         <div class="compare-home-theme">
           <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
           <button
@@ -45,11 +44,10 @@
             <span class="theme-switch__thumb" aria-hidden="true"></span>
           </button>
         </div>
-        <a href="index.html" class="compare-home-cta">Zur Hauptseite</a>
       </div>
     </header>
 
-    <section class="top-filter-venn" aria-label="Filter und synoptische Übersicht">
+    <section class="top-filter-venn liste-page__search" aria-label="Filter und synoptische Übersicht">
       <div class="filter-venn-row">
         <div class="filter-col">
           <div class="filter-toolbar" id="filter-accordion">
@@ -57,8 +55,8 @@
               <input
                 type="search"
                 id="q"
-                aria-label="Suche nach Ereignistitel oder Versstelle"
-                placeholder="Ereignistitel oder Versstelle…"
+                aria-label="Suche nach Ereignistitel"
+                placeholder="Ereignistitel suchen"
                 autocomplete="off"
               />
             </div>
@@ -67,7 +65,14 @@
                 class="filter-acc-summary filter-acc-summary--toolbar"
                 title="Filter nach Evangelien öffnen oder schließen"
               >
-                <span class="filter-acc-btn-label">Filter</span>
+                <svg class="filter-acc-btn-icon" viewBox="0 0 120 120" width="40" height="40" aria-hidden="true" focusable="false">
+                  <line class="filter-line" x1="10" y1="25" x2="110" y2="25" />
+                  <line class="filter-line" x1="10" y1="60" x2="110" y2="60" />
+                  <line class="filter-line" x1="10" y1="95" x2="110" y2="95" />
+                  <circle class="filter-knob filter-k1" cx="38" cy="25" r="10" />
+                  <circle class="filter-knob filter-k2" cx="78" cy="60" r="10" />
+                  <circle class="filter-knob filter-k3" cx="52" cy="95" r="10" />
+                </svg>
               </summary>
               <div class="filter-acc-body filter-acc-body--presets">
                 <div class="preset-wrap" id="presets"></div>
@@ -87,18 +92,15 @@
       <div class="list" id="list"></div>
     </section>
 
-    <footer>
+    <footer class="liste-page__footer">
       <p>
-        <a href="index.html">Zum Vergleich</a>
+        <a href="index.html">Zur Startseite</a>
         ·
         <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
       </p>
       <p>
         Die Tabelle folgt der <strong>Synopsis Quattuor Evangeliorum</strong> (Kurt Aland). Die zugrunde liegende Parallelliste stammt von
         <a href="https://www.bible-researcher.com/parallels.html" target="_blank" rel="noopener">bible-researcher.com</a>.
-      </p>
-      <p>
-        „Q-Kandidaten“ kennzeichnet Zeilen, in denen nur Matthäus und Lukas vorkommen, nicht Markus — eine grobe Hilfe zur Zwei-Quellen-Theorie. Wo Aland mehrere Verse in einer Zelle bündelt, kann ein Vers fehlen; dann weist das Textfenster darauf hin.
       </p>
     </footer>
   </div>
@@ -109,7 +111,6 @@
         <path d="M18 15l-6-6-6 6" />
       </svg>
     </button>
-    <button type="button" class="filter-reset-fab" id="filter-reset-fab" aria-label="Filter zurücksetzen" title="Filter zurücksetzen">×</button>
   </div>
 
   <div

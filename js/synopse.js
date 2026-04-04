@@ -137,35 +137,8 @@
   }
 
   function syncListFabs() {
-    const filterBtn = document.getElementById("filter-reset-fab");
     const scrollBtn = document.getElementById("scroll-top-fab");
-    const qEl = document.getElementById("q");
-    const q = qEl && qEl.value.trim();
-    const dirty = activePreset !== "all" || !!q || !!activeSection;
-    if (filterBtn) filterBtn.classList.toggle("visible", dirty);
     if (scrollBtn) scrollBtn.classList.toggle("visible", window.scrollY > 200);
-  }
-
-  function resetAllListFilters() {
-    activePreset = "all";
-    activeSection = "";
-    const qEl = document.getElementById("q");
-    if (qEl) qEl.value = "";
-    syncPresetButtonActiveState();
-    document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
-      panel.open = false;
-    });
-    try {
-      const u = new URL(window.location.href);
-      u.searchParams.delete("section");
-      const next = u.pathname + (u.search ? u.search : "") + (u.hash || "");
-      window.history.replaceState({}, "", next);
-    } catch (e) {
-      /* ignore */
-    }
-    filter();
-    syncListFabs();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function presetButtonHtml(p) {
@@ -564,6 +537,24 @@
   }
 
   let activeTranslationId = QUICK_TRANSLATION_DE;
+
+  /** Auf der Startseite: fester Lesetext für die Demo-Synopse (überschreibbar mit ?translation=) */
+  let homeDemoTranslationId = QUICK_TRANSLATION_DE;
+  if (isCompareHome) {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tr = params.get("translation");
+      if (tr && translationById[tr]) homeDemoTranslationId = tr;
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function effectiveTranslationId(which) {
+    if (isCompareHome && which === "main") return homeDemoTranslationId;
+    return activeTranslationId;
+  }
+
   const translationRawCache = Object.create(null);
   const translationVerseCache = Object.create(null);
 
@@ -606,28 +597,40 @@
   }
 
   /** Längere Bezeichnung für Hinweis „Übersetzung: …“ und Karten in der Auswahl (falls labelLong gesetzt) */
-  function activeTranslationVerboseLabel() {
-    const t = translationById[activeTranslationId];
+  function translationVerboseLabelForId(translationId) {
+    const t = translationById[translationId];
     if (!t) return "Unbekannt";
     return t.labelLong || t.label;
   }
 
-  function activeTranslationIsSourceText() {
-    const t = translationById[activeTranslationId];
+  function activeTranslationVerboseLabel() {
+    return translationVerboseLabelForId(activeTranslationId);
+  }
+
+  function translationIsSourceTextForId(translationId) {
+    const t = translationById[translationId];
     return !!(t && String(t.lang) === "el");
   }
 
-  function compareModalColumnMetaHtml() {
-    if (activeTranslationId === "byz_2013") {
+  function activeTranslationIsSourceText() {
+    return translationIsSourceTextForId(activeTranslationId);
+  }
+
+  function compareColumnMetaHtmlForTranslation(translationId) {
+    if (translationId === "byz_2013") {
       return '<p class="compare-note compare-note--urtext">byzantinischer Mehrheitstext (Byz 2013)</p>';
     }
-    if (activeTranslationId === "greek_slb") {
+    if (translationId === "greek_slb") {
       return '<p class="compare-note compare-note--urtext">textkritische Ausgabe der Society of Biblical Literature</p>';
     }
-    if (activeTranslationIsSourceText()) {
+    if (translationIsSourceTextForId(translationId)) {
       return '<p class="compare-note compare-note--urtext">griechischer Referenztext</p>';
     }
-    return '<p class="compare-note">Übersetzung: ' + escapeHtml(activeTranslationVerboseLabel()) + "</p>";
+    return '<p class="compare-note">Übersetzung: ' + escapeHtml(translationVerboseLabelForId(translationId)) + "</p>";
+  }
+
+  function compareModalColumnMetaHtml() {
+    return compareColumnMetaHtmlForTranslation(activeTranslationId);
   }
 
   function translationGroupLabel(langKey) {
@@ -648,7 +651,7 @@
     return byLang;
   }
 
-  /** Kompakte Leiste: Elberfelder, Griechisch, bis zu zwei angeheftete Übersetzungen (mit ×), Weitere */
+  /** Kompakte Leiste: Elberfelder, Griechisch, bis zu zwei angeheftete Übersetzungen (mit ×), „Weitere Übersetzungen“ / Tausch-Icon */
   function renderTranslationQuickStrip() {
     let extraHtml = "";
     pinnedQuickTranslationIds.forEach(function (pinId) {
@@ -672,6 +675,17 @@
         '" title="Aus Schnellwahl entfernen">×</button>' +
         "</div>";
     });
+    const extraPinCount = pinnedQuickTranslationIds.filter(function (pid) {
+      return !isQuickPairTranslationId(pid);
+    }).length;
+    const pinnedQuickSlotsFull = extraPinCount >= MAX_PINNED_QUICK_TRANSLATIONS;
+    const morePickerLabel = pinnedQuickSlotsFull
+      ? "Übersetzungen in der Schnellwahl wechseln"
+      : "Weitere Übersetzungen zur Schnellwahl hinzufügen";
+    const morePickerTitle = pinnedQuickSlotsFull
+      ? "Weitere Übersetzungen auswählen oder eine ersetzen"
+      : "Weitere Übersetzungen hinzufügen";
+    const moreButtonInner = '<span class="translation-quick__more-label">Weitere Übersetzungen</span>';
     return (
       '<div class="translation-quick" role="group" aria-label="Lesetext wählen">' +
       '<button type="button" class="translation-quick__btn" data-translation="' +
@@ -686,8 +700,13 @@
       "</button>" +
       extraHtml +
       '<button type="button" class="translation-quick__more" data-open-translation-picker ' +
-      'aria-haspopup="dialog" aria-expanded="false" aria-controls="translation-picker-overlay">' +
-      "Weitere Übersetzungen" +
+      'aria-haspopup="dialog" aria-expanded="false" aria-controls="translation-picker-overlay" ' +
+      'aria-label="' +
+      escapeAttr(morePickerLabel) +
+      '" title="' +
+      escapeAttr(morePickerTitle) +
+      '">' +
+      moreButtonInner +
       "</button>" +
       "</div>"
     );
@@ -917,12 +936,15 @@
   let translationSwapSeq = 0;
 
   function syncGreekScriptClass() {
-    const t = translationById[activeTranslationId];
-    const greek = !!(t && String(t.lang) === "el");
+    const tModal = translationById[activeTranslationId];
+    const greekModal = !!(tModal && String(tModal.lang) === "el");
+    const mainTid = isCompareHome ? homeDemoTranslationId : activeTranslationId;
+    const tMain = translationById[mainTid];
+    const greekMain = !!(tMain && String(tMain.lang) === "el");
     const modalPanel = document.getElementById("compare-modal-panel");
     const mainPanel = document.getElementById("compare-main-panel");
-    if (modalPanel) modalPanel.classList.toggle("is-greek-script", greek);
-    if (mainPanel) mainPanel.classList.toggle("is-greek-script", greek);
+    if (modalPanel) modalPanel.classList.toggle("is-greek-script", greekModal);
+    if (mainPanel) mainPanel.classList.toggle("is-greek-script", greekMain);
   }
 
   function closeCompareModal() {
@@ -1018,6 +1040,39 @@
     });
   }
 
+  const exampleLayer = document.getElementById("beispiel");
+  const exampleOpenBtn = document.getElementById("compare-home-open-example");
+  const exampleCloseBtn = document.getElementById("compare-home-example-close");
+  const exampleBackdrop = document.getElementById("compare-home-example-backdrop");
+
+  function closeExampleLayer() {
+    if (!exampleLayer || exampleLayer.hidden) return;
+    exampleLayer.setAttribute("hidden", "");
+    exampleLayer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("compare-home-example-is-open");
+    try {
+      if (location.hash === "#beispiel") {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    if (exampleOpenBtn) exampleOpenBtn.focus();
+  }
+
+  function openExampleLayer() {
+    if (!exampleLayer) return;
+    exampleLayer.removeAttribute("hidden");
+    exampleLayer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("compare-home-example-is-open");
+    try {
+      history.replaceState(null, "", "#beispiel");
+    } catch (e) {
+      /* ignore */
+    }
+    if (exampleCloseBtn) exampleCloseBtn.focus();
+  }
+
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
     const siteInfoDlg = document.getElementById("site-info-dialog");
@@ -1036,6 +1091,11 @@
       e.preventDefault();
       closeTranslationPicker();
       focusTranslationQuickControl();
+      return;
+    }
+    if (exampleLayer && !exampleLayer.hidden) {
+      e.preventDefault();
+      closeExampleLayer();
       return;
     }
     if (compareModal && compareModal.classList.contains("is-open")) {
@@ -1070,6 +1130,31 @@
       if (typeof siteInfoDialog.close === "function") siteInfoDialog.close();
     });
   }
+
+  if (isCompareHome && exampleLayer && exampleOpenBtn) {
+    exampleOpenBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      openExampleLayer();
+    });
+  }
+  if (exampleCloseBtn) {
+    exampleCloseBtn.addEventListener("click", function () {
+      closeExampleLayer();
+    });
+  }
+  if (exampleBackdrop) {
+    exampleBackdrop.addEventListener("click", function () {
+      closeExampleLayer();
+    });
+  }
+  if (isCompareHome && exampleLayer && location.hash === "#beispiel") {
+    openExampleLayer();
+  }
+  window.addEventListener("hashchange", function () {
+    if (!isCompareHome || !exampleLayer) return;
+    if (location.hash === "#beispiel") openExampleLayer();
+    else if (!exampleLayer.hidden) closeExampleLayer();
+  });
 
   document.addEventListener("click", function (e) {
     const unpinBtn = e.target.closest("[data-remove-pinned-translation]");
@@ -1118,17 +1203,18 @@
   }
 
   async function fillCompareGrid(grid, r, which) {
+    const tid = effectiveTranslationId(which);
     syncGreekScriptClass();
     if (!grid || grid.dataset.filled === "1") return;
     grid.innerHTML =
       '<p class="compare-note">' +
-      (activeTranslationIsSourceText() ? "Lade griechischen Text …" : "Lade Übersetzung …") +
+      (translationIsSourceTextForId(tid) ? "Lade griechischen Text …" : "Lade Übersetzung …") +
       "</p>";
 
     let cache = null;
     const SC = window.SYNOPTIC_COMPARE;
     try {
-      cache = await getVerseCache(activeTranslationId);
+      cache = await getVerseCache(tid);
     } catch (err) {
       if (!isCompareRowActive(r, which)) return;
       const detail =
@@ -1137,7 +1223,7 @@
           : "";
       grid.innerHTML =
         '<p class="compare-note">' +
-        (activeTranslationIsSourceText()
+        (translationIsSourceTextForId(tid)
           ? "Der griechische Text konnte nicht geladen werden."
           : "Übersetzung konnte nicht geladen werden.") +
         escapeHtml(detail) +
@@ -1150,7 +1236,7 @@
     if (!cache || !SC) {
       grid.innerHTML =
         '<p class="compare-note">' +
-        (activeTranslationIsSourceText() ? "Keine Textdaten verfügbar." : "Übersetzungsdaten nicht verfügbar.") +
+        (translationIsSourceTextForId(tid) ? "Keine Textdaten verfügbar." : "Übersetzungsdaten nicht verfügbar.") +
         "</p>";
       grid.dataset.filled = "1";
       triggerCompareGridReveal(grid);
@@ -1178,7 +1264,7 @@
     const n = active.length;
     grid.style.gridTemplateColumns = "repeat(" + n + ", minmax(0, 1fr))";
 
-    const colMeta = compareModalColumnMetaHtml();
+    const colMeta = compareColumnMetaHtmlForTranslation(tid);
     grid.innerHTML = active
       .map((c) => {
         const ref = r[c.refKey] || "";
@@ -1269,14 +1355,12 @@
 
   function renderRow(r) {
     const title = escapeHtml(r.title_de || r.title);
-    const sec = escapeHtml(r.section_de || r.section || "");
+    const titleWithNumber = `${r.aland_no}. ${title}`;
     return `
       <section class="row-wrap" data-row-id="${r.row_id}">
         <div class="row row-head" tabindex="0" role="button" aria-label="Versvergleich in Fenster öffnen">
-          <div class="aland">${r.aland_no}</div>
           <div class="row-main">
-            <h2>${title}</h2>
-            <div class="sec">${sec}</div>
+            <h2>${titleWithNumber}</h2>
           </div>
           <div class="row-actions">
             <div class="gospels">
@@ -1411,11 +1495,9 @@
   }
 
   if (listEl) {
-    const resetFab = document.getElementById("filter-reset-fab");
     const scrollTopFab = document.getElementById("scroll-top-fab");
     window.addEventListener("scroll", syncListFabs, { passive: true });
     syncListFabs();
-    if (resetFab) resetFab.addEventListener("click", resetAllListFilters);
     if (scrollTopFab) {
       scrollTopFab.addEventListener("click", function () {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1446,7 +1528,7 @@
     if (row) openCompareMainForRow(row);
   }
 
-  getVerseCache(activeTranslationId).catch(function () {
+  getVerseCache(isCompareHome ? homeDemoTranslationId : activeTranslationId).catch(function () {
     // Erstes Laden kann bei lokalen file://-Setups scheitern; wir zeigen den Fehler erst im Panel.
   });
 })();

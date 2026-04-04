@@ -332,7 +332,7 @@
 
   function syncFilterPresetsLabel() {
     if (!filterPresetsLabel || !filterPresetsPanel) return;
-    filterPresetsLabel.textContent = filterPresetsPanel.open ? "Filter schließen" : "Filter";
+    filterPresetsLabel.textContent = filterPresetsPanel.open ? "Filter schliessen" : "Filter";
   }
 
   /** Entspricht CSS --filter-gap (Abstand Toolbar-Zeile → Dropdown). */
@@ -446,7 +446,7 @@
       label: "Elberfelder 1905",
       path: "data/translations/german/elberfelder_1905.json",
       info:
-        "Die Elberfelder Übersetzung entstand im pietistischen Umfeld und strebt eine möglichst wörtliche Wiedergabe des hebräischen und griechischen Urtextes an. Die hier verwendete Fassung von 1905 gehört zu den klassischen, älteren Elberfelder-Texten vor den späteren großen Revisionen (ab 1961 bzw. 1985); Sprache und Schreibung sind damit typisch für die Bibeldrucke des frühen 20. Jahrhunderts.",
+        "Die Elberfelder Übersetzung entstand im pietistischen Umfeld und strebt eine möglichst wörtliche Wiedergabe des hebräischen und griechischen Urtextes an. Die hier verwendete Fassung von 1905 gehört zu den klassischen, älteren Elberfelder-Texten vor den späteren grossen Revisionen (ab 1961 bzw. 1985); Sprache und Schreibung sind damit typisch für die Bibeldrucke des frühen 20. Jahrhunderts.",
       infoUrl: "https://de.wikipedia.org/wiki/Elberfelder_Bibel",
     },
     {
@@ -491,7 +491,7 @@
       label: "Byz 2013 (Robinson–Pierpont)",
       path: "data/translations/greek/byz_2013.json",
       info:
-        "The New Testament in the Original Greek: Byzantine Textform (2013), herausgegeben von Maurice A. Robinson und William G. Pierpont — kurz: Robinson–Pierpont Byzantine Text (Revision 2013). „Byzantine Textform“ meint den Mehrheitstext (Majority Text) der griechischen Handschriften: den Text, der in den meisten byzantinischen Manuskripten überliefert ist. Das ist keine Ausgabe des Textus Receptus: Der TR basiert auf wenigen späten Handschriften und historisch gewachsenen Drucktraditionen (Erasmus → Stephanus → Beza → Elzevir) und enthält u. a. in der Offenbarung Rückübersetzungen aus dem Lateinischen; die Byzantine Textform 2013 hingegen basiert auf systematischer Auswertung vieler Handschriften und versucht, den Mehrheitstext wissenschaftlich zu rekonstruieren — konfessionell nicht „überliefert“, sondern kritisch erstellt. Typisch unterscheiden sich Byz und TR u. a. bei der Johannesoffenbarung, bei einigen längeren Lesarten und in Orthographie sowie Wortstellung; Byz wirkt oft gleichmäßiger, der TR historisch gewachsen, aber textkritisch uneinheitlicher. In Software wird Byz 2013 gern genutzt, weil der Text frei verfügbar, konsistent und der Manuskriptmehrheit nahe ist — gut für Vergleiche und textkritische Werkzeuge.",
+        "The New Testament in the Original Greek: Byzantine Textform (2013), herausgegeben von Maurice A. Robinson und William G. Pierpont — kurz: Robinson–Pierpont Byzantine Text (Revision 2013). „Byzantine Textform“ meint den Mehrheitstext (Majority Text) der griechischen Handschriften: den Text, der in den meisten byzantinischen Manuskripten überliefert ist. Das ist keine Ausgabe des Textus Receptus: Der TR basiert auf wenigen späten Handschriften und historisch gewachsenen Drucktraditionen (Erasmus → Stephanus → Beza → Elzevir) und enthält u. a. in der Offenbarung Rückübersetzungen aus dem Lateinischen; die Byzantine Textform 2013 hingegen basiert auf systematischer Auswertung vieler Handschriften und versucht, den Mehrheitstext wissenschaftlich zu rekonstruieren — konfessionell nicht „überliefert“, sondern kritisch erstellt. Typisch unterscheiden sich Byz und TR u. a. bei der Johannesoffenbarung, bei einigen längeren Lesarten und in Orthographie sowie Wortstellung; Byz wirkt oft gleichmässiger, der TR historisch gewachsen, aber textkritisch uneinheitlicher. In Software wird Byz 2013 gern genutzt, weil der Text frei verfügbar, konsistent und der Manuskriptmehrheit nahe ist — gut für Vergleiche und textkritische Werkzeuge.",
       infoUrl: "https://en.wikipedia.org/wiki/Byzantine_text-type",
     },
     {

@@ -38,273 +38,80 @@
 
   /** Aktiver Aland-Abschnitt (interner Schlüssel) — nur per \`?section=\` gesetzt, kein eigenes UI. */
   let activeSection = "";
-
-  function normalizeForSearch(value) {
-    return String(value || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+  function createAlandTopic(id, label, startAland, endAland) {
+    const alandNos = [];
+    for (let no = startAland; no <= endAland; no += 1) {
+      alandNos.push(no);
+    }
+    const alandSet = new Set(alandNos);
+    return {
+      id: id,
+      label: label,
+      count: alandNos.length,
+      matcher: function (row) {
+        return alandSet.has(row.aland_no);
+      },
+    };
   }
 
-  function getRowSearchText(row) {
-    return normalizeForSearch(
-      [
-        row.aland_no,
-        row.title,
-        row.title_de,
-        row.section,
-        row.section_de,
-        row.ref_matthew,
-        row.ref_mark,
-        row.ref_luke,
-        row.ref_john,
-      ].join(" "),
-    );
-  }
-
-  function rowIncludesAllTerms(row, terms) {
-    const hay = getRowSearchText(row);
-    return terms.every(function (term) {
-      return hay.includes(normalizeForSearch(term));
-    });
-  }
-
-  function rowIncludesAnyTerm(row, terms) {
-    const hay = getRowSearchText(row);
-    return terms.some(function (term) {
-      return hay.includes(normalizeForSearch(term));
-    });
-  }
-
-  function rowTitleIncludesAnyTerm(row, terms) {
-    const hay = normalizeForSearch([row.title, row.title_de].join(" "));
-    return terms.some(function (term) {
-      return hay.includes(normalizeForSearch(term));
-    });
-  }
-
-  function rowSectionStartsWith(row, prefix) {
-    return String(row.section_de || row.section || "").startsWith(prefix);
-  }
-
+  /* 365 Ereignisse im Explorer: ohne 1 (Prolog) und 361 (Paulus über die Erscheinungen Jesu). */
   const explorerTopicGroups = [
     {
-      label: "Vorbereitung und Herkunft Jesu",
+      label: "1. Vorbereitung und Herkunft Jesu",
       items: [
-        {
-          id: "birth-childhood",
-          label: "Geburt und Kindheit",
-          matcher: function (row) {
-            return rowSectionStartsWith(row, "2.") || rowTitleIncludesAnyTerm(row, ["prolog"]);
-          },
-        },
-        {
-          id: "john-baptist",
-          label: "Auftreten von Johannes dem Täufer",
-          matcher: function (row) {
-            return rowIncludesAllTerms(row, ["johannes"]) && rowIncludesAnyTerm(row, ["täufer", "bußpredigt", "messianische", "fragenden"]);
-          },
-        },
-        {
-          id: "baptism",
-          label: "Taufe Jesu",
-          matcher: function (row) {
-            return rowIncludesAllTerms(row, ["taufe", "jesu"]);
-          },
-        },
-        {
-          id: "temptation",
-          label: "Versuchung in der Wüste",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["versuchung"]);
-          },
-        },
+        createAlandTopic("birth-childhood", "1.1 Geburt und Kindheit", 2, 12),
+        createAlandTopic("john-baptist", "1.2 Johannes der Täufer", 13, 17),
+        createAlandTopic("baptism-temptation", "1.3 Taufe und Versuchung", 18, 20),
+        createAlandTopic("first-encounters", "1.4 Erste Begegnungen und Zeichen", 21, 31),
       ],
     },
     {
-      label: "Öffentliches Wirken in Galiläa",
+      label: "2. Öffentliches Wirken in Galiläa",
       items: [
-        {
-          id: "calling-disciples",
-          label: "Berufung der Jünger",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["berufung der jünger", "berufung der ersten jünger", "auswahl der zwölf", "sendung der zwölf"]);
-          },
-        },
-        {
-          id: "kingdom-preaching",
-          label: "Predigt vom Reich Gottes",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["predigt", "reich gottes", "lehre in der synagoge", "wirken in galiläa", "predigtreise"]);
-          },
-        },
-        {
-          id: "parables",
-          label: "Gleichnisse",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["gleichnis"]);
-          },
-        },
-        {
-          id: "wonders-healings",
-          label: "Wunder und Heilungen",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, [
-              "heilung",
-              "heilt",
-              "reinigung",
-              "auferweckung",
-              "besessene",
-              "besessenen",
-              "blind",
-              "sturm beschwichtigt",
-              "wunderbarer fischfang",
-              "taubstummen",
-            ]);
-          },
-        },
+        createAlandTopic("galilee-beginning", "2.1 Beginn in Galiläa", 32, 49),
+        createAlandTopic("sermon-on-mount", "2.2 Bergpredigt", 50, 76),
+        createAlandTopic("sermon-on-plain", "2.3 Rede in der Ebene", 77, 83),
+        createAlandTopic("healings-and-mission", "2.4 Heilungen und Jüngersendung", 84, 121),
+        createAlandTopic("parables", "2.5 Gleichnisreden", 122, 135),
+        createAlandTopic("signs-and-revelation", "2.6 Zeichen und Offenbarungen", 136, 157),
       ],
     },
     {
-      label: "Weg nach Jerusalem",
+      label: "3. Weg nach Jerusalem",
       items: [
-        {
-          id: "religious-conflict",
-          label: "Widerstand durch religiöse Autoritäten",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, [
-              "pharisäer",
-              "schriftgelehrte",
-              "hohepriester",
-              "beelzebul",
-              "vollmacht",
-              "auseinandersetzung mit den juden",
-              "wehe den schriftgelehrten",
-            ]);
-          },
-        },
-        {
-          id: "discipleship-discourses",
-          label: "Lehrreden über Nachfolge",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, [
-              "nachfolge",
-              "jüngerschaft",
-              "wer euch hört",
-              "wahre größe",
-              "will jemand mir nachkommen",
-              "demut",
-            ]);
-          },
-        },
-        {
-          id: "passion-predictions",
-          label: "Ankündigungen des Leidens",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["leiden voraus", "leidensankündigung", "dritte leidensankündigung", "sagt sein leiden"]);
-          },
-        },
+        createAlandTopic("confession-transfiguration", "3.1 Bekenntnis, Verklärung, Nachfolge", 158, 173),
+        createAlandTopic("departure-journey", "3.2 Aufbruch nach Jerusalem", 174, 181),
+        createAlandTopic("journey-discourses", "3.3 Lehrreden und Gleichnisse auf dem Weg", 182, 237),
+        createAlandTopic("tabernacles", "3.4 Laubhüttenfest und Tempelreden", 238, 250),
+        createAlandTopic("judea-peraea", "3.5 Wirken in Judäa und jenseits des Jordan", 251, 261),
+        createAlandTopic("passion-jericho", "3.6 Leidensankündigung und Jericho", 262, 266),
       ],
     },
     {
-      label: "Wirken in Jerusalem",
+      label: "4. Wirken in Jerusalem",
       items: [
-        {
-          id: "entry-jerusalem",
-          label: "Einzug in Jerusalem",
-          matcher: function (row) {
-            return rowIncludesAllTerms(row, ["einzug", "jerusalem"]);
-          },
-        },
-        {
-          id: "temple-cleansing",
-          label: "Tempelreinigung",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["tempelreinigung"]);
-          },
-        },
-        {
-          id: "controversies",
-          label: "Streitgespräche",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, [
-              "frage nach",
-              "zur kaisermünze",
-              "große gebot",
-              "davids sohn",
-              "vollmacht",
-              "wehe den schriftgelehrten",
-              "weingärtnern",
-            ]);
-          },
-        },
-        {
-          id: "eschatological-discourses",
-          label: "Endzeitreden (Synoptiker)",
-          matcher: function (row) {
-            return rowSectionStartsWith(row, "14.") || rowIncludesAnyTerm(row, ["menschensohnes", "wachet", "feigenbaum", "verwüstung", "ende"]);
-          },
-        },
+        createAlandTopic("entry-temple", "4.1 Einzug und Tempel", 267, 276),
+        createAlandTopic("temple-disputes", "4.2 Streitgespräche im Tempel", 277, 286),
+        createAlandTopic("eschatological-discourses", "4.3 Endzeitreden", 287, 300),
+        createAlandTopic("last-days-before-passion", "4.4 Letzte Tage vor der Passion", 301, 307),
       ],
     },
     {
-      label: "Passion (Leiden und Tod)",
+      label: "5. Passion (Leiden und Tod)",
       items: [
-        {
-          id: "last-supper",
-          label: "Letztes Abendmahl",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["letzte abendmahl"]);
-          },
-        },
-        {
-          id: "arrest",
-          label: "Gefangennahme",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["getsemane", "festnahme", "sanhedrin", "petrus verleugnung"]);
-          },
-        },
-        {
-          id: "trial-crucifixion",
-          label: "Verhör und Kreuzigung",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, [
-              "pilatus",
-              "herodes",
-              "kreuzigung",
-              "golgatha",
-              "tod jesu",
-              "grablegung",
-              "barabbas",
-            ]);
-          },
-        },
+        createAlandTopic("supper-farewell", "5.1 Abendmahl und Abschiedsreden", 308, 329),
+        createAlandTopic("gethsemane-sanhedrin", "5.2 Getsemane und jüdisches Verhör", 330, 333),
+        createAlandTopic("pilate-herod", "5.3 Prozesse vor Pilatus und Herodes", 334, 341),
+        createAlandTopic("crucifixion-death", "5.4 Kreuzigung und Tod", 342, 349),
+        createAlandTopic("burial-watch", "5.5 Grablegung und Grabwache", 350, 351),
       ],
     },
     {
-      label: "Auferstehung und Erscheinungen",
+      label: "6. Auferstehung und Erscheinungen",
       items: [
-        {
-          id: "empty-tomb",
-          label: "Leeres Grab",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["frauen am grab", "wache am grab", "leeres grab"]);
-          },
-        },
-        {
-          id: "appearances",
-          label: "Erscheinungen des Auferstandenen",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["erscheint", "emmaus", "see tiberias", "erscheinungen jesu"]);
-          },
-        },
-        {
-          id: "mission-disciples",
-          label: "Sendung der Jünger",
-          matcher: function (row) {
-            return rowIncludesAnyTerm(row, ["große auftrag", "schluss des matthäus", "schluss des lukas", "himmelfahrt"]);
-          },
-        },
+        createAlandTopic("empty-tomb", "6.1 Leeres Grab", 352, 354),
+        createAlandTopic("appearances", "6.2 Erscheinungen des Auferstandenen", 355, 360),
+        createAlandTopic("commission-endings", "6.3 Sendung und Evangelienausgänge", 362, 367),
       ],
     },
   ];
@@ -313,6 +120,26 @@
       return Object.assign({ groupLabel: group.label }, item);
     });
   });
+  const explorerAssignedAlands = new Set();
+  let explorerAssignedCount = 0;
+  explorerTopics.forEach(function (topic) {
+    data.forEach(function (row) {
+      if (!topic.matcher(row)) return;
+      explorerAssignedAlands.add(row.aland_no);
+      explorerAssignedCount += 1;
+    });
+  });
+  if (
+    explorerAssignedAlands.size !== 365 ||
+    explorerAssignedCount !== 365 ||
+    explorerAssignedAlands.has(1) ||
+    explorerAssignedAlands.has(361)
+  ) {
+    console.warn("Explorer-Zuordnung unerwartet:", {
+      uniqueAssigned: explorerAssignedAlands.size,
+      totalAssigned: explorerAssignedCount,
+    });
+  }
   const explorerTopicById = new Map(
     explorerTopics.map(function (topic) {
       return [topic.id, topic];
@@ -1316,12 +1143,11 @@
       .map(function (group) {
         const items = group.items
           .map(function (item) {
-            const count = data.filter(item.matcher).length;
             return `<button type="button" class="event-explorer__item${
               item.id === explorerActiveTopicId ? " is-active" : ""
             }" data-explorer-topic="${escapeAttr(item.id)}">
               <span class="event-explorer__item-label">${escapeHtml(item.label)}</span>
-              <span class="event-explorer__item-count">${count}</span>
+              <span class="event-explorer__item-count">${item.count}</span>
             </button>`;
           })
           .join("");

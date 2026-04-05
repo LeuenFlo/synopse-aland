@@ -93,9 +93,14 @@
     };
   }
 
+  function stripExplorerTopicNumber(label) {
+    return String(label || "").replace(/^\d+\.\s*/, "").trim();
+  }
+
   /* 365 Ereignisse im Explorer: genau nach der vorgegebenen 18-Abschnitts-Zuordnung. */
   const explorerTopicGroups = [
     {
+      id: "origin",
       label: "Vorbereitung und Herkunft Jesu",
       items: [
         createAlandTopicFromList("preface", "1. Vorspann", [1]),
@@ -109,6 +114,7 @@
       ],
     },
     {
+      id: "galilee",
       label: "Öffentliches Wirken in Galiläa",
       items: [
         createAlandTopicFromList(
@@ -135,6 +141,7 @@
       ],
     },
     {
+      id: "journey",
       label: "Weg nach Jerusalem",
       items: [
         createAlandTopicFromList(
@@ -165,6 +172,7 @@
       ],
     },
     {
+      id: "jerusalem",
       label: "Wirken in Jerusalem",
       items: [
         createAlandTopicFromList(
@@ -185,6 +193,7 @@
       ],
     },
     {
+      id: "passion",
       label: "Passion (Leiden und Tod)",
       items: [
         createAlandTopicFromList(
@@ -199,6 +208,7 @@
       ],
     },
     {
+      id: "resurrection",
       label: "Auferstehung und Erscheinungen",
       items: [
         createAlandTopicFromList(
@@ -212,7 +222,7 @@
   ];
   const explorerTopics = explorerTopicGroups.flatMap(function (group) {
     return group.items.map(function (item) {
-      return Object.assign({ groupLabel: group.label }, item);
+      return Object.assign({ groupId: group.id, groupLabel: group.label }, item);
     });
   });
   const explorerAssignedAlands = new Set();
@@ -240,8 +250,16 @@
       return [topic.id, topic];
     }),
   );
+  const explorerGroupById = new Map(
+    explorerTopicGroups.map(function (group) {
+      return [group.id, group];
+    }),
+  );
   let explorerActiveTopicId = "";
-  let lastFocusBeforeExplorer = null;
+  let explorerActiveGroupId = "";
+  let chapterPickerGroupId = "";
+  let chapterPickerReturnFocusEl = null;
+  let chapterPickerHideTimer = 0;
 
   function sgMatthew(r) {
     return r.in_matthew && !r.in_mark && !r.in_luke;
@@ -367,11 +385,19 @@
   const sectionListHeadingTitleEl = document.getElementById("section-list-heading-title");
   const sectionListHeadingClearEl = document.getElementById("section-list-heading-clear");
 
+  function hasOpenFilterPanel() {
+    let open = false;
+    document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
+      if (panel.open) open = true;
+    });
+    return open;
+  }
+
   function updateSectionListHeading() {
     if (!sectionListHeadingEl || !sectionListHeadingTitleEl) return;
     const explorerTopic = explorerTopicById.get(explorerActiveTopicId);
     if (explorerTopic) {
-      sectionListHeadingTitleEl.textContent = explorerTopic.groupLabel + " · " + explorerTopic.label;
+      sectionListHeadingTitleEl.textContent = stripExplorerTopicNumber(explorerTopic.label);
       sectionListHeadingEl.hidden = false;
       if (sectionListHeadingClearEl) {
         sectionListHeadingClearEl.hidden = false;
@@ -1229,72 +1255,56 @@
   }
 
   const explorerEl = document.getElementById("event-explorer");
-  const explorerBackdrop = document.getElementById("event-explorer-backdrop");
-  const explorerOpenBtn = document.getElementById("event-explorer-open");
-  const explorerCloseBtn = document.getElementById("event-explorer-close");
-  const explorerTopicBarEl = document.getElementById("event-explorer-topicbar");
-  const explorerMenuEl = document.getElementById("event-explorer-menu");
+  const explorerChapterEl = document.getElementById("event-explorer-chapters");
+  const chapterPickerEl = document.getElementById("chapter-picker");
+  const chapterPickerBackdrop = document.getElementById("chapter-picker-backdrop");
+  const chapterPickerCloseBtn = document.getElementById("chapter-picker-close");
+  const chapterPickerTitleEl = document.getElementById("chapter-picker-title");
+  const chapterPickerItemsEl = document.getElementById("chapter-picker-items");
 
   function renderExplorerMenu() {
-    if (!explorerMenuEl) return;
-    const visibleGroups = explorerTopicGroups
-      .map(function (group) {
-        const items = group.items
-          .map(function (item) {
-            return `<button type="button" class="event-explorer__item${
-              item.id === explorerActiveTopicId ? " is-active" : ""
-            }" data-explorer-topic="${escapeAttr(item.id)}">
-              <span class="event-explorer__item-label">${escapeHtml(item.label)}</span>
-              <span class="event-explorer__item-count">${item.count}</span>
-            </button>`;
-          })
-          .join("");
-        if (!items) return "";
-        return `<section class="event-explorer__group">
-          <details class="event-explorer__group-details"${
-            group.items.some(function (item) {
-              return item.id === explorerActiveTopicId;
-            })
-              ? " open"
-              : ""
-          }>
-            <summary class="event-explorer__group-summary">
-              <span class="event-explorer__group-title">${escapeHtml(group.label)}</span>
-            </summary>
-            <div class="event-explorer__group-content">
-              <div class="event-explorer__group-items">${items}</div>
-            </div>
-          </details>
-        </section>`;
+    if (explorerChapterEl) {
+      explorerChapterEl.innerHTML = explorerTopicGroups
+        .map(function (group) {
+          const groupCount = group.items.reduce(function (sum, item) {
+            return sum + item.count;
+          }, 0);
+          return `<button type="button" class="event-explorer__chapter${
+            group.id === explorerActiveGroupId ? " is-active" : ""
+          }" data-explorer-group="${escapeAttr(group.id)}" aria-pressed="${
+            group.id === explorerActiveGroupId ? "true" : "false"
+          }">
+            <span class="event-explorer__chapter-label">${escapeHtml(group.label)}</span>
+            <span class="event-explorer__chapter-count">${groupCount}</span>
+          </button>`;
+        })
+        .join("");
+    }
+    if (!chapterPickerTitleEl || !chapterPickerItemsEl) return;
+    const activeGroup = explorerGroupById.get(chapterPickerGroupId);
+    if (!activeGroup) {
+      chapterPickerTitleEl.textContent = "";
+      chapterPickerItemsEl.innerHTML = "";
+      return;
+    }
+    chapterPickerTitleEl.textContent = activeGroup.label;
+    chapterPickerItemsEl.innerHTML = activeGroup.items
+      .map(function (item) {
+        return `<button type="button" class="event-explorer__item${
+          item.id === explorerActiveTopicId ? " is-active" : ""
+        }" data-explorer-topic="${escapeAttr(item.id)}" aria-pressed="${
+          item.id === explorerActiveTopicId ? "true" : "false"
+        }">
+          <span class="event-explorer__item-label">${escapeHtml(stripExplorerTopicNumber(item.label))}</span>
+        </button>`;
       })
-      .filter(Boolean);
-    if (explorerTopicBarEl) {
-      explorerTopicBarEl.innerHTML = "";
-    }
-    explorerMenuEl.innerHTML = visibleGroups.join("");
-  }
-
-  function closeExplorer() {
-    if (!explorerEl) return;
-    explorerEl.classList.remove("is-open");
-    window.setTimeout(function () {
-      explorerEl.setAttribute("hidden", "");
-    }, 220);
-    unlockPageScroll();
-    if (lastFocusBeforeExplorer && typeof lastFocusBeforeExplorer.focus === "function") {
-      lastFocusBeforeExplorer.focus();
-    }
-    lastFocusBeforeExplorer = null;
-  }
-
-  function resetExplorerSelection() {
-    explorerActiveTopicId = "";
-    renderExplorerMenu();
-    filter();
+      .join("");
   }
 
   function clearExplorerSelectionWithoutFiltering() {
+    explorerActiveGroupId = "";
     explorerActiveTopicId = "";
+    chapterPickerGroupId = "";
     renderExplorerMenu();
   }
 
@@ -1309,13 +1319,64 @@
     });
   }
 
-  function openExplorer() {
+  function syncExplorerVisibility() {
     if (!explorerEl) return;
-    lastFocusBeforeExplorer = document.activeElement;
-    explorerEl.removeAttribute("hidden");
-    lockPageScroll();
-    explorerEl.classList.add("is-open");
+    const qEl = document.getElementById("q");
+    const hasQuery = Boolean((qEl && qEl.value ? qEl.value : "").trim());
+    const filterModeActive = hasOpenFilterPanel() || activePreset !== "all" || Boolean(activeSection);
+    const shouldShowExplorer = !hasQuery && !filterModeActive;
+    explorerEl.hidden = !shouldShowExplorer;
+    if (!shouldShowExplorer) {
+      closeChapterPicker({ restoreFocus: false });
+    }
+  }
+
+  function closeChapterPicker(options) {
+    const restoreFocus = !options || options.restoreFocus !== false;
+    if (!chapterPickerEl || chapterPickerEl.hidden) {
+      chapterPickerGroupId = "";
+      chapterPickerReturnFocusEl = null;
+      renderExplorerMenu();
+      return;
+    }
+    chapterPickerEl.classList.remove("is-open");
+    chapterPickerGroupId = "";
     renderExplorerMenu();
+    if (chapterPickerHideTimer) {
+      window.clearTimeout(chapterPickerHideTimer);
+    }
+    chapterPickerHideTimer = window.setTimeout(function () {
+      chapterPickerEl.setAttribute("hidden", "");
+      chapterPickerHideTimer = 0;
+    }, 180);
+    unlockPageScroll();
+    if (
+      restoreFocus &&
+      chapterPickerReturnFocusEl &&
+      typeof chapterPickerReturnFocusEl.focus === "function"
+    ) {
+      chapterPickerReturnFocusEl.focus();
+    }
+    chapterPickerReturnFocusEl = null;
+  }
+
+  function openChapterPicker(groupId, triggerEl) {
+    if (!chapterPickerEl || !groupId) return;
+    if (chapterPickerHideTimer) {
+      window.clearTimeout(chapterPickerHideTimer);
+      chapterPickerHideTimer = 0;
+    }
+    chapterPickerGroupId = groupId;
+    chapterPickerReturnFocusEl = triggerEl || document.activeElement;
+    renderExplorerMenu();
+    chapterPickerEl.removeAttribute("hidden");
+    lockPageScroll();
+    window.requestAnimationFrame(function () {
+      chapterPickerEl.classList.add("is-open");
+      window.setTimeout(function () {
+        if (chapterPickerCloseBtn) chapterPickerCloseBtn.focus();
+      }, 40);
+    });
   }
 
   function openCompareMainForRow(row) {
@@ -1337,6 +1398,7 @@
   }
 
   refreshTranslationUI();
+  renderExplorerMenu();
 
   const translationPickerCloseBtn = document.getElementById("translation-picker-close");
   if (translationPickerCloseBtn) {
@@ -1399,9 +1461,9 @@
       focusTranslationQuickControl();
       return;
     }
-    if (explorerEl && explorerEl.classList.contains("is-open")) {
+    if (chapterPickerEl && !chapterPickerEl.hidden) {
       e.preventDefault();
-      closeExplorer();
+      closeChapterPicker();
       return;
     }
     if (exampleLayer && !exampleLayer.hidden) {
@@ -1420,6 +1482,16 @@
   }
   if (compareModalCloseBtn) {
     compareModalCloseBtn.addEventListener("click", closeCompareModal);
+  }
+  if (chapterPickerBackdrop) {
+    chapterPickerBackdrop.addEventListener("click", function () {
+      closeChapterPicker();
+    });
+  }
+  if (chapterPickerCloseBtn) {
+    chapterPickerCloseBtn.addEventListener("click", function () {
+      closeChapterPicker();
+    });
   }
 
   document.getElementById("translation-info-dialog-close").addEventListener("click", function () {
@@ -1692,6 +1764,28 @@
     const q = (qEl && qEl.value ? qEl.value : "").trim().toLowerCase();
     const sec = activeSection;
     const explorerTopic = explorerTopicById.get(explorerActiveTopicId) || null;
+    const hasDefaultState = !q && !sec && !explorerTopic && activePreset === "all";
+    const filterModeActive = hasOpenFilterPanel();
+
+    syncExplorerVisibility();
+
+    updateSectionListHeading();
+
+    if (hasDefaultState) {
+      const countEl = document.getElementById("count");
+      if (countEl) {
+        countEl.textContent = filterModeActive
+          ? "Wähle oben einen Filter oder starte mit einer Suche."
+          : "Wähle oben ein Kapitel oder starte mit einer Suche.";
+      }
+      listEl.innerHTML = filterModeActive
+        ? '<div class="empty">Nutze oben die Filter oder suche direkt nach einem Ereignis.</div>'
+        : '<div class="empty">Nutze oben die Kapitel oder suche direkt nach einem Ereignis.</div>';
+      scrollListToFirst = false;
+      triggerListReveal();
+      syncListFabs();
+      return;
+    }
 
     const out = data.filter((r) => {
       if (!matchesPreset(r, activePreset)) return false;
@@ -1724,8 +1818,6 @@
         (activePreset !== "all" || explorerTopic ? " (Filter aktiv)" : "");
     }
     pulseCountLine();
-
-    updateSectionListHeading();
 
     if (!out.length) {
       listEl.innerHTML = '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
@@ -1788,32 +1880,27 @@
     });
   }
 
-  if (explorerOpenBtn) {
-    explorerOpenBtn.addEventListener("click", openExplorer);
-  }
-
-  if (explorerCloseBtn) {
-    explorerCloseBtn.addEventListener("click", function () {
-      resetExplorerSelection();
-      closeExplorer();
+  if (explorerChapterEl) {
+    explorerChapterEl.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-explorer-group]");
+      if (!btn) return;
+      const nextGroupId = btn.dataset.explorerGroup || "";
+      openChapterPicker(nextGroupId, btn);
     });
   }
 
-  if (explorerBackdrop) {
-    explorerBackdrop.addEventListener("click", function () {
-      resetExplorerSelection();
-      closeExplorer();
-    });
-  }
-
-  if (explorerMenuEl) {
-    explorerMenuEl.addEventListener("click", function (e) {
+  if (chapterPickerItemsEl) {
+    chapterPickerItemsEl.addEventListener("click", function (e) {
       const btn = e.target.closest("[data-explorer-topic]");
       if (!btn) return;
       clearStandardFiltersWithoutFiltering();
       explorerActiveTopicId = btn.dataset.explorerTopic || "";
+      const topic = explorerTopicById.get(explorerActiveTopicId);
+      explorerActiveGroupId = topic ? topic.groupId : "";
+      chapterPickerGroupId = explorerActiveGroupId;
+      renderExplorerMenu();
+      closeChapterPicker({ restoreFocus: false });
       filter();
-      closeExplorer();
       const heading = document.getElementById("section-list-heading");
       const firstRow = listEl ? listEl.querySelector(".row-wrap") : null;
       const scrollTarget = heading && !heading.hidden ? heading : firstRow;

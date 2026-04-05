@@ -60,15 +60,6 @@
                 autocomplete="off"
               />
             </div>
-            <button
-              type="button"
-              class="explorer-launch-btn"
-              id="event-explorer-open"
-              aria-haspopup="dialog"
-              aria-controls="event-explorer"
-            >
-              Explorer
-            </button>
             <details class="filter-acc-panel" name="filter-acc" data-filter-kind="presets">
               <summary
                 class="filter-acc-summary filter-acc-summary--toolbar"
@@ -92,10 +83,32 @@
       </div>
     </section>
 
+    <section class="event-explorer event-explorer--inline" id="event-explorer" aria-label="Kapitel-Navigation">
+      <div class="event-explorer__chapters" id="event-explorer-chapters"></div>
+    </section>
+
+    <div
+      class="chapter-picker"
+      id="chapter-picker"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="chapter-picker-title"
+    >
+      <div class="chapter-picker__backdrop" id="chapter-picker-backdrop" aria-hidden="true"></div>
+      <section class="chapter-picker__panel">
+        <button type="button" class="chapter-picker__close" id="chapter-picker-close" aria-label="Schliessen">
+          ×
+        </button>
+        <h2 class="chapter-picker__title" id="chapter-picker-title"></h2>
+        <div class="chapter-picker__items" id="chapter-picker-items"></div>
+      </section>
+    </div>
+
     <section class="list-section" aria-label="Perikopenliste">
       <div class="section-list-heading" id="section-list-heading" hidden>
         <h2 class="section-list-heading__title" id="section-list-heading-title"></h2>
-        <a href="liste.html" class="section-list-heading__all" id="section-list-heading-clear" hidden>Alle Ereignisse</a>
+        <a href="liste.html" class="section-list-heading__all" id="section-list-heading-clear" hidden>Zurücksetzen</a>
       </div>
       <div class="count" id="count"></div>
       <div class="list" id="list"></div>
@@ -120,35 +133,6 @@
         <path d="M18 15l-6-6-6 6" />
       </svg>
     </button>
-  </div>
-
-  <div
-    class="event-explorer"
-    id="event-explorer"
-    hidden
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="event-explorer-title"
-  >
-    <div class="event-explorer__backdrop" id="event-explorer-backdrop" aria-hidden="true"></div>
-    <section class="event-explorer__panel">
-      <div class="event-explorer__toolbar">
-        <div>
-          <p class="event-explorer__eyebrow">Ereignisse entdecken</p>
-          <h2 id="event-explorer-title" class="event-explorer__title">Explorer</h2>
-        </div>
-        <button type="button" class="event-explorer__close" id="event-explorer-close" aria-label="Explorer schliessen">
-          ×
-        </button>
-      </div>
-
-      <p class="event-explorer__hint">
-        Wähle direkt ein Unterkapitel. Die Treffer erscheinen anschliessend unten in der Listenansicht.
-      </p>
-
-      <div class="event-explorer__topicbar" id="event-explorer-topicbar"></div>
-      <div class="event-explorer__menu" id="event-explorer-menu"></div>
-    </section>
   </div>
 
   <div

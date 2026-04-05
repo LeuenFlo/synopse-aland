@@ -135,6 +135,8 @@
     </button>
   </div>
 
+  <div class="share-feedback" id="share-feedback" hidden role="status" aria-live="polite"></div>
+
   <div
     class="compare-modal"
     id="compare-modal"
@@ -153,20 +155,41 @@
         </div>
       </section>
       <div class="compare-modal-panel" id="compare-modal-panel">
-        <button
-          type="button"
-          class="compare-modal-favorite"
-          id="compare-modal-favorite"
-          aria-label="Zu Favoriten hinzufügen"
-          aria-pressed="false"
-          title="Zu Favoriten hinzufügen"
-          hidden
-        >
-          <span class="compare-modal-favorite__label" aria-hidden="true">Merken</span>
-        </button>
-        <button type="button" class="compare-modal-close" id="compare-modal-close" aria-label="Schliessen">
-          ×
-        </button>
+        <div class="compare-modal-actions" aria-label="Aktionen">
+          <button
+            type="button"
+            class="compare-modal-favorite"
+            id="compare-modal-favorite"
+            aria-label="Zu Favoriten hinzufügen"
+            aria-pressed="false"
+            title="Zu Favoriten hinzufügen"
+            hidden
+          >
+            <span class="compare-modal-favorite__icon" aria-hidden="true">
+              <svg class="compare-modal-favorite__svg" viewBox="0 0 24 24" focusable="false">
+                <path d="M6 4.75A1.75 1.75 0 0 1 7.75 3h8.5A1.75 1.75 0 0 1 18 4.75V21l-6-3.45L6 21V4.75Z"></path>
+              </svg>
+            </span>
+            <span class="compare-modal-favorite__label" aria-hidden="true">Merken</span>
+          </button>
+          <button
+            type="button"
+            class="compare-modal-share"
+            id="compare-modal-share"
+            aria-label="Perikope teilen"
+            title="Perikope teilen"
+            hidden
+          >
+            <span class="compare-modal-share__icon" aria-hidden="true">
+              <svg class="compare-modal-share__svg" viewBox="0 0 24 24" focusable="false">
+                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.4 2.4 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 15 5a3 3 0 0 0 .04.49L8.02 9.6a3 3 0 1 0 0 4.8l7.02 4.12A2.82 2.82 0 0 0 15 19a3 3 0 1 0 3-2.92Z"></path>
+              </svg>
+            </span>
+          </button>
+          <button type="button" class="compare-modal-close" id="compare-modal-close" aria-label="Schliessen">
+            ×
+          </button>
+        </div>
         <header class="compare-modal-header">
           <p class="compare-modal-aland" id="compare-modal-aland"></p>
           <h2 id="compare-modal-title"></h2>

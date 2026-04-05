@@ -70,6 +70,8 @@
 
   /** Aktiver Aland-Abschnitt (interner Schlüssel) — nur per \`?section=\` gesetzt, kein eigenes UI. */
   let activeSection = "";
+  let deepLinkedAlandNo = 0;
+  let pendingPericopeOpenAlandNo = 0;
   function createAlandTopic(id, label, startAland, endAland) {
     const alandNos = [];
     for (let no = startAland; no <= endAland; no += 1) {
@@ -368,6 +370,125 @@
     if (scrollBtn) scrollBtn.classList.toggle("visible", window.scrollY > 200);
   }
 
+  const shareFeedbackEl = document.getElementById("share-feedback");
+  let shareFeedbackHideTimer = 0;
+
+  function replaceCurrentQuery(mutator) {
+    try {
+      const url = new URL(window.location.href);
+      mutator(url.searchParams);
+      const nextSearch = url.searchParams.toString();
+      const nextUrl = url.pathname + (nextSearch ? "?" + nextSearch : "") + url.hash;
+      history.replaceState(null, "", nextUrl);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function clearPericopeParamFromUrl() {
+    replaceCurrentQuery(function (params) {
+      params.delete("p");
+    });
+  }
+
+  function clearPericopeDeepLinkWithoutFiltering() {
+    if (!deepLinkedAlandNo) return;
+    deepLinkedAlandNo = 0;
+    clearPericopeParamFromUrl();
+  }
+
+  function buildPericopeUrl(alandNo) {
+    try {
+      const url = new URL(window.location.href);
+      url.hash = "";
+      url.search = "";
+      url.searchParams.set("p", String(alandNo));
+      return url.toString();
+    } catch (e) {
+      return window.location.pathname + "?p=" + encodeURIComponent(String(alandNo));
+    }
+  }
+
+  function showShareFeedback(message) {
+    if (!shareFeedbackEl) return;
+    shareFeedbackEl.textContent = message;
+    shareFeedbackEl.hidden = false;
+    shareFeedbackEl.classList.remove("is-visible");
+    void shareFeedbackEl.offsetWidth;
+    shareFeedbackEl.classList.add("is-visible");
+    if (shareFeedbackHideTimer) {
+      window.clearTimeout(shareFeedbackHideTimer);
+    }
+    shareFeedbackHideTimer = window.setTimeout(function () {
+      shareFeedbackEl.classList.remove("is-visible");
+      window.setTimeout(function () {
+        shareFeedbackEl.hidden = true;
+      }, 220);
+      shareFeedbackHideTimer = 0;
+    }, 1800);
+  }
+
+  function copyTextToClipboard(text) {
+    if (
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function" &&
+      window.isSecureContext
+    ) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.top = "-9999px";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        const copied = document.execCommand("copy");
+        document.body.removeChild(textarea);
+        if (!copied) throw new Error("copy_failed");
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  async function sharePericopeRow(row) {
+    if (!row) return false;
+    const title = row.title_de || row.title || "Perikope";
+    const url = buildPericopeUrl(row.aland_no);
+    if (navigator.share) {
+      const variants = [
+        { url: url },
+        { title: title, url: url },
+        { title: title, text: title, url: url },
+      ];
+      try {
+        for (let i = 0; i < variants.length; i += 1) {
+          const shareData = variants[i];
+          if (navigator.canShare && !navigator.canShare(shareData)) continue;
+          await navigator.share(shareData);
+          showShareFeedback("Geteilt");
+          return true;
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") return false;
+      }
+    }
+    try {
+      await copyTextToClipboard(url);
+      showShareFeedback("Link kopiert");
+      return true;
+    } catch (e) {
+      showShareFeedback("Teilen nicht verfügbar");
+      return false;
+    }
+  }
+
   function renderFilterLanding() {
     return `<section class="start-state start-state--filter" aria-label="Filter-Hinweis">
       <p class="start-state__kicker">Filtermodus</p>
@@ -445,6 +566,7 @@
   document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
     panel.addEventListener("toggle", function () {
       if (panel.open) {
+        clearPericopeDeepLinkWithoutFiltering();
         clearExplorerSelectionWithoutFiltering();
         const qEl = document.getElementById("q");
         if (qEl) qEl.value = "";
@@ -1265,6 +1387,7 @@
 
   const compareModal = document.getElementById("compare-modal");
   const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
+  const compareModalShareBtn = document.getElementById("compare-modal-share");
   const compareModalFavoriteBtn = document.getElementById("compare-modal-favorite");
   const compareModalCloseBtn = document.getElementById("compare-modal-close");
   let compareModalRowId = null;
@@ -1294,6 +1417,7 @@
     const panel = document.getElementById("compare-modal-panel");
     if (panel) panel.classList.remove("is-greek-script");
     compareModal.classList.remove("is-open");
+    syncCompareModalShareButton(null);
     syncCompareModalFavoriteButton(null);
     compareModalRowId = null;
     translationSwapSeq += 1;
@@ -1331,6 +1455,7 @@
     if (alandEl) alandEl.textContent = "Aland " + row.aland_no;
     if (titleEl) titleEl.textContent = row.title_de || row.title;
     if (secEl) secEl.textContent = row.section_de || row.section || "";
+    syncCompareModalShareButton(row);
     syncCompareModalFavoriteButton(row);
 
     const grid = document.getElementById("compare-modal-grid");
@@ -1370,6 +1495,22 @@
     compareModalFavoriteBtn.setAttribute("aria-label", active ? "Gemerkt" : "Merken");
     compareModalFavoriteBtn.title = active ? "Gemerkt" : "Merken";
     if (labelEl) labelEl.textContent = active ? "Gemerkt" : "Merken";
+  }
+
+  function syncCompareModalShareButton(row) {
+    if (!compareModalShareBtn) return;
+    if (!row) {
+      compareModalShareBtn.hidden = true;
+      compareModalShareBtn.removeAttribute("data-share-aland");
+      return;
+    }
+    compareModalShareBtn.hidden = false;
+    compareModalShareBtn.setAttribute("data-share-aland", String(row.aland_no));
+    compareModalShareBtn.setAttribute(
+      "aria-label",
+      "Perikope teilen: " + (row.title_de || row.title || "Perikope"),
+    );
+    compareModalShareBtn.title = "Perikope teilen";
   }
 
   const explorerEl = document.getElementById("event-explorer");
@@ -1598,6 +1739,16 @@
 
   if (compareModalBackdrop) {
     compareModalBackdrop.addEventListener("click", closeCompareModal);
+  }
+  if (compareModalShareBtn) {
+    compareModalShareBtn.addEventListener("click", function () {
+      if (compareModalRowId === null) return;
+      const row = data.find(function (entry) {
+        return entry.row_id === compareModalRowId;
+      });
+      if (!row) return;
+      sharePericopeRow(row);
+    });
   }
   if (compareModalFavoriteBtn) {
     compareModalFavoriteBtn.addEventListener("click", function () {
@@ -1870,7 +2021,7 @@
   function renderRow(r) {
     const title = escapeHtml(r.title_de || r.title);
     return `
-      <section class="row-wrap" data-row-id="${r.row_id}">
+      <section class="row-wrap" data-row-id="${r.row_id}" data-aland-no="${r.aland_no}">
         <div class="row row-head" tabindex="0" role="button" aria-label="Versvergleich in Fenster öffnen">
           <div class="row-main">
             <h2>${title}</h2>
@@ -1904,16 +2055,21 @@
     if (hasDefaultState) {
       const favoriteRows = getFavoriteRows();
       const starterRows = getStarterRows();
+      const deepLinkedRow = deepLinkedAlandNo ? rowByAlandNo.get(deepLinkedAlandNo) || null : null;
       const countEl = document.getElementById("count");
       if (countEl) {
         countEl.textContent = filterModeActive
           ? "Filter oder Suche wählen"
-          : favoriteRows.length
+          : deepLinkedRow
+            ? "Geteilte Perikope"
+            : favoriteRows.length
             ? "Deine Merkliste"
             : "";
       }
       if (filterModeActive) {
         listEl.innerHTML = renderFilterLanding();
+      } else if (deepLinkedRow) {
+        listEl.innerHTML = renderRow(deepLinkedRow);
       } else if (favoriteRows.length) {
         listEl.innerHTML = favoriteRows.map(renderRow).join("");
       } else {
@@ -2003,10 +2159,12 @@
   const qInput = document.getElementById("q");
   if (qInput) {
     qInput.addEventListener("input", function () {
+      clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
       filter();
     });
     qInput.addEventListener("focus", function () {
+      clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
       activePreset = "all";
       syncPresetButtonActiveState();
@@ -2022,6 +2180,7 @@
     explorerChapterEl.addEventListener("click", function (e) {
       const btn = e.target.closest("[data-explorer-group]");
       if (!btn) return;
+      clearPericopeDeepLinkWithoutFiltering();
       const nextGroupId = btn.dataset.explorerGroup || "";
       openChapterPicker(nextGroupId, btn);
     });
@@ -2031,6 +2190,7 @@
     chapterPickerItemsEl.addEventListener("click", function (e) {
       const btn = e.target.closest("[data-explorer-topic]");
       if (!btn) return;
+      clearPericopeDeepLinkWithoutFiltering();
       clearStandardFiltersWithoutFiltering();
       explorerActiveTopicId = btn.dataset.explorerTopic || "";
       const topic = explorerTopicById.get(explorerActiveTopicId);
@@ -2054,6 +2214,7 @@
     presetEl.addEventListener("click", (e) => {
       const b = e.target.closest("button[data-preset]");
       if (!b) return;
+      clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
       activePreset = b.dataset.preset;
       syncPresetButtonActiveState();
@@ -2065,17 +2226,40 @@
   if (listEl) {
     try {
       const params = new URLSearchParams(window.location.search);
-      const secFromUrl = params.get("section");
-      if (secFromUrl && sectionsOrdered.includes(secFromUrl)) {
-        activeSection = secFromUrl;
-        activePreset = "all";
-        syncPresetButtonActiveState();
-        scrollListToFirst = true;
+      let handledPericope = false;
+      const rawPericope = params.get("p");
+      if (rawPericope != null && rawPericope !== "") {
+        const pericopeNo = parseInt(rawPericope, 10);
+        if (!Number.isNaN(pericopeNo) && rowByAlandNo.has(pericopeNo)) {
+          deepLinkedAlandNo = pericopeNo;
+          pendingPericopeOpenAlandNo = pericopeNo;
+          activePreset = "all";
+          syncPresetButtonActiveState();
+          handledPericope = true;
+        }
+      }
+      if (!handledPericope) {
+        const secFromUrl = params.get("section");
+        if (secFromUrl && sectionsOrdered.includes(secFromUrl)) {
+          activeSection = secFromUrl;
+          activePreset = "all";
+          syncPresetButtonActiveState();
+          scrollListToFirst = true;
+        }
       }
     } catch (e) {
       /* ignore */
     }
     filter();
+    if (pendingPericopeOpenAlandNo) {
+      window.requestAnimationFrame(function () {
+        const wrap = listEl.querySelector(
+          '.row-wrap[data-aland-no="' + pendingPericopeOpenAlandNo + '"]',
+        );
+        if (wrap) openCompareModal(wrap);
+        pendingPericopeOpenAlandNo = 0;
+      });
+    }
   }
 
   if (listEl) {

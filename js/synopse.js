@@ -62,6 +62,11 @@
       sectionsOrdered.push(s);
     }
   }
+  const rowByAlandNo = new Map(
+    data.map(function (row) {
+      return [row.aland_no, row];
+    }),
+  );
 
   /** Aktiver Aland-Abschnitt (interner Schlüssel) — nur per \`?section=\` gesetzt, kein eigenes UI. */
   let activeSection = "";
@@ -361,6 +366,21 @@
   function syncListFabs() {
     const scrollBtn = document.getElementById("scroll-top-fab");
     if (scrollBtn) scrollBtn.classList.toggle("visible", window.scrollY > 200);
+  }
+
+  function renderFilterLanding() {
+    return `<section class="start-state start-state--filter" aria-label="Filter-Hinweis">
+      <p class="start-state__kicker">Filtermodus</p>
+      <h2 class="start-state__title">Wähle oben einen Filter</h2>
+      <p class="start-state__text">Sobald du einen Filter setzt, erscheinen hier die passenden Ereignisse. Du kannst auch direkt nach einem Ereignistitel suchen.</p>
+    </section>`;
+  }
+
+  function renderStarterLanding() {
+    return `<section class="start-state" aria-label="Einstieg in die Perikopen">
+      <h2 class="start-state__title">Perikopen, die dich interessieren könnten</h2>
+      <p class="start-state__text">Beim Lesen kannst du Perikopen für später merken. Bis dahin findest du unten ein paar gute Einstiege, mit denen du die Synopse direkt ausprobieren kannst.</p>
+    </section>`;
   }
 
   function presetButtonHtml(p) {
@@ -700,8 +720,11 @@
   const PINNED_QUICK_STORAGE_KEY = "synopse-pinned-quick-translations";
   const PINNED_QUICK_LEGACY_KEY = "synopse-pinned-quick-translation";
   const MAX_PINNED_QUICK_TRANSLATIONS = 2;
+  const FAVORITE_ALANDS_STORAGE_KEY = "synopse-favorite-alands";
+  const DEFAULT_STARTER_ALANDS = [18, 269, 352];
 
   let pinnedQuickTranslationIds = [];
+  let favoriteAlandNos = [];
 
   function sanitizePinnedQuickIds(arr) {
     const seen = Object.create(null);
@@ -767,7 +790,78 @@
     }
   }
 
+  function sanitizeFavoriteAlandNos(arr) {
+    const seen = Object.create(null);
+    const out = [];
+    (arr || []).forEach(function (value) {
+      const no = parseInt(value, 10);
+      if (Number.isNaN(no) || seen[no] || !rowByAlandNo.has(no)) return;
+      seen[no] = true;
+      out.push(no);
+    });
+    return out;
+  }
+
+  function loadFavoriteAlands() {
+    try {
+      const raw = localStorage.getItem(FAVORITE_ALANDS_STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        favoriteAlandNos = sanitizeFavoriteAlandNos(parsed);
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function persistFavoriteAlands() {
+    try {
+      localStorage.setItem(FAVORITE_ALANDS_STORAGE_KEY, JSON.stringify(favoriteAlandNos));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function isFavoriteAlandNo(alandNo) {
+    return favoriteAlandNos.indexOf(alandNo) !== -1;
+  }
+
+  function toggleFavoriteAlandNo(alandNo) {
+    if (!rowByAlandNo.has(alandNo)) return false;
+    if (isFavoriteAlandNo(alandNo)) {
+      favoriteAlandNos = favoriteAlandNos.filter(function (no) {
+        return no !== alandNo;
+      });
+    } else {
+      favoriteAlandNos = [alandNo].concat(
+        favoriteAlandNos.filter(function (no) {
+          return no !== alandNo;
+        }),
+      );
+    }
+    persistFavoriteAlands();
+    return isFavoriteAlandNo(alandNo);
+  }
+
+  function getFavoriteRows() {
+    return favoriteAlandNos
+      .map(function (no) {
+        return rowByAlandNo.get(no) || null;
+      })
+      .filter(Boolean);
+  }
+
+  function getStarterRows() {
+    return DEFAULT_STARTER_ALANDS
+      .map(function (no) {
+        return rowByAlandNo.get(no) || null;
+      })
+      .filter(Boolean);
+  }
+
   loadPinnedQuickTranslations();
+  loadFavoriteAlands();
   try {
     if (localStorage.getItem(PINNED_QUICK_LEGACY_KEY) && pinnedQuickTranslationIds.length) {
       persistPinnedQuickTranslations();
@@ -1171,6 +1265,7 @@
 
   const compareModal = document.getElementById("compare-modal");
   const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
+  const compareModalFavoriteBtn = document.getElementById("compare-modal-favorite");
   const compareModalCloseBtn = document.getElementById("compare-modal-close");
   let compareModalRowId = null;
   let compareMainRowId = null;
@@ -1199,6 +1294,7 @@
     const panel = document.getElementById("compare-modal-panel");
     if (panel) panel.classList.remove("is-greek-script");
     compareModal.classList.remove("is-open");
+    syncCompareModalFavoriteButton(null);
     compareModalRowId = null;
     translationSwapSeq += 1;
     const grid = document.getElementById("compare-modal-grid");
@@ -1235,6 +1331,7 @@
     if (alandEl) alandEl.textContent = "Aland " + row.aland_no;
     if (titleEl) titleEl.textContent = row.title_de || row.title;
     if (secEl) secEl.textContent = row.section_de || row.section || "";
+    syncCompareModalFavoriteButton(row);
 
     const grid = document.getElementById("compare-modal-grid");
     if (!grid) return;
@@ -1252,6 +1349,27 @@
         compareModalCloseBtn.focus();
       }, 50);
     }
+  }
+
+  function syncCompareModalFavoriteButton(row) {
+    if (!compareModalFavoriteBtn) return;
+    const labelEl = compareModalFavoriteBtn.querySelector(".compare-modal-favorite__label");
+    if (!row) {
+      compareModalFavoriteBtn.hidden = true;
+      compareModalFavoriteBtn.classList.remove("is-active");
+      compareModalFavoriteBtn.setAttribute("aria-pressed", "false");
+      compareModalFavoriteBtn.setAttribute("aria-label", "Merken");
+      compareModalFavoriteBtn.title = "Merken";
+      if (labelEl) labelEl.textContent = "Merken";
+      return;
+    }
+    const active = isFavoriteAlandNo(row.aland_no);
+    compareModalFavoriteBtn.hidden = false;
+    compareModalFavoriteBtn.classList.toggle("is-active", active);
+    compareModalFavoriteBtn.setAttribute("aria-pressed", active ? "true" : "false");
+    compareModalFavoriteBtn.setAttribute("aria-label", active ? "Gemerkt" : "Merken");
+    compareModalFavoriteBtn.title = active ? "Gemerkt" : "Merken";
+    if (labelEl) labelEl.textContent = active ? "Gemerkt" : "Merken";
   }
 
   const explorerEl = document.getElementById("event-explorer");
@@ -1296,6 +1414,7 @@
           item.id === explorerActiveTopicId ? "true" : "false"
         }">
           <span class="event-explorer__item-label">${escapeHtml(stripExplorerTopicNumber(item.label))}</span>
+          <span class="event-explorer__item-count">${item.count}</span>
         </button>`;
       })
       .join("");
@@ -1479,6 +1598,18 @@
 
   if (compareModalBackdrop) {
     compareModalBackdrop.addEventListener("click", closeCompareModal);
+  }
+  if (compareModalFavoriteBtn) {
+    compareModalFavoriteBtn.addEventListener("click", function () {
+      if (compareModalRowId === null) return;
+      const row = data.find(function (entry) {
+        return entry.row_id === compareModalRowId;
+      });
+      if (!row) return;
+      toggleFavoriteAlandNo(row.aland_no);
+      syncCompareModalFavoriteButton(row);
+      if (listEl) filter();
+    });
   }
   if (compareModalCloseBtn) {
     compareModalCloseBtn.addEventListener("click", closeCompareModal);
@@ -1771,15 +1902,23 @@
     updateSectionListHeading();
 
     if (hasDefaultState) {
+      const favoriteRows = getFavoriteRows();
+      const starterRows = getStarterRows();
       const countEl = document.getElementById("count");
       if (countEl) {
         countEl.textContent = filterModeActive
-          ? "Wähle oben einen Filter oder starte mit einer Suche."
-          : "Wähle oben ein Kapitel oder starte mit einer Suche.";
+          ? "Filter oder Suche wählen"
+          : favoriteRows.length
+            ? "Deine Merkliste"
+            : "";
       }
-      listEl.innerHTML = filterModeActive
-        ? '<div class="empty">Nutze oben die Filter oder suche direkt nach einem Ereignis.</div>'
-        : '<div class="empty">Nutze oben die Kapitel oder suche direkt nach einem Ereignis.</div>';
+      if (filterModeActive) {
+        listEl.innerHTML = renderFilterLanding();
+      } else if (favoriteRows.length) {
+        listEl.innerHTML = favoriteRows.map(renderRow).join("");
+      } else {
+        listEl.innerHTML = renderStarterLanding() + starterRows.map(renderRow).join("");
+      }
       scrollListToFirst = false;
       triggerListReveal();
       syncListFabs();

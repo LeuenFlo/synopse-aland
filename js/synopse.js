@@ -81,64 +81,132 @@
     };
   }
 
-  /* 365 Ereignisse im Explorer: ohne 1 (Prolog) und 361 (Paulus über die Erscheinungen Jesu). */
+  function createAlandTopicFromList(id, label, alandNos) {
+    const alandSet = new Set(alandNos);
+    return {
+      id: id,
+      label: label,
+      count: alandNos.length,
+      matcher: function (row) {
+        return alandSet.has(row.aland_no);
+      },
+    };
+  }
+
+  /* 365 Ereignisse im Explorer: genau nach der vorgegebenen 18-Abschnitts-Zuordnung. */
   const explorerTopicGroups = [
     {
-      label: "1. Vorbereitung und Herkunft Jesu",
+      label: "Vorbereitung und Herkunft Jesu",
       items: [
-        createAlandTopic("birth-childhood", "1.1 Geburt und Kindheit", 2, 12),
-        createAlandTopic("john-baptist", "1.2 Johannes der Täufer", 13, 17),
-        createAlandTopic("baptism-temptation", "1.3 Taufe und Versuchung", 18, 20),
-        createAlandTopic("first-encounters", "1.4 Erste Begegnungen und Zeichen", 21, 31),
+        createAlandTopicFromList("preface", "1. Vorspann", [1]),
+        createAlandTopicFromList("birth-childhood", "2. Geburt und Kindheit", [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+        createAlandTopicFromList("preparation", "3. Vorbereitung", [13, 14, 15, 16, 17, 18, 19, 20]),
+        createAlandTopicFromList(
+          "john-public-beginning",
+          "4. Beginn des öffentlichen Wirkens Jesu (nach Johannes)",
+          [21, 22, 23, 24, 25, 26, 27, 28, 29],
+        ),
       ],
     },
     {
-      label: "2. Öffentliches Wirken in Galiläa",
+      label: "Öffentliches Wirken in Galiläa",
       items: [
-        createAlandTopic("galilee-beginning", "2.1 Beginn in Galiläa", 32, 49),
-        createAlandTopic("sermon-on-mount", "2.2 Bergpredigt", 50, 76),
-        createAlandTopic("sermon-on-plain", "2.3 Rede in der Ebene", 77, 83),
-        createAlandTopic("healings-and-mission", "2.4 Heilungen und Jüngersendung", 84, 121),
-        createAlandTopic("parables", "2.5 Gleichnisreden", 122, 135),
-        createAlandTopic("signs-and-revelation", "2.6 Zeichen und Offenbarungen", 136, 157),
+        createAlandTopicFromList(
+          "galilee-ministry",
+          "5. Wirken Jesu in Galiläa",
+          [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+        ),
+        createAlandTopicFromList(
+          "sermon-on-mount",
+          "6. Bergpredigt (nach Matthäus)",
+          [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76],
+        ),
+        createAlandTopicFromList("sermon-on-plain", "7. Rede in der Ebene (nach Lukas)", [77, 78, 79, 80, 81, 82, 83]),
+        createAlandTopicFromList(
+          "galilee-continued",
+          "8. Wirken Jesu in Galiläa (Fortsetzung)",
+          [
+            84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107,
+            108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128,
+            129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149,
+            150, 151, 152, 153, 154, 155, 156,
+          ],
+        ),
       ],
     },
     {
-      label: "3. Weg nach Jerusalem",
+      label: "Weg nach Jerusalem",
       items: [
-        createAlandTopic("confession-transfiguration", "3.1 Bekenntnis, Verklärung, Nachfolge", 158, 173),
-        createAlandTopic("departure-journey", "3.2 Aufbruch nach Jerusalem", 174, 181),
-        createAlandTopic("journey-discourses", "3.3 Lehrreden und Gleichnisse auf dem Weg", 182, 237),
-        createAlandTopic("tabernacles", "3.4 Laubhüttenfest und Tempelreden", 238, 250),
-        createAlandTopic("judea-peraea", "3.5 Wirken in Judäa und jenseits des Jordan", 251, 261),
-        createAlandTopic("passion-jericho", "3.6 Leidensankündigung und Jericho", 262, 266),
+        createAlandTopicFromList(
+          "way-to-cross",
+          "9. Der Weg zum Kreuz",
+          [157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173],
+        ),
+        createAlandTopicFromList(
+          "last-journey-luke",
+          "10. Letzte Reise nach Jerusalem (nach Lukas)",
+          [
+            174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194,
+            195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215,
+            216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236,
+            237,
+          ],
+        ),
+        createAlandTopicFromList(
+          "tabernacles-john",
+          "11. Jesus beim Laubhüttenfest (nach Johannes)",
+          [238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250],
+        ),
+        createAlandTopicFromList(
+          "judea-ministry",
+          "12. Wirken in Judäa",
+          [251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268],
+        ),
       ],
     },
     {
-      label: "4. Wirken in Jerusalem",
+      label: "Wirken in Jerusalem",
       items: [
-        createAlandTopic("entry-temple", "4.1 Einzug und Tempel", 267, 276),
-        createAlandTopic("temple-disputes", "4.2 Streitgespräche im Tempel", 277, 286),
-        createAlandTopic("eschatological-discourses", "4.3 Endzeitreden", 287, 300),
-        createAlandTopic("last-days-before-passion", "4.4 Letzte Tage vor der Passion", 301, 307),
+        createAlandTopicFromList(
+          "final-ministry-jerusalem",
+          "13. Letztes Wirken in Jerusalem",
+          [269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286],
+        ),
+        createAlandTopicFromList(
+          "olivet-discourse",
+          "14. Rede vom Ende (Ölbergrede)",
+          [287, 288, 289, 290, 291, 292, 293, 294, 295],
+        ),
+        createAlandTopicFromList(
+          "before-passion-conclusion",
+          "15. Schluss des Berichts vor der Passion",
+          [296, 297, 298, 299, 300, 301, 302, 303, 304],
+        ),
       ],
     },
     {
-      label: "5. Passion (Leiden und Tod)",
+      label: "Passion (Leiden und Tod)",
       items: [
-        createAlandTopic("supper-farewell", "5.1 Abendmahl und Abschiedsreden", 308, 329),
-        createAlandTopic("gethsemane-sanhedrin", "5.2 Getsemane und jüdisches Verhör", 330, 333),
-        createAlandTopic("pilate-herod", "5.3 Prozesse vor Pilatus und Herodes", 334, 341),
-        createAlandTopic("crucifixion-death", "5.4 Kreuzigung und Tod", 342, 349),
-        createAlandTopic("burial-watch", "5.5 Grablegung und Grabwache", 350, 351),
+        createAlandTopicFromList(
+          "passion-narrative",
+          "16. Passionsgeschichte",
+          [
+            305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325,
+            326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346,
+            347, 348, 349, 350, 351,
+          ],
+        ),
       ],
     },
     {
-      label: "6. Auferstehung und Erscheinungen",
+      label: "Auferstehung und Erscheinungen",
       items: [
-        createAlandTopic("empty-tomb", "6.1 Leeres Grab", 352, 354),
-        createAlandTopic("appearances", "6.2 Erscheinungen des Auferstandenen", 355, 360),
-        createAlandTopic("commission-endings", "6.3 Sendung und Evangelienausgänge", 362, 367),
+        createAlandTopicFromList(
+          "resurrection",
+          "17. Auferstehung",
+          [352, 353, 354, 355, 356, 357, 358, 359, 360],
+        ),
+        createAlandTopicFromList("gospel-endings", "18. Evangelienausgänge", [363, 364, 365, 366, 367]),
       ],
     },
   ];
@@ -159,8 +227,8 @@
   if (
     explorerAssignedAlands.size !== 365 ||
     explorerAssignedCount !== 365 ||
-    explorerAssignedAlands.has(1) ||
-    explorerAssignedAlands.has(361)
+    explorerAssignedAlands.has(361) ||
+    explorerAssignedAlands.has(362)
   ) {
     console.warn("Explorer-Zuordnung unerwartet:", {
       uniqueAssigned: explorerAssignedAlands.size,

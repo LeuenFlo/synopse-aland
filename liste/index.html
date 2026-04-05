@@ -15,6 +15,13 @@
       } catch (e) {
         document.documentElement.setAttribute("data-theme", "light");
       }
+      try {
+        if (window.location.pathname === "/liste/") {
+          history.replaceState(null, "", "/liste" + window.location.search + window.location.hash);
+        }
+      } catch (e) {
+        /* ignore */
+      }
     })();
   </script>
   <meta name="color-scheme" content="light dark" />
@@ -31,7 +38,7 @@
     property="og:description"
     content="Perikopen der vier Evangelien suchen, parallel lesen, merken und als Link teilen."
   />
-  <meta property="og:url" content="https://synopse.ch/liste.html" />
+  <meta property="og:url" content="https://synopse.ch/liste" />
   <meta property="og:image" content="https://synopse.ch/og-default.svg" />
   <meta property="og:image:type" content="image/svg+xml" />
   <meta property="og:image:width" content="1200" />
@@ -43,7 +50,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/synopse.css" />
+  <link rel="stylesheet" href="/css/synopse.css" />
 </head>
 <body class="liste-page">
   <div class="wrap liste-page-wrap">
@@ -128,7 +135,7 @@
     <section class="list-section" aria-label="Perikopenliste">
       <div class="section-list-heading" id="section-list-heading" hidden>
         <h2 class="section-list-heading__title" id="section-list-heading-title"></h2>
-        <a href="liste.html" class="section-list-heading__all" id="section-list-heading-clear" hidden>Zurücksetzen</a>
+        <a href="/liste" class="section-list-heading__all" id="section-list-heading-clear" hidden>Zurücksetzen</a>
       </div>
       <div class="count" id="count"></div>
       <div class="list" id="list"></div>
@@ -138,7 +145,7 @@
       <p>
         <a href="/">Zur Startseite</a>
         ·
-        <a href="quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
+        <a href="/quellen-und-lizenzen.html">Quellen &amp; Lizenzen</a>
       </p>
       <p>
         Die Tabelle folgt der <strong>Synopsis Quattuor Evangeliorum</strong> (Kurt Aland). Die zugrunde liegende Parallelliste stammt von
@@ -249,10 +256,9 @@
     </div>
   </dialog>
 
-  <script src="js/theme.js" defer></script>
-  <script src="data/parallels_data.js"></script>
-  <script src="data/elberfelder_data.js"></script>
-  <script src="compare_text.js"></script>
-  <script src="js/synopse.js"></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/data/parallels_data.js"></script>
+  <script src="/compare_text.js"></script>
+  <script src="/js/synopse.js"></script>
 </body>
 </html>

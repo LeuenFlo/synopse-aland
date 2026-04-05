@@ -1738,12 +1738,11 @@
 
   function renderRow(r) {
     const title = escapeHtml(r.title_de || r.title);
-    const titleWithNumber = `${r.aland_no}. ${title}`;
     return `
       <section class="row-wrap" data-row-id="${r.row_id}">
         <div class="row row-head" tabindex="0" role="button" aria-label="Versvergleich in Fenster öffnen">
           <div class="row-main">
-            <h2>${titleWithNumber}</h2>
+            <h2>${title}</h2>
           </div>
           <div class="row-actions">
             <div class="gospels">

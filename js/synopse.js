@@ -1110,17 +1110,12 @@
     lastFocusBeforeModal = null;
   }
 
-  function openCompareModal(wrap) {
-    if (!compareModal) return;
-    const id = +wrap.dataset.rowId;
-    const row = data.find(function (x) {
-      return x.row_id === id;
-    });
-    if (!row) return;
-
-    translationSwapSeq += 1;
+  function openCompareModalForRow(row, focusSourceEl) {
+    if (!compareModal || !row) return;
+    const id = row.row_id;
     compareModalRowId = id;
-    lastFocusBeforeModal = document.activeElement;
+    lastFocusBeforeModal = focusSourceEl || document.activeElement;
+    translationSwapSeq += 1;
 
     const alandEl = document.getElementById("compare-modal-aland");
     const titleEl = document.getElementById("compare-modal-title");
@@ -1150,6 +1145,16 @@
         compareModalCloseBtn.focus();
       }, 50);
     }
+  }
+
+  function openCompareModal(wrap) {
+    if (!compareModal || !wrap) return;
+    const id = +wrap.dataset.rowId;
+    const row = data.find(function (x) {
+      return x.row_id === id;
+    });
+    if (!row) return;
+    openCompareModalForRow(row, wrap);
   }
 
   function syncCompareModalFavoriteButton(row) {
@@ -1734,21 +1739,16 @@
     if (hasDefaultState) {
       const favoriteRows = getFavoriteRows();
       const starterRows = getStarterRows();
-      const deepLinkedRow = deepLinkedAlandNo ? rowByAlandNo.get(deepLinkedAlandNo) || null : null;
       const countEl = document.getElementById("count");
       if (countEl) {
         countEl.textContent = filterModeActive
           ? "Filter oder Suche wählen"
-          : deepLinkedRow
-            ? "Geteiltes Ereignis"
-            : favoriteRows.length
+          : favoriteRows.length
             ? "Deine Merkliste"
             : "";
       }
       if (filterModeActive) {
         listEl.innerHTML = renderFilterLanding();
-      } else if (deepLinkedRow) {
-        listEl.innerHTML = renderRow(deepLinkedRow);
       } else if (favoriteRows.length) {
         listEl.innerHTML = favoriteRows.map(renderRow).join("");
       } else {
@@ -1932,10 +1932,8 @@
     filter();
     if (pendingPericopeOpenAlandNo) {
       window.requestAnimationFrame(function () {
-        const wrap = listEl.querySelector(
-          '.row-wrap[data-aland-no="' + pendingPericopeOpenAlandNo + '"]',
-        );
-        if (wrap) openCompareModal(wrap);
+        const row = rowByAlandNo.get(pendingPericopeOpenAlandNo) || null;
+        if (row) openCompareModalForRow(row, null);
         pendingPericopeOpenAlandNo = 0;
       });
     }

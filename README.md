@@ -6,10 +6,10 @@ Statische Website zum parallelen Lesen und Vergleichen von Ereignissen aus Matth
 
 - `index.html`: Startseite mit Einführung und Beispielansicht
 - `liste/index.html`: Suche, Filter, Kapitelwahl und Detailansicht der Ereignisse
-- `quellen-und-lizenzen.html`: Hinweise zu Datengrundlagen, Texten und Lizenzen
+- `sources/index.html`: Hinweise zu Datengrundlagen, Texten und Lizenzen
 - `js/synopse.js`: Hauptlogik für Suche, Filter, Favoriten, Sharing und Vergleichsansicht
 - `js/synopse.config.js`: zentrale Konfiguration für Kapitelstruktur, Filtergruppen und Übersetzungen
-- `compare_text.js`: Auflösung der Stellenangaben und Aufbau der Vergleichstexte
+- `js/compare_text.js`: Auflösung der Stellenangaben und Aufbau der Vergleichstexte
 - `css/synopse.css`: zentrales Styling für alle Seiten
 - `data/parallels_data.js`: Laufzeitdaten der Synopse für die Website
 

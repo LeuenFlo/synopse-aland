@@ -262,7 +262,7 @@ header p.lead {
   z-index: 5;
   display: flex;
   flex-wrap: nowrap;
-  align-items: stretch;
+  align-items: flex-start;
   gap: var(--filter-gap);
   margin-bottom: var(--filter-gap);
   padding-bottom: 0;
@@ -300,6 +300,60 @@ header p.lead {
   line-height: 1.35;
 }
 
+.search-assist {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.1rem;
+  padding: 0.35rem 0 0;
+}
+
+.search-assist[hidden] {
+  display: none;
+}
+
+.search-assist__list,
+.search-assist__chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.search-assist__heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.search-assist__book,
+.search-assist__chapter {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--paper);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.6rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.search-assist__book:hover,
+.search-assist__chapter:hover,
+.search-assist__chapter.is-active {
+  border-color: var(--accent-mid);
+  background: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  color: var(--accent);
+}
+
+.search-assist__book:focus-visible,
+.search-assist__chapter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .filter-acc-panel {
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -308,16 +362,17 @@ header p.lead {
   flex: 0 0 auto;
   width: fit-content;
   max-width: 100%;
-  align-self: center;
+  align-self: flex-start;
 }
 
 .filter-acc-panel[data-filter-kind="presets"] {
   order: 1;
+  min-height: 3rem;
 }
 
 .filter-acc-panel[open] {
   overflow: visible;
-  align-self: center;
+  align-self: flex-start;
 }
 
 .filter-acc-summary {
@@ -342,6 +397,7 @@ header p.lead {
   align-items: center;
   gap: var(--filter-gap);
   padding: 0 !important;
+  min-height: 3rem;
   font-size: 0.8rem;
   font-weight: 600;
   width: auto;
@@ -3700,6 +3756,25 @@ html[data-theme="dark"] .chapter-picker__close:focus-visible {
   border-color: #5b4333;
   background: #201c19;
   color: #e0b28f;
+}
+
+html[data-theme="dark"] .search-assist__heading {
+  color: #a7a7a7;
+}
+
+html[data-theme="dark"] .search-assist__book,
+html[data-theme="dark"] .search-assist__chapter {
+  border-color: #303030;
+  background: #191919;
+  color: #f2f0ee;
+}
+
+html[data-theme="dark"] .search-assist__book:hover,
+html[data-theme="dark"] .search-assist__chapter:hover,
+html[data-theme="dark"] .search-assist__chapter.is-active {
+  border-color: #5b4333;
+  background: #201c19;
+  color: #ebb88f;
 }
 
 @media (max-width: 980px) {

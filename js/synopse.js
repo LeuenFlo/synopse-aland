@@ -72,6 +72,32 @@
   let activeSection = "";
   let deepLinkedAlandNo = 0;
   let pendingPericopeOpenAlandNo = 0;
+  let activeSearchChapterQuery = null;
+  function normalizeSearchToken(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/ß/g, "ss")
+      .trim();
+  }
+  const verseSearchBooks = {
+    matthew: { label: "Matthäus", refKey: "ref_matthew", maxChapter: 28, aliases: ["matthäus", "matthaus", "mt"] },
+    mark: { label: "Markus", refKey: "ref_mark", maxChapter: 16, aliases: ["markus", "mk"] },
+    luke: { label: "Lukas", refKey: "ref_luke", maxChapter: 24, aliases: ["lukas", "lk"] },
+    john: { label: "Johannes", refKey: "ref_john", maxChapter: 21, aliases: ["johannes", "jn", "john"] },
+  };
+  const searchAssistEl = document.getElementById("search-assist");
+  const searchBookDefs = Object.entries(verseSearchBooks).map(function ([id, book]) {
+    return {
+      id: id,
+      label: book.label,
+      maxChapter: book.maxChapter,
+      aliases: (book.aliases || []).map(function (alias) {
+        return normalizeSearchToken(alias);
+      }),
+    };
+  });
   function createAlandTopic(id, label, startAland, endAland) {
     const alandNos = [];
     for (let no = startAland; no <= endAland; no += 1) {
@@ -104,6 +130,119 @@
     return String(label || "").replace(/^\d+\.\s*/, "").trim();
   }
 
+  function getSearchAssistState(rawValue) {
+    const raw = String(rawValue || "");
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+
+    const normalized = normalizeSearchToken(trimmed);
+    const parts = normalized.split(/\s+/);
+    const first = parts[0] || "";
+    const rest = parts.slice(1).join(" ").trim();
+
+    const exactBook = searchBookDefs.find(function (book) {
+      return book.aliases.includes(first);
+    });
+    if (exactBook) {
+      const chapterDigits = rest.replace(/[^\d]/g, "");
+      const matchingChapters = Array.from({ length: exactBook.maxChapter }, function (_, index) {
+        return index + 1;
+      }).filter(function (chapter) {
+        return !chapterDigits || String(chapter).startsWith(chapterDigits);
+      });
+      const selectedChapter =
+        /^\d+$/.test(rest) && parseInt(rest, 10) >= 1 && parseInt(rest, 10) <= exactBook.maxChapter
+          ? parseInt(rest, 10)
+          : 0;
+      return {
+        mode: "chapters",
+        book: exactBook,
+        chapters: matchingChapters,
+        selectedChapter: selectedChapter,
+      };
+    }
+
+    if (parts.length > 1) return null;
+
+    const matches = searchBookDefs.filter(function (book) {
+      return book.aliases.some(function (alias) {
+        return alias.startsWith(first);
+      });
+    });
+    if (!matches.length) return null;
+    return {
+      mode: "books",
+      matches: matches,
+    };
+  }
+
+  function renderSearchAssist(state) {
+    if (!searchAssistEl) return;
+    if (!state) {
+      searchAssistEl.hidden = true;
+      searchAssistEl.innerHTML = "";
+      activeSearchChapterQuery = null;
+      return;
+    }
+
+    if (state.mode === "books") {
+      activeSearchChapterQuery = null;
+      searchAssistEl.hidden = false;
+      searchAssistEl.innerHTML =
+        '<div class="search-assist__list">' +
+        state.matches
+          .map(function (book) {
+            return '<button type="button" class="search-assist__book" data-search-assist-book="' +
+              escapeAttr(book.id) +
+              '">' +
+              escapeHtml(book.label) +
+              "</button>";
+          })
+          .join("") +
+        "</div>";
+      return;
+    }
+
+    activeSearchChapterQuery = state.selectedChapter
+      ? { book: state.book.id, chapter: state.selectedChapter }
+      : null;
+    if (state.selectedChapter) {
+      searchAssistEl.hidden = true;
+      searchAssistEl.innerHTML = "";
+      return;
+    }
+    searchAssistEl.hidden = false;
+    searchAssistEl.innerHTML =
+      '<div class="search-assist__heading">' +
+      escapeHtml(state.book.label) +
+      "</div>" +
+      '<div class="search-assist__chapters">' +
+      state.chapters
+        .map(function (chapter) {
+          const active = state.selectedChapter === chapter;
+          return '<button type="button" class="search-assist__chapter' +
+            (active ? " is-active" : "") +
+            '" data-search-assist-book="' +
+            escapeAttr(state.book.id) +
+            '" data-search-assist-chapter="' +
+            chapter +
+            '" aria-pressed="' +
+            (active ? "true" : "false") +
+            '">' +
+            chapter +
+            "</button>";
+        })
+        .join("") +
+      "</div>";
+  }
+
+  function formatVerseQueryLabel(query) {
+    if (!query) return "";
+    const book = verseSearchBooks[query.book];
+    if (!book) return "";
+    return book.label + " " + query.chapter;
+  }
+
   function detailSectionLabelForRow(row) {
     if (!row) return "";
     const topic = explorerTopics.find(function (item) {
@@ -113,6 +252,78 @@
       return topic.groupLabel + " · " + stripExplorerTopicNumber(topic.label);
     }
     return stripExplorerTopicNumber(row.section_de || row.section || "");
+  }
+
+  function refContainsVerse(ref, chapter) {
+    if (!ref || !chapter) return false;
+    const tokens = String(ref)
+      .replace(/;/g, " ")
+      .split(/\s+/)
+      .map(function (part) {
+        return part.trim();
+      })
+      .filter(Boolean);
+    let currentChapter = 0;
+    for (let i = 0; i < tokens.length; i += 1) {
+      let token = tokens[i].replace(/[\[\]()]/g, "");
+      if (!token) continue;
+      const explicit = token.match(/^(\d+)\.(.+)$/);
+      if (explicit) {
+        currentChapter = parseInt(explicit[1], 10);
+        token = explicit[2];
+      } else if (!currentChapter) {
+        continue;
+      }
+      const cleaned = token.replace(/[a-z]/gi, "");
+      if (!cleaned) continue;
+      const rangeMatch = cleaned.match(/^(\d+)-(\d+)$/);
+      if (rangeMatch) {
+        if (currentChapter === chapter) {
+          return true;
+        }
+        continue;
+      }
+      const singleMatch = cleaned.match(/^(\d+)$/);
+      if (singleMatch) {
+        if (currentChapter === chapter) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function rowMatchesVerseQuery(row, query) {
+    if (!row || !query) return false;
+    const book = verseSearchBooks[query.book];
+    if (!book) return false;
+    return refContainsVerse(row[book.refKey] || "", query.chapter);
+  }
+
+  function normalizeReferenceSignaturePart(value) {
+    return String(value || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function getReferenceSignature(row) {
+    if (!row) return "";
+    return ["ref_matthew", "ref_mark", "ref_luke", "ref_john"]
+      .map(function (key) {
+        return normalizeReferenceSignaturePart(row[key]);
+      })
+      .join("||");
+  }
+
+  function dedupeSearchRowsByReferences(rows) {
+    const seen = new Set();
+    return (rows || []).filter(function (row) {
+      const signature = getReferenceSignature(row);
+      if (!signature) return true;
+      if (seen.has(signature)) return false;
+      seen.add(signature);
+      return true;
+    });
   }
 
   const SYNOPSE_CONFIG = window.SYNOPSE_CONFIG || {};
@@ -364,6 +575,14 @@
 
   function updateSectionListHeading() {
     if (!sectionListHeadingEl || !sectionListHeadingTitleEl) return;
+    if (activeSearchChapterQuery) {
+      sectionListHeadingTitleEl.textContent = "Ereignisse zu " + formatVerseQueryLabel(activeSearchChapterQuery);
+      sectionListHeadingEl.hidden = false;
+      if (sectionListHeadingClearEl) {
+        sectionListHeadingClearEl.hidden = false;
+      }
+      return;
+    }
     const explorerTopic = explorerTopicById.get(explorerActiveTopicId);
     if (explorerTopic) {
       sectionListHeadingTitleEl.textContent = stripExplorerTopicNumber(explorerTopic.label);
@@ -396,6 +615,7 @@
       if (panel.open) {
         clearPericopeDeepLinkWithoutFiltering();
         clearExplorerSelectionWithoutFiltering();
+        clearVerseQueryWithoutFiltering();
         const qEl = document.getElementById("q");
         if (qEl) qEl.value = "";
         document.querySelectorAll(".filter-acc-panel").forEach(function (other) {
@@ -1249,6 +1469,10 @@
     renderExplorerMenu();
   }
 
+  function clearVerseQueryWithoutFiltering() {
+    activeSearchChapterQuery = null;
+  }
+
   function clearStandardFiltersWithoutFiltering() {
     const qEl = document.getElementById("q");
     if (qEl) qEl.value = "";
@@ -1264,7 +1488,8 @@
     if (!explorerEl) return;
     const qEl = document.getElementById("q");
     const hasQuery = Boolean((qEl && qEl.value ? qEl.value : "").trim());
-    const filterModeActive = hasOpenFilterPanel() || activePreset !== "all" || Boolean(activeSection);
+    const filterModeActive =
+      hasOpenFilterPanel() || activePreset !== "all" || Boolean(activeSection) || Boolean(activeSearchChapterQuery);
     const shouldShowExplorer = !hasQuery && !filterModeActive;
     explorerEl.hidden = !shouldShowExplorer;
     if (!shouldShowExplorer) {
@@ -1459,7 +1684,6 @@
       closeChapterPicker();
     });
   }
-
   document.getElementById("translation-info-dialog-close").addEventListener("click", function () {
     const dlg = document.getElementById("translation-info-dialog");
     if (dlg && typeof dlg.close === "function") dlg.close();
@@ -1726,10 +1950,15 @@
   function filter() {
     if (!listEl) return;
     const qEl = document.getElementById("q");
-    const q = (qEl && qEl.value ? qEl.value : "").trim().toLowerCase();
+    const qRaw = qEl && qEl.value ? qEl.value : "";
+    const q = qRaw.trim().toLowerCase();
+    const searchAssistState = getSearchAssistState(qRaw);
+    renderSearchAssist(searchAssistState);
     const sec = activeSection;
     const explorerTopic = explorerTopicById.get(explorerActiveTopicId) || null;
-    const hasDefaultState = !q && !sec && !explorerTopic && activePreset === "all";
+    const verseQuery = activeSearchChapterQuery;
+    const textQuery = verseQuery ? "" : q;
+    const hasDefaultState = !textQuery && !sec && !explorerTopic && activePreset === "all" && !verseQuery;
     const filterModeActive = hasOpenFilterPanel();
 
     syncExplorerVisibility();
@@ -1749,6 +1978,8 @@
       }
       if (filterModeActive) {
         listEl.innerHTML = renderFilterLanding();
+      } else if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) {
+        listEl.innerHTML = '<div class="empty">Kapitel wählen, um passende Ereignisse zu sehen.</div>';
       } else if (favoriteRows.length) {
         listEl.innerHTML = favoriteRows.map(renderRow).join("");
       } else {
@@ -1764,7 +1995,9 @@
       if (!matchesPreset(r, activePreset)) return false;
       if (sec && r.section !== sec) return false;
       if (explorerTopic && !explorerTopic.matcher(r)) return false;
-      if (!q) return true;
+      if (verseQuery && !rowMatchesVerseQuery(r, verseQuery)) return false;
+      if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) return false;
+      if (!textQuery) return true;
       const hay = [
         r.title,
         r.title_de,
@@ -1778,30 +2011,44 @@
       ]
         .join(" ")
         .toLowerCase();
-      return hay.includes(q);
+      return hay.includes(textQuery);
     });
+    
+    const visibleOut = textQuery || verseQuery ? dedupeSearchRowsByReferences(out) : out;
 
     const countEl = document.getElementById("count");
     if (countEl) {
-      countEl.textContent =
-        out.length +
-        " von " +
-        n +
-        " Zeilen" +
-        (activePreset !== "all" || explorerTopic ? " (Filter aktiv)" : "");
+      if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) {
+        countEl.textContent = "Kapitel wählen";
+      } else {
+        countEl.textContent =
+          visibleOut.length +
+          " von " +
+          n +
+          " Zeilen" +
+          (verseQuery
+            ? " (Bibelstelle aktiv)"
+            : activePreset !== "all" || explorerTopic
+              ? " (Filter aktiv)"
+              : "");
+      }
     }
     pulseCountLine();
 
-    if (!out.length) {
-      listEl.innerHTML = '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
+    if (!visibleOut.length) {
+      listEl.innerHTML = searchAssistState && searchAssistState.mode === "chapters" && !verseQuery
+        ? '<div class="empty">Kapitel wählen, um passende Ereignisse zu sehen.</div>'
+        : verseQuery
+          ? '<div class="empty">Kein Ereignis gefunden, das dieses Kapitel direkt enthält.</div>'
+          : '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
       scrollListToFirst = false;
       triggerListReveal();
       syncListFabs();
       return;
     }
-    listEl.innerHTML = out.map(renderRow).join("");
+    listEl.innerHTML = visibleOut.map(renderRow).join("");
     triggerListReveal();
-    if (scrollListToFirst && out.length) {
+    if (scrollListToFirst && visibleOut.length) {
       scrollListToFirst = false;
       const heading = document.getElementById("section-list-heading");
       const firstRow = listEl.querySelector(".row-wrap");
@@ -1840,11 +2087,13 @@
     qInput.addEventListener("input", function () {
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
+      clearVerseQueryWithoutFiltering();
       filter();
     });
     qInput.addEventListener("focus", function () {
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
+      clearVerseQueryWithoutFiltering();
       activePreset = "all";
       syncPresetButtonActiveState();
       activeSection = "";
@@ -1855,11 +2104,36 @@
     });
   }
 
+  if (searchAssistEl && qInput) {
+    searchAssistEl.addEventListener("click", function (e) {
+      const chapterBtn = e.target.closest("[data-search-assist-chapter]");
+      if (chapterBtn) {
+        const bookId = chapterBtn.getAttribute("data-search-assist-book") || "";
+        const chapter = chapterBtn.getAttribute("data-search-assist-chapter") || "";
+        const book = verseSearchBooks[bookId];
+        if (!book || !chapter) return;
+        qInput.value = book.label + " " + chapter;
+        filter();
+        qInput.focus();
+        return;
+      }
+      const bookBtn = e.target.closest("[data-search-assist-book]");
+      if (!bookBtn) return;
+      const bookId = bookBtn.getAttribute("data-search-assist-book") || "";
+      const book = verseSearchBooks[bookId];
+      if (!book) return;
+      qInput.value = book.label + " ";
+      filter();
+      qInput.focus();
+    });
+  }
+
   if (explorerChapterEl) {
     explorerChapterEl.addEventListener("click", function (e) {
       const btn = e.target.closest("[data-explorer-group]");
       if (!btn) return;
       clearPericopeDeepLinkWithoutFiltering();
+      clearVerseQueryWithoutFiltering();
       const nextGroupId = btn.dataset.explorerGroup || "";
       openChapterPicker(nextGroupId, btn);
     });
@@ -1870,6 +2144,7 @@
       const btn = e.target.closest("[data-explorer-topic]");
       if (!btn) return;
       clearPericopeDeepLinkWithoutFiltering();
+      clearVerseQueryWithoutFiltering();
       clearStandardFiltersWithoutFiltering();
       explorerActiveTopicId = btn.dataset.explorerTopic || "";
       const topic = explorerTopicById.get(explorerActiveTopicId);
@@ -1895,6 +2170,7 @@
       if (!b) return;
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
+      clearVerseQueryWithoutFiltering();
       activePreset = b.dataset.preset;
       syncPresetButtonActiveState();
       filter();

@@ -10,55 +10,35 @@
     </filter>
   </defs>
 
-  <!-- Hintergrund -->
   <rect width="1200" height="630" fill="url(#bg)" />
 
-  <!-- sehr subtile obere Linie -->
   <line x1="100" y1="84" x2="1100" y2="84" stroke="#E4DED2" stroke-width="2" />
 
-  <!-- Icon-Panel -->
   <g transform="translate(100 126)" filter="url(#shadow)">
     <rect width="132" height="132" rx="28" fill="#FCFBF7" stroke="#E6E0D5" stroke-width="2.5"/>
     <g transform="translate(30 24)" stroke-linecap="round" stroke-width="11">
-      <line x1="0"  y1="4"  x2="0"  y2="82" stroke="#5B7FA6" />
+      <line x1="0" y1="4" x2="0" y2="82" stroke="#5B7FA6" />
       <line x1="24" y1="32" x2="24" y2="82" stroke="#B1A067" />
-      <line x1="48" y1="0"  x2="48" y2="82" stroke="#6C9A76" />
+      <line x1="48" y1="0" x2="48" y2="82" stroke="#6C9A76" />
       <line x1="72" y1="20" x2="72" y2="82" stroke="#7C6FA3" />
     </g>
   </g>
 
-  <!-- Kicker -->
-  <text x="266" y="156"
-        fill="#7D786F"
-        font-family="Arial, sans-serif"
-        font-size="24"
-        letter-spacing="2.2">
+  <text x="266" y="156" fill="#7D786F" font-family="Arial, sans-serif" font-size="24" letter-spacing="2.2">
     PARALLEL LESEN · VERGLEICHEN · TEILEN
   </text>
 
-  <!-- Titel -->
-  <text x="266" y="248"
-        fill="#4B4A67"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="72">
+  <text x="266" y="248" fill="#4B4A67" font-family="Georgia, 'Times New Roman', serif" font-size="72">
     Synopse der vier
   </text>
-  <text x="266" y="332"
-        fill="#4B4A67"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="72">
+  <text x="266" y="332" fill="#4B4A67" font-family="Georgia, 'Times New Roman', serif" font-size="72">
     Evangelien
   </text>
 
-  <!-- Untertitel -->
-  <text x="266" y="398"
-        fill="#7F7B76"
-        font-family="Arial, sans-serif"
-        font-size="31">
-    Perikopen parallel lesen, Unterschiede erkennen und Texte teilen
+  <text x="266" y="398" fill="#7F7B76" font-family="Arial, sans-serif" font-size="31">
+    Ereignisse parallel lesen, Unterschiede erkennen und Texte teilen
   </text>
 
-  <!-- Farbmarken statt langer Liste -->
   <g transform="translate(266 462)" font-family="Arial, sans-serif" font-size="24" font-weight="700">
     <g transform="translate(0 0)">
       <circle cx="0" cy="-8" r="6" fill="#5B7FA6"/>
@@ -78,12 +58,8 @@
     </g>
   </g>
 
-  <!-- Subtile Fußzeile -->
   <line x1="100" y1="544" x2="1100" y2="544" stroke="#E4DED2" stroke-width="2" />
-  <text x="100" y="580"
-        fill="#9A948A"
-        font-family="Arial, sans-serif"
-        font-size="22">
+  <text x="100" y="580" fill="#9A948A" font-family="Arial, sans-serif" font-size="22">
     synopse.ch
   </text>
 </svg>

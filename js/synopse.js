@@ -2212,6 +2212,10 @@
         if (row) openCompareModalForRow(row, null);
         pendingPericopeOpenAlandNo = 0;
       });
+    } else if (qInput) {
+      window.requestAnimationFrame(function () {
+        qInput.focus({ preventScroll: true });
+      });
     }
   }
 

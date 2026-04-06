@@ -104,6 +104,17 @@
     return String(label || "").replace(/^\d+\.\s*/, "").trim();
   }
 
+  function detailSectionLabelForRow(row) {
+    if (!row) return "";
+    const topic = explorerTopics.find(function (item) {
+      return item.matcher(row);
+    });
+    if (topic) {
+      return topic.groupLabel + " · " + stripExplorerTopicNumber(topic.label);
+    }
+    return stripExplorerTopicNumber(row.section_de || row.section || "");
+  }
+
   /* 365 Ereignisse im Explorer: genau nach der vorgegebenen 18-Abschnitts-Zuordnung. */
   const explorerTopicGroups = [
     {
@@ -400,13 +411,13 @@
   function buildPericopeUrl(alandNo) {
     try {
       const url = new URL(window.location.href);
-      url.pathname = "/liste";
+      url.pathname = "/liste/";
       url.hash = "";
       url.search = "";
       url.searchParams.set("p", String(alandNo));
       return url.toString();
     } catch (e) {
-      return "/liste?p=" + encodeURIComponent(String(alandNo));
+      return "/liste/?p=" + encodeURIComponent(String(alandNo));
     }
   }
 
@@ -1453,9 +1464,12 @@
     const alandEl = document.getElementById("compare-modal-aland");
     const titleEl = document.getElementById("compare-modal-title");
     const secEl = document.getElementById("compare-modal-sec");
-    if (alandEl) alandEl.textContent = "Aland " + row.aland_no;
+    if (alandEl) {
+      alandEl.textContent = "";
+      alandEl.hidden = true;
+    }
     if (titleEl) titleEl.textContent = row.title_de || row.title;
-    if (secEl) secEl.textContent = row.section_de || row.section || "";
+    if (secEl) secEl.textContent = detailSectionLabelForRow(row);
     syncCompareModalShareButton(row);
     syncCompareModalFavoriteButton(row);
 
@@ -1649,9 +1663,12 @@
     const alandEl = document.getElementById("compare-main-aland");
     const titleEl = document.getElementById("compare-main-title");
     const secEl = document.getElementById("compare-main-sec");
-    if (alandEl) alandEl.textContent = "Aland " + row.aland_no;
+    if (alandEl) {
+      alandEl.textContent = "";
+      alandEl.hidden = true;
+    }
     if (titleEl) titleEl.textContent = row.title_de || row.title;
-    if (secEl) secEl.textContent = row.section_de || row.section || "";
+    if (secEl) secEl.textContent = detailSectionLabelForRow(row);
     grid.dataset.filled = "0";
     grid.classList.remove("is-swapping");
     grid.innerHTML = "";

@@ -266,7 +266,6 @@ header p.lead {
   gap: var(--filter-gap);
   margin-bottom: var(--filter-gap);
   padding-bottom: 0;
-  /* Trennung zur Liste: nur .top-filter-venn { border-bottom } */
 }
 
 /* Sanfter Platz für das Dropdown (margin wird per JS gesetzt) */
@@ -587,95 +586,15 @@ select {
   }
 }
 
-/* Obere Zeile: Filter links, Venn rechts; darunter Liste in voller Breite */
-.top-filter-venn {
+.liste-page__search {
   margin-bottom: 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.filter-venn-row {
-  display: grid;
-  gap: 1.25rem 1.35rem;
-  align-items: stretch;
-}
-
-.filter-col {
+.liste-page__search-row,
+.liste-page__search-col {
   min-width: 0;
-}
-
-.venn-aside {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-muted);
-  padding: 0.75rem 0.65rem 0.5rem;
-  box-shadow: var(--shadow-card);
-}
-
-.venn-wrap {
-  position: relative;
-  width: 100%;
-  padding-top: 1.35rem;
-  padding-bottom: 1.1rem;
-}
-
-.venn-aside .venn-lbl {
-  position: absolute;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.venn-aside .venn-lbl-mt {
-  top: 0;
-  left: 6%;
-  color: var(--mt);
-}
-
-.venn-aside .venn-lbl-mk {
-  top: 0;
-  right: 6%;
-  color: var(--mk);
-}
-
-.venn-aside .venn-lbl-lk {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--lk);
-}
-
-#venn-chart {
-  width: 100%;
-  min-height: 200px;
-}
-
-#venn-chart svg {
-  display: block;
-  width: 100% !important;
-  max-width: 100%;
-  height: auto !important;
-}
-
-.venn-fallback {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin: 0;
-  line-height: 1.45;
-}
-
-@media (min-width: 960px) {
-  .filter-venn-row {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
-  }
-
-  /* Eine Spalte, wenn das Venn-Aside fehlt (z. B. temporär in index.html auskommentiert) */
-  .filter-venn-row:has(> .filter-col:only-child) {
-    grid-template-columns: 1fr;
-  }
 }
 
 .list-section {

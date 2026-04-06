@@ -501,7 +501,7 @@
     translationById[t.id] = t;
   });
 
-  /** Schnellauswahl: Deutsch (Elberfelder) + Griechisch (SBL GNT textkritisch) */
+  /** Schnellauswahl: Deutsch (Elberfelder) + Griechisch (Urtext) */
   const QUICK_TRANSLATION_DE = SYNOPSE_CONFIG.quickTranslationDe || "elberfelder_1905";
   const QUICK_TRANSLATION_EL = SYNOPSE_CONFIG.quickTranslationEl || "greek_slb";
 
@@ -825,7 +825,7 @@
       '<button type="button" class="translation-quick__btn" data-translation="' +
       escapeAttr(QUICK_TRANSLATION_EL) +
       '">' +
-      '<span class="translation-quick__primary">Griechisch (SBL)</span>' +
+      '<span class="translation-quick__primary">Griechisch (Urtext)</span>' +
       "</button>" +
       extraHtml +
       '<button type="button" class="translation-quick__more" data-open-translation-picker ' +

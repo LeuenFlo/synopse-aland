@@ -294,7 +294,7 @@
 
   const presetGroups = [
     {
-      label: "Kommt in der Perikope vor",
+      label: "Kommt im Ereignis vor",
       presets: [
         {
           id: "has_mt",
@@ -324,7 +324,7 @@
         {
           id: "triple",
           label: "In allen Synoptikern",
-          title: "Matthäus, Markus und Lukas zugleich (keine reine Joh-Perikope)",
+          title: "Matthäus, Markus und Lukas zugleich (kein reines Johannes-Ereignis)",
         },
         {
           id: "q",
@@ -334,7 +334,7 @@
         {
           id: "syn_only",
           label: "Ohne Johannes-Evangelium",
-          title: "Die Johannes-Spalte ist in dieser Perikope leer (nur Mt/Mk/Lk)",
+          title: "Die Johannes-Spalte ist in diesem Ereignis leer (nur Mt/Mk/Lk)",
         },
       ],
     },
@@ -344,7 +344,7 @@
         {
           id: "sg_mt",
           label: "Matthäus",
-          title: "Nur bei Matthäus, bei Markus und Lukas diese Perikope nicht",
+          title: "Nur bei Matthäus, bei Markus und Lukas dieses Ereignis nicht",
         },
         {
           id: "sg_mk",
@@ -471,7 +471,7 @@
 
   async function sharePericopeRow(row) {
     if (!row) return false;
-    const title = row.title_de || row.title || "Perikope";
+    const title = row.title_de || row.title || "Ereignis";
     const url = buildPericopeUrl(row.aland_no);
     if (navigator.share) {
       const variants = [
@@ -510,9 +510,9 @@
   }
 
   function renderStarterLanding() {
-    return `<section class="start-state" aria-label="Einstieg in die Perikopen">
-      <h2 class="start-state__title">Perikopen, die dich interessieren könnten</h2>
-      <p class="start-state__text">Beim Lesen kannst du Perikopen für später merken. Bis dahin findest du unten ein paar gute Einstiege, mit denen du die Synopse direkt ausprobieren kannst.</p>
+    return `<section class="start-state" aria-label="Einstieg in die Ereignisse">
+      <h2 class="start-state__title">Ereignisse, die dich interessieren könnten</h2>
+      <p class="start-state__text">Beim Lesen kannst du Ereignisse für später merken. Bis dahin findest du unten ein paar gute Einstiege, mit denen du die Synopse direkt ausprobieren kannst.</p>
     </section>`;
   }
 
@@ -1523,9 +1523,9 @@
     compareModalShareBtn.setAttribute("data-share-aland", String(row.aland_no));
     compareModalShareBtn.setAttribute(
       "aria-label",
-      "Perikope teilen: " + (row.title_de || row.title || "Perikope"),
+      "Ereignis teilen: " + (row.title_de || row.title || "Ereignis"),
     );
-    compareModalShareBtn.title = "Perikope teilen";
+    compareModalShareBtn.title = "Ereignis teilen";
   }
 
   const explorerEl = document.getElementById("event-explorer");
@@ -2079,7 +2079,7 @@
         countEl.textContent = filterModeActive
           ? "Filter oder Suche wählen"
           : deepLinkedRow
-            ? "Geteilte Perikope"
+            ? "Geteiltes Ereignis"
             : favoriteRows.length
             ? "Deine Merkliste"
             : "";

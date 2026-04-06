@@ -647,6 +647,23 @@
     filterPresetsLabel.textContent = filterPresetsPanel.open ? "Filter schliessen" : "Filter";
   }
 
+  function syncFilterVisibility() {
+    if (!filterPresetsPanel) return;
+    const qEl = document.getElementById("q");
+    const hasQuery = Boolean((qEl && qEl.value ? qEl.value : "").trim());
+    if (hasQuery && filterPresetsPanel.open) {
+      filterPresetsPanel.open = false;
+    }
+    filterPresetsPanel.classList.toggle("is-hidden-by-search", hasQuery);
+    filterPresetsPanel.setAttribute("aria-hidden", hasQuery ? "true" : "false");
+    if (hasQuery) {
+      filterPresetsPanel.setAttribute("inert", "");
+    } else {
+      filterPresetsPanel.removeAttribute("inert");
+    }
+    updateFilterToolbarReserveSpace();
+  }
+
   /** Entspricht CSS --filter-gap (Abstand Toolbar-Zeile → Dropdown). */
   function getFilterGapPx() {
     const fs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
@@ -677,6 +694,7 @@
       });
     });
     syncFilterPresetsLabel();
+    syncFilterVisibility();
     window.addEventListener("resize", updateFilterToolbarReserveSpace);
     if (filterPresetsBody && typeof ResizeObserver !== "undefined") {
       new ResizeObserver(updateFilterToolbarReserveSpace).observe(filterPresetsBody);
@@ -1962,6 +1980,7 @@
     const filterModeActive = hasOpenFilterPanel();
 
     syncExplorerVisibility();
+    syncFilterVisibility();
 
     updateSectionListHeading();
 

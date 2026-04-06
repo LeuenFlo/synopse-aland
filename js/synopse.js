@@ -2084,6 +2084,21 @@
 
   const qInput = document.getElementById("q");
   if (qInput) {
+    const mobileSearchPlaceholder = qInput.getAttribute("data-placeholder-mobile") || "";
+    const desktopSearchPlaceholder = qInput.getAttribute("data-placeholder-desktop") || qInput.placeholder || "";
+    const placeholderMedia = window.matchMedia("(max-width: 720px)");
+
+    function syncSearchPlaceholder() {
+      qInput.placeholder = placeholderMedia.matches ? mobileSearchPlaceholder : desktopSearchPlaceholder;
+    }
+
+    syncSearchPlaceholder();
+    if (typeof placeholderMedia.addEventListener === "function") {
+      placeholderMedia.addEventListener("change", syncSearchPlaceholder);
+    } else if (typeof placeholderMedia.addListener === "function") {
+      placeholderMedia.addListener(syncSearchPlaceholder);
+    }
+
     qInput.addEventListener("input", function () {
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
@@ -2114,7 +2129,7 @@
         if (!book || !chapter) return;
         qInput.value = book.label + " " + chapter;
         filter();
-        qInput.focus();
+        qInput.blur();
         return;
       }
       const bookBtn = e.target.closest("[data-search-assist-book]");

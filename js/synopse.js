@@ -68,36 +68,61 @@
     }),
   );
 
+  function escapeHtml(s) {
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function escapeAttr(s) {
+    return String(s || "").replace(/"/g, "&quot;");
+  }
+
   /** Aktiver Aland-Abschnitt (interner Schlüssel) — nur per \`?section=\` gesetzt, kein eigenes UI. */
   let activeSection = "";
   let deepLinkedAlandNo = 0;
   let pendingPericopeOpenAlandNo = 0;
   let activeSearchChapterQuery = null;
-  function normalizeSearchToken(value) {
-    return String(value || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/ß/g, "ss")
-      .trim();
-  }
-  const verseSearchBooks = {
-    matthew: { label: "Matthäus", refKey: "ref_matthew", maxChapter: 28, aliases: ["matthäus", "matthaus", "mt"] },
-    mark: { label: "Markus", refKey: "ref_mark", maxChapter: 16, aliases: ["markus", "mk"] },
-    luke: { label: "Lukas", refKey: "ref_luke", maxChapter: 24, aliases: ["lukas", "lk"] },
-    john: { label: "Johannes", refKey: "ref_john", maxChapter: 21, aliases: ["johannes", "jn", "john"] },
-  };
   const searchAssistEl = document.getElementById("search-assist");
-  const searchBookDefs = Object.entries(verseSearchBooks).map(function ([id, book]) {
-    return {
-      id: id,
-      label: book.label,
-      maxChapter: book.maxChapter,
-      aliases: (book.aliases || []).map(function (alias) {
-        return normalizeSearchToken(alias);
-      }),
-    };
-  });
+  const searchToolsFactory =
+    window.SYNOPSE_SEARCH && typeof window.SYNOPSE_SEARCH.createSearchTools === "function"
+      ? window.SYNOPSE_SEARCH.createSearchTools
+      : null;
+  const searchTools = searchToolsFactory
+    ? searchToolsFactory({
+        searchAssistEl: searchAssistEl,
+        escapeHtml: escapeHtml,
+        escapeAttr: escapeAttr,
+      })
+    : null;
+  const verseSearchBooks = searchTools ? searchTools.verseSearchBooks : {};
+  const getSearchAssistState = searchTools
+    ? searchTools.getSearchAssistState
+    : function () {
+        return null;
+      };
+  const renderSearchAssist = searchTools
+    ? searchTools.renderSearchAssist
+    : function () {
+        if (!searchAssistEl) return;
+        searchAssistEl.hidden = true;
+        searchAssistEl.innerHTML = "";
+      };
+  const formatVerseQueryLabel = searchTools
+    ? searchTools.formatVerseQueryLabel
+    : function () {
+        return "";
+      };
+  const rowMatchesVerseQuery = searchTools
+    ? searchTools.rowMatchesVerseQuery
+    : function () {
+        return false;
+      };
+  const dedupeSearchRowsByReferences = searchTools
+    ? searchTools.dedupeSearchRowsByReferences
+    : function (rows) {
+        return rows || [];
+      };
   function createAlandTopic(id, label, startAland, endAland) {
     const alandNos = [];
     for (let no = startAland; no <= endAland; no += 1) {
@@ -130,119 +155,6 @@
     return String(label || "").replace(/^\d+\.\s*/, "").trim();
   }
 
-  function getSearchAssistState(rawValue) {
-    const raw = String(rawValue || "");
-    const trimmed = raw.trim();
-    if (!trimmed) return null;
-
-    const normalized = normalizeSearchToken(trimmed);
-    const parts = normalized.split(/\s+/);
-    const first = parts[0] || "";
-    const rest = parts.slice(1).join(" ").trim();
-
-    const exactBook = searchBookDefs.find(function (book) {
-      return book.aliases.includes(first);
-    });
-    if (exactBook) {
-      const chapterDigits = rest.replace(/[^\d]/g, "");
-      const matchingChapters = Array.from({ length: exactBook.maxChapter }, function (_, index) {
-        return index + 1;
-      }).filter(function (chapter) {
-        return !chapterDigits || String(chapter).startsWith(chapterDigits);
-      });
-      const selectedChapter =
-        /^\d+$/.test(rest) && parseInt(rest, 10) >= 1 && parseInt(rest, 10) <= exactBook.maxChapter
-          ? parseInt(rest, 10)
-          : 0;
-      return {
-        mode: "chapters",
-        book: exactBook,
-        chapters: matchingChapters,
-        selectedChapter: selectedChapter,
-      };
-    }
-
-    if (parts.length > 1) return null;
-
-    const matches = searchBookDefs.filter(function (book) {
-      return book.aliases.some(function (alias) {
-        return alias.startsWith(first);
-      });
-    });
-    if (!matches.length) return null;
-    return {
-      mode: "books",
-      matches: matches,
-    };
-  }
-
-  function renderSearchAssist(state) {
-    if (!searchAssistEl) return;
-    if (!state) {
-      searchAssistEl.hidden = true;
-      searchAssistEl.innerHTML = "";
-      activeSearchChapterQuery = null;
-      return;
-    }
-
-    if (state.mode === "books") {
-      activeSearchChapterQuery = null;
-      searchAssistEl.hidden = false;
-      searchAssistEl.innerHTML =
-        '<div class="search-assist__list">' +
-        state.matches
-          .map(function (book) {
-            return '<button type="button" class="search-assist__book" data-search-assist-book="' +
-              escapeAttr(book.id) +
-              '">' +
-              escapeHtml(book.label) +
-              "</button>";
-          })
-          .join("") +
-        "</div>";
-      return;
-    }
-
-    activeSearchChapterQuery = state.selectedChapter
-      ? { book: state.book.id, chapter: state.selectedChapter }
-      : null;
-    if (state.selectedChapter) {
-      searchAssistEl.hidden = true;
-      searchAssistEl.innerHTML = "";
-      return;
-    }
-    searchAssistEl.hidden = false;
-    searchAssistEl.innerHTML =
-      '<div class="search-assist__heading">' +
-      escapeHtml(state.book.label) +
-      "</div>" +
-      '<div class="search-assist__chapters">' +
-      state.chapters
-        .map(function (chapter) {
-          const active = state.selectedChapter === chapter;
-          return '<button type="button" class="search-assist__chapter' +
-            (active ? " is-active" : "") +
-            '" data-search-assist-book="' +
-            escapeAttr(state.book.id) +
-            '" data-search-assist-chapter="' +
-            chapter +
-            '" aria-pressed="' +
-            (active ? "true" : "false") +
-            '">' +
-            chapter +
-            "</button>";
-        })
-        .join("") +
-      "</div>";
-  }
-
-  function formatVerseQueryLabel(query) {
-    if (!query) return "";
-    const book = verseSearchBooks[query.book];
-    if (!book) return "";
-    return book.label + " " + query.chapter;
-  }
-
   function detailSectionLabelForRow(row) {
     if (!row) return "";
     const topic = explorerTopics.find(function (item) {
@@ -252,78 +164,6 @@
       return topic.groupLabel + " · " + stripExplorerTopicNumber(topic.label);
     }
     return stripExplorerTopicNumber(row.section_de || row.section || "");
-  }
-
-  function refContainsVerse(ref, chapter) {
-    if (!ref || !chapter) return false;
-    const tokens = String(ref)
-      .replace(/;/g, " ")
-      .split(/\s+/)
-      .map(function (part) {
-        return part.trim();
-      })
-      .filter(Boolean);
-    let currentChapter = 0;
-    for (let i = 0; i < tokens.length; i += 1) {
-      let token = tokens[i].replace(/[\[\]()]/g, "");
-      if (!token) continue;
-      const explicit = token.match(/^(\d+)\.(.+)$/);
-      if (explicit) {
-        currentChapter = parseInt(explicit[1], 10);
-        token = explicit[2];
-      } else if (!currentChapter) {
-        continue;
-      }
-      const cleaned = token.replace(/[a-z]/gi, "");
-      if (!cleaned) continue;
-      const rangeMatch = cleaned.match(/^(\d+)-(\d+)$/);
-      if (rangeMatch) {
-        if (currentChapter === chapter) {
-          return true;
-        }
-        continue;
-      }
-      const singleMatch = cleaned.match(/^(\d+)$/);
-      if (singleMatch) {
-        if (currentChapter === chapter) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  function rowMatchesVerseQuery(row, query) {
-    if (!row || !query) return false;
-    const book = verseSearchBooks[query.book];
-    if (!book) return false;
-    return refContainsVerse(row[book.refKey] || "", query.chapter);
-  }
-
-  function normalizeReferenceSignaturePart(value) {
-    return String(value || "")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  function getReferenceSignature(row) {
-    if (!row) return "";
-    return ["ref_matthew", "ref_mark", "ref_luke", "ref_john"]
-      .map(function (key) {
-        return normalizeReferenceSignaturePart(row[key]);
-      })
-      .join("||");
-  }
-
-  function dedupeSearchRowsByReferences(rows) {
-    const seen = new Set();
-    return (rows || []).filter(function (row) {
-      const signature = getReferenceSignature(row);
-      if (!signature) return true;
-      if (seen.has(signature)) return false;
-      seen.add(signature);
-      return true;
-    });
   }
 
   const SYNOPSE_CONFIG = window.SYNOPSE_CONFIG || {};
@@ -409,7 +249,6 @@
   }
 
   const shareFeedbackEl = document.getElementById("share-feedback");
-  let shareFeedbackHideTimer = 0;
 
   function replaceCurrentQuery(mutator) {
     try {
@@ -448,85 +287,24 @@
     }
   }
 
-  function showShareFeedback(message) {
-    if (!shareFeedbackEl) return;
-    shareFeedbackEl.textContent = message;
-    shareFeedbackEl.hidden = false;
-    shareFeedbackEl.classList.remove("is-visible");
-    void shareFeedbackEl.offsetWidth;
-    shareFeedbackEl.classList.add("is-visible");
-    if (shareFeedbackHideTimer) {
-      window.clearTimeout(shareFeedbackHideTimer);
-    }
-    shareFeedbackHideTimer = window.setTimeout(function () {
-      shareFeedbackEl.classList.remove("is-visible");
-      window.setTimeout(function () {
-        shareFeedbackEl.hidden = true;
-      }, 220);
-      shareFeedbackHideTimer = 0;
-    }, 1800);
-  }
-
-  function copyTextToClipboard(text) {
-    if (
-      navigator.clipboard &&
-      typeof navigator.clipboard.writeText === "function" &&
-      window.isSecureContext
-    ) {
-      return navigator.clipboard.writeText(text);
-    }
-    return new Promise(function (resolve, reject) {
-      try {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.setAttribute("readonly", "");
-        textarea.style.position = "fixed";
-        textarea.style.top = "-9999px";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-        const copied = document.execCommand("copy");
-        document.body.removeChild(textarea);
-        if (!copied) throw new Error("copy_failed");
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
-
-  async function sharePericopeRow(row) {
-    if (!row) return false;
-    const title = row.title_de || row.title || "Ereignis";
-    const url = buildPericopeUrl(row.aland_no);
-    if (navigator.share) {
-      const variants = [
-        { url: url },
-        { title: title, url: url },
-        { title: title, text: title, url: url },
-      ];
-      try {
-        for (let i = 0; i < variants.length; i += 1) {
-          const shareData = variants[i];
-          if (navigator.canShare && !navigator.canShare(shareData)) continue;
-          await navigator.share(shareData);
-          showShareFeedback("Geteilt");
-          return true;
-        }
-      } catch (e) {
-        if (e && e.name === "AbortError") return false;
-      }
-    }
-    try {
-      await copyTextToClipboard(url);
-      showShareFeedback("Link kopiert");
-      return true;
-    } catch (e) {
-      showShareFeedback("Teilen nicht verfügbar");
-      return false;
-    }
-  }
+  const shareToolsFactory =
+    window.SYNOPSE_SHARE && typeof window.SYNOPSE_SHARE.createShareTools === "function"
+      ? window.SYNOPSE_SHARE.createShareTools
+      : null;
+  const shareTools = shareToolsFactory
+    ? shareToolsFactory({
+        shareFeedbackEl: shareFeedbackEl,
+        buildPericopeUrl: buildPericopeUrl,
+        getRowTitle: function (row) {
+          return row && (row.title_de || row.title || "Ereignis");
+        },
+      })
+    : null;
+  const sharePericopeRow = shareTools
+    ? shareTools.sharePericopeRow
+    : async function () {
+        return false;
+      };
 
   function renderFilterLanding() {
     return `<section class="start-state start-state--filter" aria-label="Filter-Hinweis">
@@ -732,96 +510,12 @@
     return `<span class="pill ${cls} ${on ? "on" : ""} ${on && bold ? "bold" : ""}">${label}${r}</span>`;
   }
 
-  const TRANSLATION_LANG_ORDER = SYNOPSE_CONFIG.translationLangOrder || [];
-  const TRANSLATIONS = SYNOPSE_CONFIG.translations || [];
-  const translationById = Object.create(null);
-  TRANSLATIONS.forEach(function (t) {
-    translationById[t.id] = t;
-  });
-
-  /** Schnellauswahl: Deutsch (Elberfelder) + Griechisch (Urtext) */
-  const QUICK_TRANSLATION_DE = SYNOPSE_CONFIG.quickTranslationDe || "elberfelder_1905";
-  const QUICK_TRANSLATION_EL = SYNOPSE_CONFIG.quickTranslationEl || "greek_slb";
-
-  function isQuickPairTranslationId(id) {
-    return id === QUICK_TRANSLATION_DE || id === QUICK_TRANSLATION_EL;
-  }
-
-  /** Bis zu zwei zusätzliche Schnelltasten (neben Elb./Gr.); Reihenfolge = Anheften-Reihenfolge */
-  const PINNED_QUICK_STORAGE_KEY = "synopse-pinned-quick-translations";
-  const PINNED_QUICK_LEGACY_KEY = "synopse-pinned-quick-translation";
-  const MAX_PINNED_QUICK_TRANSLATIONS = 2;
   const FAVORITE_ALANDS_STORAGE_KEY = "synopse-favorite-alands";
   const DEFAULT_STARTER_ALANDS = Array.isArray(SYNOPSE_CONFIG.defaultStarterAlands) && SYNOPSE_CONFIG.defaultStarterAlands.length
     ? SYNOPSE_CONFIG.defaultStarterAlands
     : [18, 269, 352];
 
-  let pinnedQuickTranslationIds = [];
   let favoriteAlandNos = [];
-
-  function sanitizePinnedQuickIds(arr) {
-    const seen = Object.create(null);
-    const out = [];
-    (arr || []).forEach(function (id) {
-      if (!id || seen[id] || !translationById[id] || isQuickPairTranslationId(id)) return;
-      seen[id] = true;
-      out.push(id);
-    });
-    return out.slice(0, MAX_PINNED_QUICK_TRANSLATIONS);
-  }
-
-  function loadPinnedQuickTranslations() {
-    try {
-      const raw = localStorage.getItem(PINNED_QUICK_STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          pinnedQuickTranslationIds = sanitizePinnedQuickIds(parsed);
-          return;
-        }
-      }
-      const legacy = localStorage.getItem(PINNED_QUICK_LEGACY_KEY);
-      if (legacy && translationById[legacy] && !isQuickPairTranslationId(legacy)) {
-        pinnedQuickTranslationIds = [legacy];
-      }
-    } catch (e) {
-      /* ignore */
-    }
-  }
-
-  function persistPinnedQuickTranslations() {
-    try {
-      localStorage.setItem(PINNED_QUICK_STORAGE_KEY, JSON.stringify(pinnedQuickTranslationIds));
-      localStorage.removeItem(PINNED_QUICK_LEGACY_KEY);
-    } catch (e) {
-      /* ignore */
-    }
-  }
-
-  /**
-   * Nicht-Elb./Gr.-Auswahl: anheften (max. 2; bei Überlauf ältesten Eintrag verdrängen).
-   */
-  function notePinnedTranslationChoice(id) {
-    if (isQuickPairTranslationId(id) || !translationById[id]) return;
-    if (pinnedQuickTranslationIds.indexOf(id) !== -1) return;
-    if (pinnedQuickTranslationIds.length < MAX_PINNED_QUICK_TRANSLATIONS) {
-      pinnedQuickTranslationIds.push(id);
-    } else {
-      pinnedQuickTranslationIds.shift();
-      pinnedQuickTranslationIds.push(id);
-    }
-    persistPinnedQuickTranslations();
-  }
-
-  function removePinnedQuickTranslation(id) {
-    pinnedQuickTranslationIds = pinnedQuickTranslationIds.filter(function (x) {
-      return x !== id;
-    });
-    persistPinnedQuickTranslations();
-    if (activeTranslationId === id) {
-      activeTranslationId = QUICK_TRANSLATION_DE;
-    }
-  }
 
   function sanitizeFavoriteAlandNos(arr) {
     const seen = Object.create(null);
@@ -893,425 +587,116 @@
       .filter(Boolean);
   }
 
-  loadPinnedQuickTranslations();
   loadFavoriteAlands();
-  try {
-    if (localStorage.getItem(PINNED_QUICK_LEGACY_KEY) && pinnedQuickTranslationIds.length) {
-      persistPinnedQuickTranslations();
-    }
-  } catch (e) {
-    /* ignore */
-  }
-
-  let activeTranslationId = QUICK_TRANSLATION_DE;
-
-  /** Auf der Startseite: fester Lesetext für die Demo-Synopse (überschreibbar mit ?translation=) */
-  let homeDemoTranslationId = QUICK_TRANSLATION_DE;
+  let initialHomeDemoTranslationId = "";
   if (isCompareHome) {
     try {
       const params = new URLSearchParams(window.location.search);
       const tr = params.get("translation");
-      if (tr && translationById[tr]) homeDemoTranslationId = tr;
+      if (tr) initialHomeDemoTranslationId = tr;
     } catch (e) {
       /* ignore */
     }
   }
 
-  function effectiveTranslationId(which) {
-    if (isCompareHome && which === "main") return homeDemoTranslationId;
-    return activeTranslationId;
-  }
-
-  const translationRawCache = Object.create(null);
-  const translationVerseCache = Object.create(null);
-
-  async function loadTranslationRaw(id) {
-    if (translationRawCache[id]) return translationRawCache[id];
-    const t = translationById[id];
-    if (!t) throw new Error("Unbekannte Übersetzung: " + id);
-    if (id === "elberfelder_1905" && Array.isArray(window.ELBERFELDER_DATA)) {
-      translationRawCache[id] = window.ELBERFELDER_DATA;
-      return translationRawCache[id];
-    }
-    const res = await fetch(t.path);
-    if (!res.ok) throw new Error("Konnte Datei nicht laden (" + t.path + ")");
-    const text = await res.text();
-    let raw;
-    try {
-      raw = JSON.parse(text.replace(/^\uFEFF/, ""));
-    } catch (parseErr) {
-      throw new Error(
-        "Ungültiges JSON in " + t.path + (parseErr && parseErr.message ? ": " + parseErr.message : ""),
-      );
-    }
-    translationRawCache[id] = raw;
-    return raw;
-  }
-
-  async function getVerseCache(id) {
-    if (translationVerseCache[id]) return translationVerseCache[id];
-    const SC = window.SYNOPTIC_COMPARE;
-    if (!SC || typeof SC.initFromTranslationData !== "function") return null;
-    const raw = await loadTranslationRaw(id);
-    const cache = SC.initFromTranslationData(raw);
-    translationVerseCache[id] = cache;
-    return cache;
-  }
-
-  function activeTranslationLabel() {
-    const t = translationById[activeTranslationId];
-    return t ? t.label : "Unbekannt";
-  }
-
-  /** Längere Bezeichnung für Hinweis „Übersetzung: …“ und Karten in der Auswahl (falls labelLong gesetzt) */
-  function translationVerboseLabelForId(translationId) {
-    const t = translationById[translationId];
-    if (!t) return "Unbekannt";
-    return t.labelLong || t.label;
-  }
-
-  function activeTranslationVerboseLabel() {
-    return translationVerboseLabelForId(activeTranslationId);
-  }
-
-  function translationIsSourceTextForId(translationId) {
-    const t = translationById[translationId];
-    return !!(t && String(t.lang) === "el");
-  }
-
-  function activeTranslationIsSourceText() {
-    return translationIsSourceTextForId(activeTranslationId);
-  }
-
-  function compareColumnMetaHtmlForTranslation(translationId) {
-    if (translationId === "byz_2013") {
-      return '<p class="compare-note compare-note--urtext">byzantinischer Mehrheitstext (Byz 2013)</p>';
-    }
-    if (translationId === "greek_slb") {
-      return '<p class="compare-note compare-note--urtext">textkritische Ausgabe der Society of Biblical Literature</p>';
-    }
-    if (translationIsSourceTextForId(translationId)) {
-      return '<p class="compare-note compare-note--urtext">griechischer Referenztext</p>';
-    }
-    return '<p class="compare-note">Übersetzung: ' + escapeHtml(translationVerboseLabelForId(translationId)) + "</p>";
-  }
-
-  function compareModalColumnMetaHtml() {
-    return compareColumnMetaHtmlForTranslation(activeTranslationId);
-  }
-
-  function translationGroupLabel(langKey) {
-    if (langKey === "_") return "Sonstige";
-    const found = TRANSLATION_LANG_ORDER.find(function (g) {
-      return g.key === langKey;
-    });
-    return found ? found.label : langKey;
-  }
-
-  function getTranslationsByLang() {
-    const byLang = Object.create(null);
-    TRANSLATIONS.forEach(function (t) {
-      const k = t.lang != null && String(t.lang) !== "" ? String(t.lang) : "_";
-      if (!byLang[k]) byLang[k] = [];
-      byLang[k].push(t);
-    });
-    return byLang;
-  }
-
-  /** Kompakte Leiste: Elberfelder, Griechisch, bis zu zwei angeheftete Übersetzungen (mit ×), „Weitere Übersetzungen“ / Tausch-Icon */
-  function renderTranslationQuickStrip() {
-    let extraHtml = "";
-    pinnedQuickTranslationIds.forEach(function (pinId) {
-      const t = translationById[pinId];
-      if (!t || isQuickPairTranslationId(pinId)) return;
-      extraHtml +=
-        '<div class="translation-quick__pin-wrap">' +
-        '<button type="button" class="translation-quick__btn translation-quick__btn--extra" data-translation="' +
-        escapeAttr(t.id) +
-        '" title="' +
-        escapeAttr(t.label) +
-        '">' +
-        '<span class="translation-quick__primary">' +
-        escapeHtml(t.label) +
-        "</span>" +
-        "</button>" +
-        '<button type="button" class="translation-quick__unpin" data-remove-pinned-translation="' +
-        escapeAttr(t.id) +
-        '" aria-label="' +
-        escapeAttr(t.label + " aus Schnellwahl entfernen") +
-        '" title="Aus Schnellwahl entfernen">×</button>' +
-        "</div>";
-    });
-    const extraPinCount = pinnedQuickTranslationIds.filter(function (pid) {
-      return !isQuickPairTranslationId(pid);
-    }).length;
-    const pinnedQuickSlotsFull = extraPinCount >= MAX_PINNED_QUICK_TRANSLATIONS;
-    const morePickerLabel = pinnedQuickSlotsFull
-      ? "Übersetzungen in der Schnellwahl wechseln"
-      : "Weitere Übersetzungen zur Schnellwahl hinzufügen";
-    const morePickerTitle = pinnedQuickSlotsFull
-      ? "Weitere Übersetzungen auswählen oder eine ersetzen"
-      : "Weitere Übersetzungen hinzufügen";
-    const moreButtonInner = '<span class="translation-quick__more-label">Weitere Übersetzungen</span>';
-    return (
-      '<div class="translation-quick" role="group" aria-label="Lesetext wählen">' +
-      '<button type="button" class="translation-quick__btn" data-translation="' +
-      escapeAttr(QUICK_TRANSLATION_DE) +
-      '">' +
-      '<span class="translation-quick__primary">Elberfelder 1905</span>' +
-      "</button>" +
-      '<button type="button" class="translation-quick__btn" data-translation="' +
-      escapeAttr(QUICK_TRANSLATION_EL) +
-      '">' +
-      '<span class="translation-quick__primary">Griechisch (Urtext)</span>' +
-      "</button>" +
-      extraHtml +
-      '<button type="button" class="translation-quick__more" data-open-translation-picker ' +
-      'aria-haspopup="dialog" aria-expanded="false" aria-controls="translation-picker-overlay" ' +
-      'aria-label="' +
-      escapeAttr(morePickerLabel) +
-      '" title="' +
-      escapeAttr(morePickerTitle) +
-      '">' +
-      moreButtonInner +
-      "</button>" +
-      "</div>"
-    );
-  }
-
-  /** Vollständige Übersicht im Overlay: drei Bereiche — Deutsch, Alte Sprachen, Weitere Sprachen */
-  function renderTranslationPickerFull() {
-    const byLang = getTranslationsByLang();
-    const MODERN_LANG_KEYS = ["en", "fr", "it", "es"];
-    const ANCIENT_LANG_KEYS = ["el", "la"];
-
-    function renderOneCard(t) {
-      const active = t.id === activeTranslationId ? " active" : "";
-      const infoBtn = t.info
-        ? `<button type="button" class="translation-info-btn" data-translation-info="${escapeAttr(
-            t.id,
-          )}" aria-label="Hinweis zu ${escapeAttr(t.label)}" title="Kurzinfo">i</button>`
-        : "";
-      return (
-        `<div class="translation-picker-row">` +
-        `<button type="button" class="translation-picker-card${active}" data-translation="${escapeAttr(t.id)}">` +
-        `<span class="translation-picker-card__name">${escapeHtml(t.labelLong || t.label)}</span>` +
-        `</button>${infoBtn}</div>`
-      );
-    }
-
-    function sectionForLang(langKey, title) {
-      const items = byLang[langKey];
-      if (!items || !items.length) return "";
-      const cards = items.map(renderOneCard).join("");
-      const gid = langKey === "_" ? "sonstige" : langKey;
-      return (
-        `<section class="translation-picker-group" aria-labelledby="tp-g-${escapeAttr(gid)}">` +
-        `<h3 class="translation-picker-group__title" id="tp-g-${escapeAttr(gid)}">${escapeHtml(title)}</h3>` +
-        `<div class="translation-picker-grid">${cards}</div>` +
-        `</section>`
-      );
-    }
-
-    function gridOnlyForLang(langKey) {
-      const items = byLang[langKey];
-      if (!items || !items.length) return "";
-      return items.map(renderOneCard).join("");
-    }
-
-    function megaSection(megaId, megaTitle, innerHtml) {
-      const body = String(innerHtml || "").trim();
-      if (!body) return "";
-      return (
-        `<section class="translation-picker-mega" aria-labelledby="tp-mega-${escapeAttr(megaId)}">` +
-        `<h2 class="translation-picker-mega__title" id="tp-mega-${escapeAttr(megaId)}">${escapeHtml(megaTitle)}</h2>` +
-        `<div class="translation-picker-mega__body">${body}</div>` +
-        `</section>`
-      );
-    }
-
-    const blocks = [];
-
-    const deGrid = gridOnlyForLang("de");
-    if (deGrid) {
-      blocks.push(
-        megaSection("de", "Deutsche Übersetzungen", `<div class="translation-picker-grid">${deGrid}</div>`),
-      );
-    }
-
-    let ancientInner = "";
-    ANCIENT_LANG_KEYS.forEach(function (k) {
-      const title =
-        k === "el"
-          ? "Griechisch"
-          : k === "la"
-            ? "Latein"
-            : translationGroupLabel(k);
-      ancientInner += sectionForLang(k, title);
-    });
-    if (ancientInner) {
-      blocks.push(megaSection("ancient", "Alte Sprachen", ancientInner));
-    }
-
-    let modernInner = "";
-    MODERN_LANG_KEYS.forEach(function (k) {
-      const block = sectionForLang(k, translationGroupLabel(k));
-      if (block) modernInner += block;
-    });
-    Object.keys(byLang)
-      .filter(function (k) {
-        if (k === "_" || k === "de") return false;
-        if (ANCIENT_LANG_KEYS.indexOf(k) !== -1) return false;
-        return MODERN_LANG_KEYS.indexOf(k) === -1;
+  const translationToolsFactory =
+    window.SYNOPSE_TRANSLATIONS && typeof window.SYNOPSE_TRANSLATIONS.createTranslationTools === "function"
+      ? window.SYNOPSE_TRANSLATIONS.createTranslationTools
+      : null;
+  const translationTools = translationToolsFactory
+    ? translationToolsFactory({
+        translationLangOrder: SYNOPSE_CONFIG.translationLangOrder || [],
+        translations: SYNOPSE_CONFIG.translations || [],
+        quickTranslationDe: SYNOPSE_CONFIG.quickTranslationDe || "elberfelder_1905",
+        quickTranslationEl: SYNOPSE_CONFIG.quickTranslationEl || "greek_slb",
+        isCompareHome: isCompareHome,
+        initialHomeDemoTranslationId: initialHomeDemoTranslationId,
+        escapeHtml: escapeHtml,
+        escapeAttr: escapeAttr,
+        lockPageScroll: lockPageScroll,
+        unlockPageScroll: unlockPageScroll,
       })
-      .sort()
-      .forEach(function (langKey) {
-        const block = sectionForLang(langKey, translationGroupLabel(langKey));
-        if (block) modernInner += block;
-      });
-    if (byLang["_"] && byLang["_"].length) {
-      modernInner += sectionForLang("_", "Sonstige");
-    }
-    if (modernInner) {
-      blocks.push(megaSection("more", "Weitere Sprachen", modernInner));
-    }
-
-    return `<div class="translation-picker-overview translation-picker-overview--mega">${blocks.join("")}</div>`;
-  }
-
-  function openTranslationInfoDialog(translationId) {
-    const t = translationById[translationId];
-    if (!t || !t.info) return;
-    closeTranslationPicker();
-    const dlg = document.getElementById("translation-info-dialog");
-    document.getElementById("translation-info-dialog-title").textContent = t.labelLong || t.label;
-    const body = document.getElementById("translation-info-dialog-body");
-    body.textContent = "";
-    body.appendChild(document.createTextNode(t.info.trimEnd()));
-    if (t.infoUrl) {
-      body.appendChild(document.createTextNode(" Weitere Informationen: "));
-      const a = document.createElement("a");
-      a.href = t.infoUrl;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      var linkLabel = "Link";
-      try {
-        linkLabel = new URL(t.infoUrl).hostname.replace(/^www\./, "");
-      } catch (e) {}
-      a.textContent = linkLabel;
-      body.appendChild(a);
-    }
-    if (dlg && typeof dlg.showModal === "function") {
-      dlg.showModal();
-    }
-  }
-
-  function updateMobileTranslationLabel() {
-    const lab = document.getElementById("translation-lang-mobile-label");
-    if (lab) lab.textContent = activeTranslationLabel();
-  }
-
-  function syncTranslationButtons() {
-    document.querySelectorAll("button[data-translation]").forEach(function (btn) {
-      btn.classList.toggle("active", btn.dataset.translation === activeTranslationId);
-    });
-    document.querySelectorAll(".translation-lang-pick").forEach(function (det) {
-      det.open = !!det.querySelector("button[data-translation].active");
-    });
-    updateMobileTranslationLabel();
-  }
-
-  /** Schnellleiste neu aufbauen (z. B. zusätzlicher Button bei Sonder-Auswahl) */
-  function refreshQuickStripOnly() {
-    const quickHtml = renderTranslationQuickStrip();
-    const modalBtns = document.getElementById("compare-modal-translation-buttons");
-    const mainBtns = document.getElementById("compare-main-translation-buttons");
-    if (modalBtns) modalBtns.innerHTML = quickHtml;
-    if (mainBtns) mainBtns.innerHTML = quickHtml;
-  }
-
-  function refreshTranslationUI() {
-    refreshQuickStripOnly();
-    const pickerBody = document.getElementById("translation-picker-body");
-    if (pickerBody) pickerBody.innerHTML = renderTranslationPickerFull();
-    syncTranslationButtons();
-  }
-
-  const translationPickerOverlay = document.getElementById("translation-picker-overlay");
-  let translationPickerCloseTimer = null;
-
-  function getTranslationMoreButtons() {
-    return document.querySelectorAll("[data-open-translation-picker]");
-  }
-
-  function closeTranslationPicker() {
-    if (!translationPickerOverlay || translationPickerOverlay.hasAttribute("hidden")) return;
-    getTranslationMoreButtons().forEach(function (btn) {
-      btn.setAttribute("aria-expanded", "false");
-    });
-    translationPickerOverlay.classList.remove("is-visible");
-    unlockPageScroll();
-    if (translationPickerCloseTimer) {
-      clearTimeout(translationPickerCloseTimer);
-      translationPickerCloseTimer = null;
-    }
-    translationPickerCloseTimer = window.setTimeout(function () {
-      translationPickerCloseTimer = null;
-      translationPickerOverlay.setAttribute("hidden", "");
-    }, 380);
-  }
-
-  function focusTranslationQuickControl() {
-    const more = document.querySelector("[data-open-translation-picker]");
-    if (more && typeof more.focus === "function") {
-      more.focus();
-    }
-  }
-
-  function openTranslationPicker() {
-    if (!translationPickerOverlay) return;
-    if (translationPickerCloseTimer) {
-      clearTimeout(translationPickerCloseTimer);
-      translationPickerCloseTimer = null;
-    }
-    const pickerBody = document.getElementById("translation-picker-body");
-    if (pickerBody) {
-      pickerBody.innerHTML = renderTranslationPickerFull();
-      syncTranslationButtons();
-    }
-    translationPickerOverlay.classList.remove("is-visible");
-    translationPickerOverlay.removeAttribute("hidden");
-    lockPageScroll();
-    getTranslationMoreButtons().forEach(function (btn) {
-      btn.setAttribute("aria-expanded", "true");
-    });
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        translationPickerOverlay.classList.add("is-visible");
-      });
-    });
-    window.setTimeout(function () {
-      const c = document.getElementById("translation-picker-close");
-      if (c && typeof c.focus === "function") c.focus();
-    }, 120);
-  }
+    : null;
+  const getActiveTranslationId = translationTools
+    ? translationTools.getActiveTranslationId
+    : function () {
+        return "";
+      };
+  const setActiveTranslationId = translationTools
+    ? translationTools.setActiveTranslationId
+    : function () {};
+  const getHomeDemoTranslationId = translationTools
+    ? translationTools.getHomeDemoTranslationId
+    : function () {
+        return "";
+      };
+  const effectiveTranslationId = translationTools
+    ? translationTools.effectiveTranslationId
+    : function () {
+        return "";
+      };
+  const isQuickPairTranslationId = translationTools
+    ? translationTools.isQuickPairTranslationId
+    : function () {
+        return false;
+      };
+  const notePinnedTranslationChoice = translationTools
+    ? translationTools.notePinnedTranslationChoice
+    : function () {};
+  const removePinnedQuickTranslation = translationTools
+    ? translationTools.removePinnedQuickTranslation
+    : function () {};
+  const getVerseCache = translationTools
+    ? translationTools.getVerseCache
+    : async function () {
+        return null;
+      };
+  const translationIsSourceTextForId = translationTools
+    ? translationTools.translationIsSourceTextForId
+    : function () {
+        return false;
+      };
+  const compareColumnMetaHtmlForTranslation = translationTools
+    ? translationTools.compareColumnMetaHtmlForTranslation
+    : function () {
+        return "";
+      };
+  const refreshQuickStripOnly = translationTools
+    ? translationTools.refreshQuickStripOnly
+    : function () {};
+  const refreshTranslationUI = translationTools
+    ? translationTools.refreshTranslationUI
+    : function () {};
+  const syncTranslationButtons = translationTools
+    ? translationTools.syncTranslationButtons
+    : function () {};
+  const openTranslationPicker = translationTools
+    ? translationTools.openTranslationPicker
+    : function () {};
+  const closeTranslationPicker = translationTools
+    ? translationTools.closeTranslationPicker
+    : function () {};
+  const openTranslationInfoDialog = translationTools
+    ? translationTools.openTranslationInfoDialog
+    : function () {};
+  const focusTranslationQuickControl = translationTools
+    ? translationTools.focusTranslationQuickControl
+    : function () {};
 
   const compareModal = document.getElementById("compare-modal");
   const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
   const compareModalShareBtn = document.getElementById("compare-modal-share");
   const compareModalFavoriteBtn = document.getElementById("compare-modal-favorite");
   const compareModalCloseBtn = document.getElementById("compare-modal-close");
+  const translationPickerOverlay = document.getElementById("translation-picker-overlay");
   let compareModalRowId = null;
   let compareMainRowId = null;
   let lastFocusBeforeModal = null;
   let translationSwapSeq = 0;
 
   function syncGreekScriptClass() {
-    const tModal = translationById[activeTranslationId];
-    const greekModal = !!(tModal && String(tModal.lang) === "el");
-    const mainTid = isCompareHome ? homeDemoTranslationId : activeTranslationId;
-    const tMain = translationById[mainTid];
-    const greekMain = !!(tMain && String(tMain.lang) === "el");
+    const greekModal = translationIsSourceTextForId(getActiveTranslationId());
+    const greekMain = translationIsSourceTextForId(effectiveTranslationId("main"));
     const modalPanel = document.getElementById("compare-modal-panel");
     const mainPanel = document.getElementById("compare-main-panel");
     if (modalPanel) modalPanel.classList.toggle("is-greek-script", greekModal);
@@ -1770,9 +1155,9 @@
     }
     const tBtn = e.target.closest("button[data-translation]");
     if (!tBtn) return;
-    activeTranslationId = tBtn.dataset.translation;
-    if (!isQuickPairTranslationId(activeTranslationId)) {
-      notePinnedTranslationChoice(activeTranslationId);
+    setActiveTranslationId(tBtn.dataset.translation);
+    if (!isQuickPairTranslationId(getActiveTranslationId())) {
+      notePinnedTranslationChoice(getActiveTranslationId());
     }
     invalidateOpenPanels();
     if (translationPickerOverlay && !translationPickerOverlay.hidden) {
@@ -1971,6 +1356,10 @@
     const qRaw = qEl && qEl.value ? qEl.value : "";
     const q = qRaw.trim().toLowerCase();
     const searchAssistState = getSearchAssistState(qRaw);
+    activeSearchChapterQuery =
+      searchAssistState && searchAssistState.mode === "chapters" && searchAssistState.selectedChapter
+        ? { book: searchAssistState.book.id, chapter: searchAssistState.selectedChapter }
+        : null;
     renderSearchAssist(searchAssistState);
     const sec = activeSection;
     const explorerTopic = explorerTopicById.get(explorerActiveTopicId) || null;
@@ -2287,7 +1676,7 @@
     if (row) openCompareMainForRow(row);
   }
 
-  getVerseCache(isCompareHome ? homeDemoTranslationId : activeTranslationId).catch(function () {
+  getVerseCache(isCompareHome ? getHomeDemoTranslationId() : getActiveTranslationId()).catch(function () {
     // Erstes Laden kann bei lokalen file://-Setups scheitern; wir zeigen den Fehler erst im Panel.
   });
 })();

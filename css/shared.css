@@ -1,0 +1,200 @@
+/* Seite „Quellen & Lizenzen“ */
+.sources-page h2 {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.35rem;
+  margin: 2rem 0 0.85rem;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.sources-page h2:first-of-type {
+  margin-top: 0.5rem;
+}
+
+.sources-page .src-intro {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 68ch;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.sources-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-bottom: 0.25rem;
+}
+
+.sources-page th,
+.sources-page td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sources-page th {
+  background: var(--bg-muted);
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sources-page td:first-child {
+  font-weight: 600;
+  color: var(--paper);
+  min-width: 8.5rem;
+}
+
+.sources-page td a {
+  color: var(--accent);
+  word-break: break-word;
+}
+
+.sources-page .src-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0.5rem 0 1.5rem;
+  max-width: 72ch;
+}
+
+.sources-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -0.15rem;
+  padding-bottom: 0.35rem;
+}
+
+.subnav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.subnav a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--bg-muted);
+  transition: color 0.15s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.subnav a:hover {
+  color: var(--paper);
+  border-color: var(--border-strong);
+  background: var(--bg);
+  box-shadow: var(--shadow-card);
+}
+
+.subnav a.here {
+  color: var(--accent-on);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .gospels { justify-content: flex-start; }
+  .text-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.fab-stack {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.scroll-top-fab {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--paper);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+
+.scroll-top-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
+}
+
+.scroll-top-fab svg {
+  display: block;
+  margin-top: -2px;
+}
+
+.scroll-top-fab.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-fab:hover {
+  border-color: var(--accent-strong);
+  color: var(--accent);
+  box-shadow: var(--shadow-elevate);
+}
+
+.scroll-top-fab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.share-feedback {
+  position: fixed;
+  left: 50%;
+  bottom: calc(max(1.1rem, env(safe-area-inset-bottom)) + 0.6rem);
+  z-index: 1205;
+  transform: translate(-50%, 0.5rem);
+  padding: 0.62rem 0.95rem;
+  border-radius: var(--radius-pill);
+  background: rgba(24, 24, 28, 0.92);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  box-shadow: var(--shadow-elevate);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+.share-feedback.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+html[data-theme="dark"] .share-feedback {
+  background: rgba(235, 235, 240, 0.94);
+  color: #151515;
+}
+

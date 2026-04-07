@@ -3,20 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem("synopse-theme");
-        if (t === "dark" || t === "light") {
-          document.documentElement.setAttribute("data-theme", t);
-        } else {
-          document.documentElement.setAttribute("data-theme", "light");
-        }
-      } catch (e) {
-        document.documentElement.setAttribute("data-theme", "light");
-      }
-    })();
-  </script>
+  <script src="/js/theme-head.js"></script>
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
   <meta
@@ -37,17 +24,7 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Synopse der vier Evangelien mit stilisierten farbigen Evangelienlinien." />
-  <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://stats.synopse.ch/js/pa-izu_HGGO6-DSIU1cyxeTg.js"></script>
-  <script>
-    window.plausible = window.plausible || function () {
-      (plausible.q = plausible.q || []).push(arguments);
-    };
-    plausible.init = plausible.init || function (i) {
-      plausible.o = i || {};
-    };
-    plausible.init();
-  </script>
+  <script src="/js/plausible-init.js"></script>
   <title>Quellen &amp; Lizenzen · Synopse der vier Evangelien</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />

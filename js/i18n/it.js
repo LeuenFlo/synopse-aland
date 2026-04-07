@@ -120,7 +120,7 @@
       "it": "Italiano",
       "es": "Spagnolo",
       "la": "Latino",
-      "el": "Ἑλληνικὴ κοινή"
+      "el": "Greco"
     }
   },
   "js": {
@@ -215,7 +215,7 @@
       "quickRemoveTitle": "Rimuovi dall’accesso rapido",
       "quickAria": "Scegli il testo di lettura",
       "quickDefaultDeLabel": "Elberfelder 1905",
-      "quickDefaultElLabel": "Ἑλληνικὴ κοινή",
+      "quickDefaultElLabel": "Greco",
       "morePickerLabelAdd": "Aggiungi altre traduzioni all’accesso rapido",
       "morePickerLabelReplace": "Cambia le traduzioni dell’accesso rapido",
       "morePickerTitleAdd": "Aggiungi altre traduzioni",

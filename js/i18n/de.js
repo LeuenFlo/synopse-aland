@@ -120,7 +120,7 @@
       "it": "Italiano",
       "es": "Español",
       "la": "Latina",
-      "el": "Ἑλληνικὴ κοινή"
+      "el": "Griechisch"
     }
   },
   "js": {
@@ -208,7 +208,7 @@
       "quickRemoveTitle": "Aus Schnellwahl entfernen",
       "quickAria": "Lesetext wählen",
       "quickDefaultDeLabel": "Elberfelder 1905",
-      "quickDefaultElLabel": "Ἑλληνικὴ κοινή",
+      "quickDefaultElLabel": "Griechisch",
       "morePickerLabelAdd": "Weitere Übersetzungen zur Schnellwahl hinzufügen",
       "morePickerLabelReplace": "Übersetzungen in der Schnellwahl wechseln",
       "morePickerTitleAdd": "Weitere Übersetzungen hinzufügen",

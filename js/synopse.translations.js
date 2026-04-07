@@ -71,6 +71,20 @@
       translationById[translation.id] = translation;
     });
 
+    function localizedTranslationShortLabel(translation) {
+      if (!translation) return "";
+      if (translation.id === "greek_slb") {
+        return getTranslationLangLabel("el", translation.label);
+      }
+      return translation.label;
+    }
+
+    function localizedTranslationVerboseLabel(translation) {
+      if (!translation) return "";
+      if (translation.labelLong) return translation.labelLong;
+      return localizedTranslationShortLabel(translation);
+    }
+
     function getPrimaryQuickTranslationId() {
       var uiLang = getUiLang();
       var candidate =
@@ -230,13 +244,13 @@
 
     function activeTranslationLabel() {
       var translation = translationById[activeTranslationId];
-      return translation ? translation.label : t("js.translationUi.unknown");
+      return translation ? localizedTranslationShortLabel(translation) : t("js.translationUi.unknown");
     }
 
     function translationVerboseLabelForId(translationId) {
       var translation = translationById[translationId];
       if (!translation) return t("js.translationUi.unknown");
-      return translation.labelLong || translation.label;
+      return localizedTranslationVerboseLabel(translation);
     }
 
     function translationIsSourceTextForId(translationId) {
@@ -263,7 +277,11 @@
     }
 
     function translationUsesGreekLabelFont(translation) {
-      return !!(translation && String(translation.lang) === "el");
+      return !!(
+        translation &&
+        String(translation.lang) === "el" &&
+        translation.id !== "greek_slb"
+      );
     }
 
     function translationLabelClass(translation) {
@@ -271,7 +289,7 @@
     }
 
     function translationGroupLabelClass(langKey) {
-      return String(langKey) === "el" ? " translation-label--greek" : "";
+      return "";
     }
 
     function getTranslationsByLang() {
@@ -294,16 +312,16 @@
           '<button type="button" class="translation-quick__btn translation-quick__btn--extra" data-translation="' +
           escapeAttr(translation.id) +
           '" title="' +
-          escapeAttr(translation.label) +
+          escapeAttr(localizedTranslationShortLabel(translation)) +
           '">' +
           '<span class="translation-quick__primary' + translationLabelClass(translation) + '">' +
-          escapeHtml(translation.label) +
+          escapeHtml(localizedTranslationShortLabel(translation)) +
           "</span>" +
           "</button>" +
           '<button type="button" class="translation-quick__unpin" data-remove-pinned-translation="' +
           escapeAttr(translation.id) +
           '" aria-label="' +
-          escapeAttr(t("js.translationUi.quickRemove", { label: translation.label })) +
+          escapeAttr(t("js.translationUi.quickRemove", { label: localizedTranslationShortLabel(translation) })) +
           '" title="' +
           escapeAttr(t("js.translationUi.quickRemoveTitle")) +
           '">×</button>' +
@@ -328,14 +346,14 @@
         '<button type="button" class="translation-quick__btn" data-translation="' +
         escapeAttr(primaryQuickTranslation.id) +
         '">' +
-        '<span class="translation-quick__primary' + translationLabelClass(primaryQuickTranslation) + '">' + escapeHtml(primaryQuickTranslation.label) + "</span>" +
+        '<span class="translation-quick__primary' + translationLabelClass(primaryQuickTranslation) + '">' + escapeHtml(localizedTranslationShortLabel(primaryQuickTranslation)) + "</span>" +
         "</button>"
           );
         })() +
         '<button type="button" class="translation-quick__btn" data-translation="' +
         escapeAttr(quickTranslationEl) +
         '">' +
-        '<span class="translation-quick__primary' + translationLabelClass(translationById[quickTranslationEl]) + '">' + escapeHtml(translationById[quickTranslationEl] ? translationById[quickTranslationEl].label : t("js.translationUi.quickDefaultElLabel")) + "</span>" +
+        '<span class="translation-quick__primary' + translationLabelClass(translationById[quickTranslationEl]) + '">' + escapeHtml(translationById[quickTranslationEl] ? localizedTranslationShortLabel(translationById[quickTranslationEl]) : t("js.translationUi.quickDefaultElLabel")) + "</span>" +
         "</button>" +
         extraHtml +
         '<button type="button" class="translation-quick__more" data-open-translation-picker ' +
@@ -362,7 +380,7 @@
           ? '<button type="button" class="translation-info-btn" data-translation-info="' +
             escapeAttr(translation.id) +
             '" aria-label="' +
-            escapeAttr(t("js.translationUi.hintFor", { label: translation.label })) +
+            escapeAttr(t("js.translationUi.hintFor", { label: localizedTranslationShortLabel(translation) })) +
             '" title="' +
             escapeAttr(t("js.translationUi.shortInfo")) +
             '">i</button>'
@@ -375,7 +393,7 @@
           escapeAttr(translation.id) +
           '">' +
           '<span class="translation-picker-card__name' + translationLabelClass(translation) + '">' +
-          escapeHtml(translation.labelLong || translation.label) +
+          escapeHtml(localizedTranslationVerboseLabel(translation)) +
           "</span>" +
           "</button>" +
           infoBtn +
@@ -535,7 +553,7 @@
       if (!translation || !translation.info) return;
       closeTranslationPicker();
       var dialog = document.getElementById("translation-info-dialog");
-      document.getElementById("translation-info-dialog-title").textContent = translation.labelLong || translation.label;
+      document.getElementById("translation-info-dialog-title").textContent = localizedTranslationVerboseLabel(translation);
       var body = document.getElementById("translation-info-dialog-body");
       body.textContent = "";
       body.appendChild(document.createTextNode(translation.info.trimEnd()));

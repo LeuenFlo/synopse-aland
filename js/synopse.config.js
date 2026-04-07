@@ -180,7 +180,7 @@
       { key: "it", label: "Italiano" },
       { key: "es", label: "Español" },
       { key: "la", label: "Latina" },
-      { key: "el", label: "Ἑλληνικὴ κοινή" },
+      { key: "el", label: "Greek" },
     ],
     translations: [
       {
@@ -249,7 +249,7 @@
       {
         id: "greek_slb",
         lang: "el",
-        label: "Ἑλληνικὴ κοινή",
+        label: "Greek",
         path: "/data/translations/greek/greek_slb.json",
         info:
           "Das SBL Greek New Testament (SBLGNT) ist eine kritisch edierte Ausgabe des griechischen Neuen Testaments; die erste Ausgabe erschien 2010 (Society of Biblical Literature). Der Text steht frei in elektronischer Form zur Verfügung und richtet sich an Studium, Lehre und Forschung.",

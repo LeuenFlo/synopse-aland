@@ -798,10 +798,8 @@ html[data-theme="dark"] .site-info-dialog {
 }
 
 .translation-label--greek {
-  font-family: "SBL Greek", "Times New Roman", serif;
-  font-size: 1.1rem;
-  font-feature-settings: "liga" 1, "clig" 1;
-  font-synthesis: none;
+  font-family: "SBL Greek";
+  font-size: 0.88rem;
 }
 
 .translation-quick__more {

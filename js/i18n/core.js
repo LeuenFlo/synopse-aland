@@ -200,6 +200,8 @@ function readPath(obj, key) {
   }
 
   function bindLangSwitches() {
+    var switches = Array.prototype.slice.call(document.querySelectorAll(".lang-switch"));
+
     document.querySelectorAll("[data-lang-switch]").forEach(function (button) {
       if (button.__synopseLangBound) return;
       button.__synopseLangBound = true;
@@ -207,6 +209,28 @@ function readPath(obj, key) {
         setLang(button.getAttribute("data-lang-switch"));
       });
     });
+
+    if (!document.__synopseLangOutsideBound) {
+      document.__synopseLangOutsideBound = true;
+
+      document.addEventListener("click", function (event) {
+        switches.forEach(function (langSwitch) {
+          if (langSwitch.hasAttribute("open") && !langSwitch.contains(event.target)) {
+            langSwitch.removeAttribute("open");
+          }
+        });
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key !== "Escape") return;
+        switches.forEach(function (langSwitch) {
+          if (langSwitch.hasAttribute("open")) {
+            langSwitch.removeAttribute("open");
+          }
+        });
+      });
+    }
+
     syncLangSwitches();
   }
 

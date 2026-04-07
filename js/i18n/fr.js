@@ -36,10 +36,10 @@
     "heroText2": "Ici, tu peux placer ces textes côte à côte et découvrir leurs ressemblances et leurs différences.",
     "designedBy": "<strong>Designed by Flo</strong>",
     "inspiredBy": "Inspiré de la <strong>Synopsis Quattuor Evangeliorum</strong>",
-    "siteInfoTitle": "La synopsis d’Aland",
-    "siteInfoKicker": "Synopsis Quattuor Evangeliorum",
-    "siteInfoP1": "La <strong>Synopsis Quattuor Evangeliorum</strong> de Kurt Aland ordonne les quatre Évangiles <strong>en parallèle par événements</strong> : le même récit apparaît côte à côte sur une même ligne, et les cases vides montrent où un texte manque. Cela rend clairement comparables les ressemblances et les différences entre Matthieu, Marc, Luc et Jean.",
-    "siteInfoP2": "Ce site fonde la comparaison des textes de lecture sur une <strong>structure d’événements</strong> orientée vers la <strong>synopsis</strong> de Kurt Aland."
+    "siteInfoTitle": "Qu’est-ce qu’une synopsis ?",
+    "siteInfoKicker": "Lire et comparer les Évangiles en parallèle",
+    "siteInfoP1": "Dans les Évangiles, beaucoup de choses sont racontées plusieurs fois : souvent de manière semblable, parfois différemment.<br><br>Une <strong>synopsis</strong> place ces récits côte à côte. Cela te permet de voir directement :<br><br><strong>• ce qui est identique</strong><br><strong>• ce qui est différent</strong><br><strong>• et comment les Évangiles se complètent</strong>",
+    "siteInfoP2": "Ce site t’aide à lire les textes en parallèle et à mieux les comprendre.<br><br>Chaque événement, par exemple le baptême de Jésus, est réparti en plusieurs colonnes : <strong>Matthieu</strong>, <strong>Marc</strong>, <strong>Luc</strong> et <strong>Jean</strong>. Tu peux lire et comparer les textes en même temps.<br><br>La structure de ce site s’inspire des synopsis classiques des Évangiles, notamment de celles liées à Kurt Aland, utilisées en théologie et dans l’étude biblique."
   },
   "list": {
     "pageTitle": "Trouver un événement",

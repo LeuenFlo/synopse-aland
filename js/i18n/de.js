@@ -36,10 +36,10 @@
     "heroText2": "Hier kannst du diese Texte nebeneinanderlegen und ihre Gemeinsamkeiten und Unterschiede entdecken.",
     "designedBy": "<strong>Designed by Flo</strong>",
     "inspiredBy": "In Anlehnung an die <strong>Synopsis Quattuor Evangeliorum</strong>",
-    "siteInfoTitle": "Die Aland-Synopse",
-    "siteInfoKicker": "Synopsis Quattuor Evangeliorum",
-    "siteInfoP1": "Kurt Alands <strong>Synopsis Quattuor Evangeliorum</strong> ordnet die vier Evangelien <strong>parallel nach Ereignissen</strong>: dieselbe Erzählung steht in einer Zeile nebeneinander, leere Felder zeigen, wo ein Text fehlt. So werden Übereinstimmungen und Unterschiede zwischen Matthäus, Markus, Lukas und Johannes übersichtlich vergleichbar — die übliche Grundlage synoptischer Arbeit.",
-    "siteInfoP2": "Diese Website baut den Lesetext-Vergleich auf einer an Kurt Alands <strong>Synopsis</strong> orientierten <strong>Ereignisstruktur</strong> auf."
+    "siteInfoTitle": "Was ist eine Synopse?",
+    "siteInfoKicker": "Evangelien parallel lesen und vergleichen",
+    "siteInfoP1": "In den Evangelien wird vieles mehrfach erzählt – oft ähnlich, manchmal unterschiedlich.<br><br>Eine <strong>Synopse</strong> stellt diese Berichte nebeneinander dar. So kannst du direkt sehen:<br><br><strong>• was gleich ist</strong><br><strong>• was unterschiedlich ist</strong><br><strong>• und wie die Evangelien sich ergänzen</strong>",
+    "siteInfoP2": "Diese Website hilft dir dabei, die Texte parallel zu lesen und besser zu verstehen.<br><br>Jedes Ereignis (z. B. die Taufe Jesu) wird in mehrere Spalten aufgeteilt: <strong>Matthäus</strong>, <strong>Markus</strong>, <strong>Lukas</strong> und <strong>Johannes</strong>. Du kannst die Texte gleichzeitig lesen und vergleichen.<br><br>Die Struktur dieser Website orientiert sich an klassischen Evangelien-Synopsen (u. a. nach Kurt Aland), die in Theologie und Bibelstudium verwendet werden."
   },
   "list": {
     "pageTitle": "Ereignis suchen",

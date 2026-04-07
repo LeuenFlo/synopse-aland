@@ -36,10 +36,10 @@
     "heroText2": "Aquí puedes colocar estos textos uno al lado del otro y descubrir sus semejanzas y diferencias.",
     "designedBy": "<strong>Designed by Flo</strong>",
     "inspiredBy": "Inspirado en la <strong>Synopsis Quattuor Evangeliorum</strong>",
-    "siteInfoTitle": "La sinopsis de Aland",
-    "siteInfoKicker": "Synopsis Quattuor Evangeliorum",
-    "siteInfoP1": "La <strong>Synopsis Quattuor Evangeliorum</strong> de Kurt Aland organiza los cuatro Evangelios <strong>en paralelo por acontecimientos</strong>: el mismo relato aparece uno al lado del otro en una misma fila, y las celdas vacías muestran dónde falta un texto. Así, las semejanzas y diferencias entre Mateo, Marcos, Lucas y Juan pueden compararse claramente.",
-    "siteInfoP2": "Este sitio basa la comparación de textos de lectura en una <strong>estructura de acontecimientos</strong> orientada a la <strong>sinopsis</strong> de Kurt Aland."
+    "siteInfoTitle": "¿Qué es una sinopsis?",
+    "siteInfoKicker": "Leer y comparar los Evangelios en paralelo",
+    "siteInfoP1": "En los Evangelios muchas cosas se cuentan más de una vez: a menudo de forma parecida, a veces de forma distinta.<br><br>Una <strong>sinopsis</strong> coloca estos relatos uno al lado del otro. Así puedes ver directamente:<br><br><strong>• qué es igual</strong><br><strong>• qué es diferente</strong><br><strong>• y cómo se complementan los Evangelios</strong>",
+    "siteInfoP2": "Este sitio te ayuda a leer los textos en paralelo y a comprenderlos mejor.<br><br>Cada acontecimiento, por ejemplo el bautismo de Jesús, se divide en varias columnas: <strong>Mateo</strong>, <strong>Marcos</strong>, <strong>Lucas</strong> y <strong>Juan</strong>. Puedes leer y comparar los textos al mismo tiempo.<br><br>La estructura de este sitio se inspira en sinopsis clásicas de los Evangelios, entre ellas las asociadas a Kurt Aland, utilizadas en teología y estudio bíblico."
   },
   "list": {
     "pageTitle": "Buscar un acontecimiento",

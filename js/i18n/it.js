@@ -36,10 +36,10 @@
     "heroText2": "Qui puoi affiancare questi testi e scoprire le loro somiglianze e differenze.",
     "designedBy": "<strong>Designed by Flo</strong>",
     "inspiredBy": "Ispirato alla <strong>Synopsis Quattuor Evangeliorum</strong>",
-    "siteInfoTitle": "La sinossi di Aland",
-    "siteInfoKicker": "Synopsis Quattuor Evangeliorum",
-    "siteInfoP1": "La <strong>Synopsis Quattuor Evangeliorum</strong> di Kurt Aland dispone i quattro Vangeli <strong>in parallelo per eventi</strong>: lo stesso racconto appare affiancato sulla stessa riga e le celle vuote mostrano dove un testo manca. In questo modo somiglianze e differenze tra Matteo, Marco, Luca e Giovanni diventano chiaramente confrontabili.",
-    "siteInfoP2": "Questo sito imposta il confronto dei testi di lettura su una <strong>struttura di eventi</strong> orientata alla <strong>sinossi</strong> di Kurt Aland."
+    "siteInfoTitle": "Che cos’è una sinossi?",
+    "siteInfoKicker": "Leggere e confrontare i Vangeli in parallelo",
+    "siteInfoP1": "Nei Vangeli molte cose vengono raccontate più di una volta: spesso in modo simile, a volte in modo diverso.<br><br>Una <strong>sinossi</strong> mette questi racconti uno accanto all’altro. In questo modo puoi vedere subito:<br><br><strong>• che cosa è uguale</strong><br><strong>• che cosa è diverso</strong><br><strong>• e come i Vangeli si completano a vicenda</strong>",
+    "siteInfoP2": "Questo sito ti aiuta a leggere i testi in parallelo e a comprenderli meglio.<br><br>Ogni evento, per esempio il battesimo di Gesù, è suddiviso in più colonne: <strong>Matteo</strong>, <strong>Marco</strong>, <strong>Luca</strong> e <strong>Giovanni</strong>. Puoi leggere e confrontare i testi contemporaneamente.<br><br>La struttura di questo sito si ispira alle sinossi classiche dei Vangeli, tra cui quelle legate a Kurt Aland, usate nella teologia e nello studio biblico."
   },
   "list": {
     "pageTitle": "Trova un evento",

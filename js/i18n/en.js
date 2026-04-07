@@ -36,10 +36,10 @@
     "heroText2": "Here you can place these texts side by side and discover their similarities and differences.",
     "designedBy": "<strong>Designed by Flo</strong>",
     "inspiredBy": "Inspired by the <strong>Synopsis Quattuor Evangeliorum</strong>",
-    "siteInfoTitle": "The Aland Synopsis",
-    "siteInfoKicker": "Synopsis Quattuor Evangeliorum",
-    "siteInfoP1": "Kurt Aland’s <strong>Synopsis Quattuor Evangeliorum</strong> arranges the four Gospels <strong>in parallel by events</strong>: the same narrative appears side by side in a single row, and empty cells show where a text is missing. This makes similarities and differences between Matthew, Mark, Luke, and John clearly comparable — the usual basis of synoptic work.",
-    "siteInfoP2": "This website builds its reading-text comparison on an <strong>event structure</strong> oriented toward Kurt Aland’s <strong>synopsis</strong>."
+    "siteInfoTitle": "What Is a Synopsis?",
+    "siteInfoKicker": "Read and compare the Gospels side by side",
+    "siteInfoP1": "Many things are told more than once in the Gospels, often similarly, sometimes differently.<br><br>A <strong>synopsis</strong> places these accounts next to each other. This lets you see directly:<br><br><strong>• what is the same</strong><br><strong>• what is different</strong><br><strong>• and how the Gospels complement one another</strong>",
+    "siteInfoP2": "This website helps you read the texts in parallel and understand them more clearly.<br><br>Each event, for example the baptism of Jesus, is divided into several columns: <strong>Matthew</strong>, <strong>Mark</strong>, <strong>Luke</strong>, and <strong>John</strong>. You can read and compare the texts at the same time.<br><br>The structure of this website is based on classic Gospel synopses, including those associated with Kurt Aland, as used in theology and Bible study."
   },
   "list": {
     "pageTitle": "Find an Event",

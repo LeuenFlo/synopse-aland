@@ -208,7 +208,8 @@ html[data-theme="dark"] .theme-switch:hover {
     border-color 0.18s ease,
     background-color 0.18s ease,
     color 0.18s ease,
-    transform 0.18s ease;
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
 }
 
 .lang-switch__trigger::-webkit-details-marker {
@@ -220,6 +221,8 @@ html[data-theme="dark"] .theme-switch:hover {
   border-color: var(--accent-strong);
   background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
   color: var(--accent-deep);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--accent-soft) 28%, transparent);
+  transform: translateY(-1px);
 }
 
 .lang-switch__trigger:focus-visible {
@@ -230,6 +233,13 @@ html[data-theme="dark"] .theme-switch:hover {
 .lang-switch__icon {
   display: block;
   pointer-events: none;
+  transition:
+    transform 0.28s ease,
+    opacity 0.18s ease;
+}
+
+.lang-switch[open] .lang-switch__icon {
+  transform: rotate(-14deg) scale(1.04);
 }
 
 .lang-switch__menu {
@@ -246,6 +256,8 @@ html[data-theme="dark"] .theme-switch:hover {
   background: color-mix(in srgb, var(--panel) 94%, transparent);
   box-shadow: var(--shadow-elevate);
   backdrop-filter: blur(14px);
+  transform-origin: top right;
+  animation: lang-switch-menu-in 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lang-switch__btn {
@@ -265,17 +277,71 @@ html[data-theme="dark"] .theme-switch:hover {
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
-    transform 0.18s ease;
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .lang-switch__btn.is-active {
   background: color-mix(in srgb, var(--accent-soft) 75%, transparent);
   color: var(--accent-deep);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-strong) 28%, transparent);
+}
+
+.lang-switch__btn:hover {
+  background: color-mix(in srgb, var(--accent-soft) 54%, transparent);
+  color: var(--accent-deep);
+  transform: translateY(-1px);
 }
 
 .lang-switch__btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.lang-switch[open] .lang-switch__btn {
+  animation: lang-switch-item-in 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.lang-switch[open] .lang-switch__btn:nth-child(1) {
+  animation-delay: 0.02s;
+}
+
+.lang-switch[open] .lang-switch__btn:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.lang-switch[open] .lang-switch__btn:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+.lang-switch[open] .lang-switch__btn:nth-child(4) {
+  animation-delay: 0.11s;
+}
+
+.lang-switch[open] .lang-switch__btn:nth-child(5) {
+  animation-delay: 0.14s;
+}
+
+@keyframes lang-switch-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lang-switch-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .theme-switch-label {

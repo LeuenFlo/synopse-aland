@@ -797,6 +797,13 @@ html[data-theme="dark"] .site-info-dialog {
   line-height: 1.25;
 }
 
+.translation-label--greek {
+  font-family: "SBL Greek", "Times New Roman", serif;
+  font-size: 1.1rem;
+  font-feature-settings: "liga" 1, "clig" 1;
+  font-synthesis: none;
+}
+
 .translation-quick__more {
   flex: 1 1 100%;
   display: inline-flex;
@@ -1439,4 +1446,3 @@ footer p {
 footer p:last-child {
   margin-bottom: 0;
 }
-

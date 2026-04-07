@@ -182,6 +182,102 @@ html[data-theme="dark"] .theme-switch:hover {
   flex-shrink: 0;
 }
 
+.lang-switch {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-switch[open] {
+  z-index: 30;
+}
+
+.lang-switch__trigger {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.lang-switch__trigger::-webkit-details-marker {
+  display: none;
+}
+
+.lang-switch__trigger:hover,
+.lang-switch[open] .lang-switch__trigger {
+  border-color: var(--accent-strong);
+  background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
+  color: var(--accent-deep);
+}
+
+.lang-switch__trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lang-switch__icon {
+  display: block;
+  pointer-events: none;
+}
+
+.lang-switch__menu {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  min-width: 4.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.32rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+  box-shadow: var(--shadow-elevate);
+  backdrop-filter: blur(14px);
+}
+
+.lang-switch__btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  width: 100%;
+  padding: 0.42rem 0.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.lang-switch__btn.is-active {
+  background: color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  color: var(--accent-deep);
+}
+
+.lang-switch__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .theme-switch-label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -913,4 +1009,3 @@ html[data-theme="dark"] .row-head:hover {
   align-items: start;
   /* Spaltenzahl wird per JS gesetzt (nur Bücher mit Perikope) */
 }
-

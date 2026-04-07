@@ -4,17 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <script src="/js/theme-head.js"></script>
+  <script src="/js/i18n/de.js"></script>
+  <script src="/js/i18n/en.js"></script>
+  <script src="/js/i18n/fr.js"></script>
+  <script src="/js/i18n/it.js"></script>
+  <script src="/js/i18n/es.js"></script>
+  <script src="/js/i18n/events/de.js"></script>
+  <script src="/js/i18n/events/en.js"></script>
+  <script src="/js/i18n/events/fr.js"></script>
+  <script src="/js/i18n/events/it.js"></script>
+  <script src="/js/i18n/events/es.js"></script>
+  <script src="/js/i18n/core.js"></script>
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
   <meta
+    id="home-description-meta"
     name="description"
     content="Die Gute Botschaft aus vier Perspektiven: Ereignisse der Evangelien parallel lesen, vergleichen und entdecken."
   />
   <meta property="og:locale" content="de_CH" />
   <meta property="og:site_name" content="Synopse der vier Evangelien" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Synopse der vier Evangelien" />
+  <meta id="home-og-title" property="og:title" content="Synopse der vier Evangelien" />
   <meta
+    id="home-og-description"
     property="og:description"
     content="Ereignisse der Evangelien parallel lesen, vergleichen und entdecken."
   />
@@ -25,7 +38,7 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Synopse der vier Evangelien mit stilisierten farbigen Evangelienlinien." />
   <script src="/js/plausible-init.js"></script>
-  <title>Synopse der vier Evangelien</title>
+  <title id="home-title-meta">Synopse der vier Evangelien</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -45,8 +58,25 @@
       >
         i
       </button>
-      <h1 class="compare-home-header__mark">Synopse der vier Evangelien</h1>
+      <h1 class="compare-home-header__mark" id="home-site-mark">Synopse der vier Evangelien</h1>
       <div class="compare-home-header__right">
+        <details class="lang-switch">
+          <summary class="lang-switch__trigger" aria-label="Language" title="Language">
+            <svg class="lang-switch__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18"></path>
+              <path d="M12 3a14 14 0 0 1 0 18"></path>
+              <path d="M12 3a14 14 0 0 0 0 18"></path>
+            </svg>
+          </summary>
+          <div class="lang-switch__menu" role="group" aria-label="Language">
+            <button type="button" class="lang-switch__btn" data-lang-switch="de">DE</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="en">EN</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="fr">FR</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="it">IT</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="es">ES</button>
+          </div>
+        </details>
         <div class="compare-home-theme">
           <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
           <button
@@ -75,8 +105,8 @@
               Die Gute Botschaft<br><i style="font-size: 0.82em;">aus vier Perspektiven</i>
             </h2>
             <div class="compare-home-hero__sub">
-              <p>Ist dir auch aufgefallen, dass viele Ereignisse in mehreren Evangelien auftauchen?</p>
-              <p>Hier kannst du diese Texte nebeneinanderlegen und ihre Gemeinsamkeiten und Unterschiede entdecken.</p>
+              <p id="home-hero-sub-1">Ist dir auch aufgefallen, dass viele Ereignisse in mehreren Evangelien auftauchen?</p>
+              <p id="home-hero-sub-2">Hier kannst du diese Texte nebeneinanderlegen und ihre Gemeinsamkeiten und Unterschiede entdecken.</p>
             </div>
             <div class="compare-home-hero__actions">
               <a href="/liste/" class="compare-home-pill compare-home-pill--primary">
@@ -84,7 +114,7 @@
                   <circle cx="11" cy="11" r="7" />
                   <path d="M20 20l-3.2-3.2" />
                 </svg>
-                Ereignis suchen
+                <span id="home-open-search-label">Ereignis suchen</span>
               </a>
               <button type="button" class="compare-home-pill compare-home-pill--ghost" id="compare-home-open-example">
                 Beispiel ansehen
@@ -94,8 +124,8 @@
         </section>
 
         <section class="compare-home-info-bar" aria-label="Erklärung">
-          <p><strong>Designed by Flo</strong></p>
-          <p>In Anlehung an die <strong>Synopsis Quattuor Evangeliorum</strong></p>
+          <p id="home-designed-by"><strong>Designed by Flo</strong></p>
+          <p id="home-inspired-by">In Anlehnung an die <strong>Synopsis Quattuor Evangeliorum</strong></p>
         </section>
       </div>
     </main>
@@ -170,21 +200,21 @@
       <button type="button" class="translation-info-dialog-x" id="site-info-dialog-close" aria-label="Schliessen">×</button>
       <header class="site-info-dialog__head">
         <h4 id="site-info-dialog-title" class="translation-info-dialog-h site-info-dialog__title">Die Aland-Synopse</h4>
-        <p class="site-info-dialog__kicker">Synopsis Quattuor Evangeliorum</p>
+        <p class="site-info-dialog__kicker" id="site-info-dialog-kicker">Synopsis Quattuor Evangeliorum</p>
       </header>
       <div class="site-info-intro">
-        <p>
+        <p id="site-info-dialog-p1">
           Kurt Alands <strong>Synopsis Quattuor Evangeliorum</strong> ordnet die vier Evangelien <strong>parallel nach Ereignissen</strong>: dieselbe Erzählung steht in
           einer Zeile nebeneinander, leere Felder zeigen, wo ein Text fehlt. So werden Übereinstimmungen und Unterschiede zwischen Matthäus, Markus, Lukas und Johannes
           übersichtlich vergleichbar — die übliche Grundlage synoptischer Arbeit.
         </p>
-        <p>
-          Diese Website nutzt dieselbe <strong>Ereignisstruktur</strong> für den Lesetext-Vergleich und folgt der Synopsis nach <strong>Kurt Aland</strong>.
+        <p id="site-info-dialog-p2">
+          Diese Website baut den Lesetext-Vergleich auf einer an Kurt Alands <strong>Synopsis</strong> orientierten <strong>Ereignisstruktur</strong> auf.
         </p>
       </div>
       <footer class="site-info-footer">
         <p class="site-info-footer__links">
-          <a href="/sources/">Quellen &amp; Lizenzen</a>
+          <a href="/sources/" id="site-info-dialog-sources-link">Quellen &amp; Lizenzen</a>
         </p>
       </footer>
     </div>

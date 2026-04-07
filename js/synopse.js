@@ -2,10 +2,98 @@
   const data = window.PARALLELS_DATA;
   const listEl = document.getElementById("list");
   const isCompareHome = document.body.classList.contains("compare-home");
+  const i18n = window.SYNOPSE_I18N || null;
+  if (i18n && typeof i18n.initPage === "function") {
+    i18n.initPage();
+  }
+  const t = i18n
+    ? i18n.t
+    : function (key, vars) {
+        const fallback = {
+          "js.missingData": "Keine Daten — <code>data/parallels_data.js</code> fehlt oder enthält keine Einträge.",
+          "js.eventFallback": "Ereignis",
+          "js.shareEvent": "Ereignis teilen",
+          "js.bookmark": "Merken",
+          "js.bookmarked": "Gemerkt",
+          "js.eventsFor": "Ereignisse zu {label}",
+          "js.filterModeKicker": "Filtermodus",
+          "js.filterModeTitle": "Wähle oben einen Filter",
+          "js.filterModeText":
+            "Sobald du einen Filter setzt, erscheinen hier die passenden Ereignisse. Du kannst auch direkt nach einem Ereignistitel suchen.",
+          "js.starterTitle": "Ereignisse, die dich interessieren könnten",
+          "js.starterText":
+            "Beim Lesen kannst du Ereignisse für später merken. Bis dahin findest du unten ein paar gute Einstiege, mit denen du die Synopse direkt ausprobieren kannst.",
+          "js.loadingGreek": "Lade griechischen Text …",
+          "js.loadingTranslation": "Lade Übersetzung …",
+          "js.greekLoadFailed": "Der griechische Text konnte nicht geladen werden.",
+          "js.translationLoadFailed": "Übersetzung konnte nicht geladen werden.",
+          "js.noGreekData": "Keine Textdaten verfügbar.",
+          "js.noTranslationData": "Übersetzungsdaten nicht verfügbar.",
+          "js.noLinkedGospelText": "In dieser Zeile ist kein Evangelientext verknüpft.",
+          "js.translationPrefix": "Übersetzung: {label}",
+          "js.chooseChapterToSeeEvents": "Kapitel wählen, um passende Ereignisse zu sehen.",
+          "js.noEventForChapter": "Kein Ereignis gefunden, das dieses Kapitel direkt enthält.",
+          "js.noResults": "Keine Treffer — Filter lockern oder Suche ändern.",
+          "js.countLines": "{count} von {total} Zeilen",
+          "js.chapterActiveSuffix": " (Bibelstelle aktiv)",
+          "js.filterActiveSuffix": " (Filter aktiv)",
+          "js.yourBookmarks": "Deine Merkliste",
+          "js.chooseFilterOrSearch": "Filter oder Suche wählen",
+          "js.chooseChapter": "Kapitel wählen",
+          "js.books.matthew": "Matthäus",
+          "js.books.mark": "Markus",
+          "js.books.luke": "Lukas",
+          "js.books.john": "Johannes",
+          "js.openCompareAria": "Versvergleich in Fenster öffnen",
+        };
+        let value = fallback[key] || key;
+        return String(value).replace(/\{(\w+)\}/g, function (_, name) {
+          return vars && Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : "";
+        });
+      };
+  const getRowTitle = i18n
+    ? i18n.getRowTitle
+    : function (row) {
+        return (row && (row.title_de || row.title)) || t("js.eventFallback");
+      };
+  const getRowSection = i18n
+    ? i18n.getRowSection
+    : function (row) {
+        return (row && (row.section_de || row.section)) || "";
+      };
+  const getBookLabel = i18n
+    ? i18n.getBookLabel
+    : function (bookId) {
+        return t("js.books." + bookId);
+      };
+  const getExplorerGroupLabel = i18n
+    ? i18n.getExplorerGroupLabel
+    : function (_, fallback) {
+        return fallback || "";
+      };
+  const getExplorerTopicLabel = i18n
+    ? i18n.getExplorerTopicLabel
+    : function (_, fallback) {
+        return fallback || "";
+      };
+  const getPresetGroupLabel = i18n
+    ? i18n.getPresetGroupLabel
+    : function (_, fallback) {
+        return fallback || "";
+      };
+  const getPresetLabel = i18n
+    ? i18n.getPresetLabel
+    : function (_, fallback) {
+        return fallback || "";
+      };
+  const getPresetTitle = i18n
+    ? i18n.getPresetTitle
+    : function (_, fallback) {
+        return fallback || "";
+      };
 
   if (!Array.isArray(data) || !data.length) {
-    const msg =
-      '<div class="empty">Keine Daten — <code>data/parallels_data.js</code> fehlt oder enthält keine Einträge.</div>';
+    const msg = '<div class="empty">' + t("js.missingData") + "</div>";
     if (listEl) {
       listEl.innerHTML = msg;
     } else {
@@ -93,9 +181,14 @@
         searchAssistEl: searchAssistEl,
         escapeHtml: escapeHtml,
         escapeAttr: escapeAttr,
+        getVerseSearchBooks: i18n ? i18n.getVerseSearchBooks : null,
       })
     : null;
-  const verseSearchBooks = searchTools ? searchTools.verseSearchBooks : {};
+  const getVerseSearchBooks = searchTools
+    ? searchTools.getVerseSearchBooks
+    : function () {
+        return {};
+      };
   const getSearchAssistState = searchTools
     ? searchTools.getSearchAssistState
     : function () {
@@ -122,6 +215,16 @@
     ? searchTools.dedupeSearchRowsByReferences
     : function (rows) {
         return rows || [];
+      };
+  const normalizeSearchToken = searchTools
+    ? searchTools.normalizeSearchToken
+    : function (value) {
+        return String(value || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/ß/g, "ss")
+          .trim();
       };
   function createAlandTopic(id, label, startAland, endAland) {
     const alandNos = [];
@@ -163,16 +266,16 @@
     if (topic) {
       return topic.groupLabel + " · " + stripExplorerTopicNumber(topic.label);
     }
-    return stripExplorerTopicNumber(row.section_de || row.section || "");
+    return stripExplorerTopicNumber(getRowSection(row) || "");
   }
 
   const SYNOPSE_CONFIG = window.SYNOPSE_CONFIG || {};
   const explorerTopicGroups = (SYNOPSE_CONFIG.explorerTopicGroups || []).map(function (group) {
     return {
       id: group.id,
-      label: group.label,
+      label: getExplorerGroupLabel(group.id, group.label),
       items: (group.items || []).map(function (item) {
-        return createAlandTopicFromList(item.id, item.label, item.alandNos || []);
+        return createAlandTopicFromList(item.id, getExplorerTopicLabel(item.id, item.label), item.alandNos || []);
       }),
     };
   });
@@ -230,7 +333,18 @@
     return r.in_john && !r.in_matthew && !r.in_mark && !r.in_luke;
   }
 
-  const presetGroups = SYNOPSE_CONFIG.presetGroups || [];
+  const presetGroups = (SYNOPSE_CONFIG.presetGroups || []).map(function (group) {
+    return {
+      id: group.id,
+      label: getPresetGroupLabel(group.id, group.label),
+      presets: (group.presets || []).map(function (preset) {
+        return Object.assign({}, preset, {
+          label: getPresetLabel(preset.id, preset.label),
+          title: getPresetTitle(preset.id, preset.title),
+        });
+      }),
+    };
+  });
   const presetEl = document.getElementById("presets");
   let activePreset = "all";
   /** Nach Deep-Link (?section=…) erste Trefferzeile ins Sichtfeld scrollen. */
@@ -295,9 +409,8 @@
     ? shareToolsFactory({
         shareFeedbackEl: shareFeedbackEl,
         buildPericopeUrl: buildPericopeUrl,
-        getRowTitle: function (row) {
-          return row && (row.title_de || row.title || "Ereignis");
-        },
+        t: t,
+        getRowTitle: getRowTitle,
       })
     : null;
   const sharePericopeRow = shareTools
@@ -308,16 +421,16 @@
 
   function renderFilterLanding() {
     return `<section class="start-state start-state--filter" aria-label="Filter-Hinweis">
-      <p class="start-state__kicker">Filtermodus</p>
-      <h2 class="start-state__title">Wähle oben einen Filter</h2>
-      <p class="start-state__text">Sobald du einen Filter setzt, erscheinen hier die passenden Ereignisse. Du kannst auch direkt nach einem Ereignistitel suchen.</p>
+      <p class="start-state__kicker">${t("js.filterModeKicker")}</p>
+      <h2 class="start-state__title">${t("js.filterModeTitle")}</h2>
+      <p class="start-state__text">${t("js.filterModeText")}</p>
     </section>`;
   }
 
   function renderStarterLanding() {
     return `<section class="start-state" aria-label="Einstieg in die Ereignisse">
-      <h2 class="start-state__title">Ereignisse, die dich interessieren könnten</h2>
-      <p class="start-state__text">Beim Lesen kannst du Ereignisse für später merken. Bis dahin findest du unten ein paar gute Einstiege, mit denen du die Synopse direkt ausprobieren kannst.</p>
+      <h2 class="start-state__title">${t("js.starterTitle")}</h2>
+      <p class="start-state__text">${t("js.starterText")}</p>
     </section>`;
   }
 
@@ -354,7 +467,7 @@
   function updateSectionListHeading() {
     if (!sectionListHeadingEl || !sectionListHeadingTitleEl) return;
     if (activeSearchChapterQuery) {
-      sectionListHeadingTitleEl.textContent = "Ereignisse zu " + formatVerseQueryLabel(activeSearchChapterQuery);
+      sectionListHeadingTitleEl.textContent = t("js.eventsFor", { label: formatVerseQueryLabel(activeSearchChapterQuery) });
       sectionListHeadingEl.hidden = false;
       if (sectionListHeadingClearEl) {
         sectionListHeadingClearEl.hidden = false;
@@ -380,7 +493,7 @@
       return;
     }
     const sample = data.find((r) => r.section === sec);
-    const label = sample && sample.section_de ? sample.section_de : sec;
+    const label = sample ? getRowSection(sample) : sec;
     sectionListHeadingTitleEl.textContent = label;
     sectionListHeadingEl.hidden = false;
     if (sectionListHeadingClearEl) {
@@ -608,13 +721,20 @@
         translationLangOrder: SYNOPSE_CONFIG.translationLangOrder || [],
         translations: SYNOPSE_CONFIG.translations || [],
         quickTranslationDe: SYNOPSE_CONFIG.quickTranslationDe || "elberfelder_1905",
+        quickTranslationEn: SYNOPSE_CONFIG.quickTranslationEn || "web",
+        quickTranslationFr: SYNOPSE_CONFIG.quickTranslationFr || "segond_1910",
+        quickTranslationIt: SYNOPSE_CONFIG.quickTranslationIt || "riveduta_1927",
+        quickTranslationEs: SYNOPSE_CONFIG.quickTranslationEs || "sparv",
         quickTranslationEl: SYNOPSE_CONFIG.quickTranslationEl || "greek_slb",
+        getUiLang: i18n ? i18n.getLang : null,
         isCompareHome: isCompareHome,
         initialHomeDemoTranslationId: initialHomeDemoTranslationId,
         escapeHtml: escapeHtml,
         escapeAttr: escapeAttr,
         lockPageScroll: lockPageScroll,
         unlockPageScroll: unlockPageScroll,
+        t: t,
+        getTranslationLangLabel: i18n ? i18n.getTranslationLangLabel : null,
       })
     : null;
   const getActiveTranslationId = translationTools
@@ -747,7 +867,7 @@
       alandEl.textContent = "";
       alandEl.hidden = true;
     }
-    if (titleEl) titleEl.textContent = row.title_de || row.title;
+    if (titleEl) titleEl.textContent = getRowTitle(row);
     if (secEl) secEl.textContent = detailSectionLabelForRow(row);
     syncCompareModalShareButton(row);
     syncCompareModalFavoriteButton(row);
@@ -787,18 +907,18 @@
       compareModalFavoriteBtn.hidden = true;
       compareModalFavoriteBtn.classList.remove("is-active");
       compareModalFavoriteBtn.setAttribute("aria-pressed", "false");
-      compareModalFavoriteBtn.setAttribute("aria-label", "Merken");
-      compareModalFavoriteBtn.title = "Merken";
-      if (labelEl) labelEl.textContent = "Merken";
+      compareModalFavoriteBtn.setAttribute("aria-label", t("js.bookmark"));
+      compareModalFavoriteBtn.title = t("js.bookmark");
+      if (labelEl) labelEl.textContent = t("js.bookmark");
       return;
     }
     const active = isFavoriteAlandNo(row.aland_no);
     compareModalFavoriteBtn.hidden = false;
     compareModalFavoriteBtn.classList.toggle("is-active", active);
     compareModalFavoriteBtn.setAttribute("aria-pressed", active ? "true" : "false");
-    compareModalFavoriteBtn.setAttribute("aria-label", active ? "Gemerkt" : "Merken");
-    compareModalFavoriteBtn.title = active ? "Gemerkt" : "Merken";
-    if (labelEl) labelEl.textContent = active ? "Gemerkt" : "Merken";
+    compareModalFavoriteBtn.setAttribute("aria-label", active ? t("js.bookmarked") : t("js.bookmark"));
+    compareModalFavoriteBtn.title = active ? t("js.bookmarked") : t("js.bookmark");
+    if (labelEl) labelEl.textContent = active ? t("js.bookmarked") : t("js.bookmark");
   }
 
   function syncCompareModalShareButton(row) {
@@ -812,9 +932,9 @@
     compareModalShareBtn.setAttribute("data-share-aland", String(row.aland_no));
     compareModalShareBtn.setAttribute(
       "aria-label",
-      "Ereignis teilen: " + (row.title_de || row.title || "Ereignis"),
+      t("js.shareEvent") + ": " + getRowTitle(row),
     );
-    compareModalShareBtn.title = "Ereignis teilen";
+    compareModalShareBtn.title = t("js.shareEvent");
   }
 
   const explorerEl = document.getElementById("event-explorer");
@@ -961,7 +1081,7 @@
       alandEl.textContent = "";
       alandEl.hidden = true;
     }
-    if (titleEl) titleEl.textContent = row.title_de || row.title;
+    if (titleEl) titleEl.textContent = getRowTitle(row);
     if (secEl) secEl.textContent = detailSectionLabelForRow(row);
     grid.dataset.filled = "0";
     grid.classList.remove("is-swapping");
@@ -1184,7 +1304,7 @@
     if (!grid || grid.dataset.filled === "1") return;
     grid.innerHTML =
       '<p class="compare-note">' +
-      (translationIsSourceTextForId(tid) ? "Lade griechischen Text …" : "Lade Übersetzung …") +
+      (translationIsSourceTextForId(tid) ? t("js.loadingGreek") : t("js.loadingTranslation")) +
       "</p>";
 
     let cache = null;
@@ -1200,8 +1320,8 @@
       grid.innerHTML =
         '<p class="compare-note">' +
         (translationIsSourceTextForId(tid)
-          ? "Der griechische Text konnte nicht geladen werden."
-          : "Übersetzung konnte nicht geladen werden.") +
+          ? t("js.greekLoadFailed")
+          : t("js.translationLoadFailed")) +
         escapeHtml(detail) +
         "</p>";
       grid.dataset.filled = "1";
@@ -1212,7 +1332,7 @@
     if (!cache || !SC) {
       grid.innerHTML =
         '<p class="compare-note">' +
-        (translationIsSourceTextForId(tid) ? "Keine Textdaten verfügbar." : "Übersetzungsdaten nicht verfügbar.") +
+        (translationIsSourceTextForId(tid) ? t("js.noGreekData") : t("js.noTranslationData")) +
         "</p>";
       grid.dataset.filled = "1";
       triggerCompareGridReveal(grid);
@@ -1221,16 +1341,16 @@
 
     const { idx, maxV, aliases } = cache;
     const cols = [
-      { book: 40, label: "Matthäus", cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
-      { book: 41, label: "Markus", cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
-      { book: 42, label: "Lukas", cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
-      { book: 43, label: "Johannes", cls: "jn", inKey: "in_john", refKey: "ref_john" },
+      { book: 40, label: getBookLabel("matthew"), cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
+      { book: 41, label: getBookLabel("mark"), cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
+      { book: 42, label: getBookLabel("luke"), cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
+      { book: 43, label: getBookLabel("john"), cls: "jn", inKey: "in_john", refKey: "ref_john" },
     ];
 
     const active = cols.filter((c) => r[c.inKey]);
     if (!active.length) {
       grid.innerHTML =
-        '<p class="compare-note">In dieser Zeile ist kein Evangelientext verknüpft.</p>';
+        '<p class="compare-note">' + t("js.noLinkedGospelText") + "</p>";
       grid.dataset.filled = "1";
       grid.style.gridTemplateColumns = "";
       triggerCompareGridReveal(grid);
@@ -1330,10 +1450,10 @@
   }
 
   function renderRow(r) {
-    const title = escapeHtml(r.title_de || r.title);
+    const title = escapeHtml(getRowTitle(r));
     return `
       <section class="row-wrap" data-row-id="${r.row_id}" data-aland-no="${r.aland_no}">
-        <div class="row row-head" tabindex="0" role="button" aria-label="Versvergleich in Fenster öffnen">
+        <div class="row row-head" tabindex="0" role="button" aria-label="${escapeAttr(t("js.openCompareAria"))}">
           <div class="row-main">
             <h2>${title}</h2>
           </div>
@@ -1354,7 +1474,7 @@
     if (!listEl) return;
     const qEl = document.getElementById("q");
     const qRaw = qEl && qEl.value ? qEl.value : "";
-    const q = qRaw.trim().toLowerCase();
+    const q = normalizeSearchToken(qRaw);
     const searchAssistState = getSearchAssistState(qRaw);
     activeSearchChapterQuery =
       searchAssistState && searchAssistState.mode === "chapters" && searchAssistState.selectedChapter
@@ -1379,15 +1499,15 @@
       const countEl = document.getElementById("count");
       if (countEl) {
         countEl.textContent = filterModeActive
-          ? "Filter oder Suche wählen"
+          ? t("js.chooseFilterOrSearch")
           : favoriteRows.length
-            ? "Deine Merkliste"
+            ? t("js.yourBookmarks")
             : "";
       }
       if (filterModeActive) {
         listEl.innerHTML = renderFilterLanding();
       } else if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) {
-        listEl.innerHTML = '<div class="empty">Kapitel wählen, um passende Ereignisse zu sehen.</div>';
+        listEl.innerHTML = '<div class="empty">' + t("js.chooseChapterToSeeEvents") + "</div>";
       } else if (favoriteRows.length) {
         listEl.innerHTML = favoriteRows.map(renderRow).join("");
       } else {
@@ -1406,19 +1526,21 @@
       if (verseQuery && !rowMatchesVerseQuery(r, verseQuery)) return false;
       if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) return false;
       if (!textQuery) return true;
-      const hay = [
-        r.title,
-        r.title_de,
-        r.section,
-        r.section_de,
-        r.ref_matthew,
-        r.ref_mark,
-        r.ref_luke,
-        r.ref_john,
-        String(r.aland_no),
-      ]
-        .join(" ")
-        .toLowerCase();
+      const hay = normalizeSearchToken(
+        [
+          r.title,
+          r.title_de,
+          r.section,
+          r.section_de,
+          getRowTitle(r),
+          getRowSection(r),
+          r.ref_matthew,
+          r.ref_mark,
+          r.ref_luke,
+          r.ref_john,
+          String(r.aland_no),
+        ].join(" "),
+      );
       return hay.includes(textQuery);
     });
     
@@ -1427,17 +1549,14 @@
     const countEl = document.getElementById("count");
     if (countEl) {
       if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) {
-        countEl.textContent = "Kapitel wählen";
+        countEl.textContent = t("js.chooseChapter");
       } else {
         countEl.textContent =
-          visibleOut.length +
-          " von " +
-          n +
-          " Zeilen" +
+          t("js.countLines", { count: visibleOut.length, total: n }) +
           (verseQuery
-            ? " (Bibelstelle aktiv)"
+            ? t("js.chapterActiveSuffix")
             : activePreset !== "all" || explorerTopic
-              ? " (Filter aktiv)"
+              ? t("js.filterActiveSuffix")
               : "");
       }
     }
@@ -1445,10 +1564,10 @@
 
     if (!visibleOut.length) {
       listEl.innerHTML = searchAssistState && searchAssistState.mode === "chapters" && !verseQuery
-        ? '<div class="empty">Kapitel wählen, um passende Ereignisse zu sehen.</div>'
+        ? '<div class="empty">' + t("js.chooseChapterToSeeEvents") + "</div>"
         : verseQuery
-          ? '<div class="empty">Kein Ereignis gefunden, das dieses Kapitel direkt enthält.</div>'
-          : '<div class="empty">Keine Treffer — Filter lockern oder Suche ändern.</div>';
+          ? '<div class="empty">' + t("js.noEventForChapter") + "</div>"
+          : '<div class="empty">' + t("js.noResults") + "</div>";
       scrollListToFirst = false;
       triggerListReveal();
       syncListFabs();
@@ -1533,7 +1652,7 @@
       if (chapterBtn) {
         const bookId = chapterBtn.getAttribute("data-search-assist-book") || "";
         const chapter = chapterBtn.getAttribute("data-search-assist-chapter") || "";
-        const book = verseSearchBooks[bookId];
+        const book = getVerseSearchBooks()[bookId];
         if (!book || !chapter) return;
         qInput.value = book.label + " " + chapter;
         filter();
@@ -1543,7 +1662,7 @@
       const bookBtn = e.target.closest("[data-search-assist-book]");
       if (!bookBtn) return;
       const bookId = bookBtn.getAttribute("data-search-assist-book") || "";
-      const book = verseSearchBooks[bookId];
+      const book = getVerseSearchBooks()[bookId];
       if (!book) return;
       qInput.value = book.label + " ";
       filter();

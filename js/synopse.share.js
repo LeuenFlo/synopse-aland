@@ -4,10 +4,19 @@
 
     var shareFeedbackEl = options.shareFeedbackEl || null;
     var buildPericopeUrl = options.buildPericopeUrl;
+    var t =
+      options.t ||
+      function (key) {
+        if (key === "js.shareDone") return "Geteilt";
+        if (key === "js.shareCopied") return "Link kopiert";
+        if (key === "js.shareUnavailable") return "Teilen nicht verfügbar";
+        if (key === "js.eventFallback") return "Ereignis";
+        return key;
+      };
     var getRowTitle =
       options.getRowTitle ||
       function (row) {
-        return (row && (row.title_de || row.title)) || "Ereignis";
+        return (row && (row.title_de || row.title)) || t("js.eventFallback");
       };
 
     var shareFeedbackHideTimer = 0;
@@ -72,7 +81,7 @@
             var shareData = variants[i];
             if (navigator.canShare && !navigator.canShare(shareData)) continue;
             await navigator.share(shareData);
-            showShareFeedback("Geteilt");
+            showShareFeedback(t("js.shareDone"));
             return true;
           }
         } catch (e) {
@@ -82,10 +91,10 @@
 
       try {
         await copyTextToClipboard(url);
-        showShareFeedback("Link kopiert");
+        showShareFeedback(t("js.shareCopied"));
         return true;
       } catch (e) {
-        showShareFeedback("Teilen nicht verfügbar");
+        showShareFeedback(t("js.shareUnavailable"));
         return false;
       }
     }

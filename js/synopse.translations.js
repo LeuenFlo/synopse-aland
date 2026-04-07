@@ -5,9 +5,18 @@
     var translationLangOrder = options.translationLangOrder || [];
     var translations = options.translations || [];
     var quickTranslationDe = options.quickTranslationDe || "elberfelder_1905";
+    var quickTranslationEn = options.quickTranslationEn || "web";
+    var quickTranslationFr = options.quickTranslationFr || "segond_1910";
+    var quickTranslationIt = options.quickTranslationIt || "riveduta_1927";
+    var quickTranslationEs = options.quickTranslationEs || "sparv";
     var quickTranslationEl = options.quickTranslationEl || "greek_slb";
     var isCompareHome = !!options.isCompareHome;
     var initialHomeDemoTranslationId = options.initialHomeDemoTranslationId || "";
+    var getUiLang =
+      options.getUiLang ||
+      function () {
+        return "de";
+      };
     var escapeHtml = options.escapeHtml || function (value) {
       var div = document.createElement("div");
       div.textContent = String(value == null ? "" : value);
@@ -18,22 +27,75 @@
     };
     var lockPageScroll = options.lockPageScroll || function () {};
     var unlockPageScroll = options.unlockPageScroll || function () {};
+    var t =
+      options.t ||
+      function (key, vars) {
+        var values = {
+          "js.translationUi.unknownTranslation": "Unbekannte Übersetzung",
+          "js.translationUi.unknown": "Unbekannt",
+          "js.translationUi.invalidJson": "Ungültiges JSON in {path}",
+          "js.translationUi.quickRemove": "{label} aus Schnellwahl entfernen",
+          "js.translationUi.quickRemoveTitle": "Aus Schnellwahl entfernen",
+          "js.translationUi.quickAria": "Lesetext wählen",
+          "js.translationUi.morePickerLabelAdd": "Weitere Übersetzungen zur Schnellwahl hinzufügen",
+          "js.translationUi.morePickerLabelReplace": "Übersetzungen in der Schnellwahl wechseln",
+          "js.translationUi.morePickerTitleAdd": "Weitere Übersetzungen hinzufügen",
+          "js.translationUi.morePickerTitleReplace": "Weitere Übersetzungen auswählen oder eine ersetzen",
+          "js.translationUi.moreTranslations": "Weitere Übersetzungen",
+          "js.translationUi.germanTranslations": "Deutsche Übersetzungen",
+          "js.translationUi.ancientLanguages": "Alte Sprachen",
+          "js.translationUi.moreLanguages": "Weitere Sprachen",
+          "js.translationUi.greek": "Griechisch",
+          "js.translationUi.latin": "Latein",
+          "js.translationUi.other": "Sonstige",
+          "js.translationUi.shortInfo": "Kurzinfo",
+          "js.translationUi.hintFor": "Hinweis zu {label}",
+          "js.translationUi.moreInfoPrefix": " Weitere Informationen: ",
+          "js.translationPrefix": "Übersetzung: {label}",
+          "js.byzantineMeta": "byzantinischer Mehrheitstext (Byz 2013)",
+          "js.sblMeta": "textkritische Ausgabe der Society of Biblical Literature",
+          "js.greekReferenceMeta": "griechischer Referenztext",
+        };
+        return String(values[key] || key).replace(/\{(\w+)\}/g, function (_, name) {
+          return vars && Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : "";
+        });
+      };
+    var getTranslationLangLabel =
+      options.getTranslationLangLabel ||
+      function (_, fallback) {
+        return fallback || "";
+      };
 
     var translationById = Object.create(null);
     translations.forEach(function (translation) {
       translationById[translation.id] = translation;
     });
 
+    function getPrimaryQuickTranslationId() {
+      var uiLang = getUiLang();
+      var candidate =
+        uiLang === "en"
+          ? quickTranslationEn
+          : uiLang === "fr"
+            ? quickTranslationFr
+            : uiLang === "it"
+              ? quickTranslationIt
+              : uiLang === "es"
+                ? quickTranslationEs
+                : quickTranslationDe;
+      return translationById[candidate] ? candidate : quickTranslationDe;
+    }
+
     var PINNED_QUICK_STORAGE_KEY = "synopse-pinned-quick-translations";
     var PINNED_QUICK_LEGACY_KEY = "synopse-pinned-quick-translation";
     var MAX_PINNED_QUICK_TRANSLATIONS = 2;
 
     var pinnedQuickTranslationIds = [];
-    var activeTranslationId = quickTranslationDe;
+    var activeTranslationId = getPrimaryQuickTranslationId();
     var homeDemoTranslationId =
       initialHomeDemoTranslationId && translationById[initialHomeDemoTranslationId]
         ? initialHomeDemoTranslationId
-        : quickTranslationDe;
+        : getPrimaryQuickTranslationId();
 
     var translationRawCache = Object.create(null);
     var translationVerseCache = Object.create(null);
@@ -42,7 +104,7 @@
     var translationPickerCloseTimer = null;
 
     function isQuickPairTranslationId(id) {
-      return id === quickTranslationDe || id === quickTranslationEl;
+      return id === getPrimaryQuickTranslationId() || id === quickTranslationEl;
     }
 
     function sanitizePinnedQuickIds(arr) {
@@ -102,7 +164,7 @@
       });
       persistPinnedQuickTranslations();
       if (activeTranslationId === id) {
-        activeTranslationId = quickTranslationDe;
+        activeTranslationId = getPrimaryQuickTranslationId();
       }
     }
 
@@ -120,7 +182,7 @@
     async function loadTranslationRaw(id) {
       if (translationRawCache[id]) return translationRawCache[id];
       var translation = translationById[id];
-      if (!translation) throw new Error("Unbekannte Übersetzung: " + id);
+      if (!translation) throw new Error(t("js.translationUi.unknownTranslation") + ": " + id);
       if (id === "elberfelder_1905" && Array.isArray(window.ELBERFELDER_DATA)) {
         translationRawCache[id] = window.ELBERFELDER_DATA;
         return translationRawCache[id];
@@ -132,11 +194,7 @@
       try {
         raw = JSON.parse(text.replace(/^\uFEFF/, ""));
       } catch (parseErr) {
-        throw new Error(
-          "Ungültiges JSON in " +
-            translation.path +
-            (parseErr && parseErr.message ? ": " + parseErr.message : ""),
-        );
+        throw new Error(t("js.translationUi.invalidJson", { path: translation.path }) + (parseErr && parseErr.message ? ": " + parseErr.message : ""));
       }
       translationRawCache[id] = raw;
       return raw;
@@ -172,12 +230,12 @@
 
     function activeTranslationLabel() {
       var translation = translationById[activeTranslationId];
-      return translation ? translation.label : "Unbekannt";
+      return translation ? translation.label : t("js.translationUi.unknown");
     }
 
     function translationVerboseLabelForId(translationId) {
       var translation = translationById[translationId];
-      if (!translation) return "Unbekannt";
+      if (!translation) return t("js.translationUi.unknown");
       return translation.labelLong || translation.label;
     }
 
@@ -188,23 +246,32 @@
 
     function compareColumnMetaHtmlForTranslation(translationId) {
       if (translationId === "byz_2013") {
-        return '<p class="compare-note compare-note--urtext">byzantinischer Mehrheitstext (Byz 2013)</p>';
+        return '<p class="compare-note compare-note--urtext">' + escapeHtml(t("js.byzantineMeta")) + "</p>";
       }
       if (translationId === "greek_slb") {
-        return '<p class="compare-note compare-note--urtext">textkritische Ausgabe der Society of Biblical Literature</p>';
+        return '<p class="compare-note compare-note--urtext">' + escapeHtml(t("js.sblMeta")) + "</p>";
       }
       if (translationIsSourceTextForId(translationId)) {
-        return '<p class="compare-note compare-note--urtext">griechischer Referenztext</p>';
+        return '<p class="compare-note compare-note--urtext">' + escapeHtml(t("js.greekReferenceMeta")) + "</p>";
       }
-      return '<p class="compare-note">Übersetzung: ' + escapeHtml(translationVerboseLabelForId(translationId)) + "</p>";
+      return '<p class="compare-note">' + escapeHtml(t("js.translationPrefix", { label: translationVerboseLabelForId(translationId) })) + "</p>";
     }
 
     function translationGroupLabel(langKey) {
-      if (langKey === "_") return "Sonstige";
-      var found = translationLangOrder.find(function (group) {
-        return group.key === langKey;
-      });
-      return found ? found.label : langKey;
+      if (langKey === "_") return t("js.translationUi.other");
+      return getTranslationLangLabel(langKey, langKey);
+    }
+
+    function translationUsesGreekLabelFont(translation) {
+      return !!(translation && String(translation.lang) === "el");
+    }
+
+    function translationLabelClass(translation) {
+      return translationUsesGreekLabelFont(translation) ? " translation-label--greek" : "";
+    }
+
+    function translationGroupLabelClass(langKey) {
+      return String(langKey) === "el" ? " translation-label--greek" : "";
     }
 
     function getTranslationsByLang() {
@@ -229,15 +296,17 @@
           '" title="' +
           escapeAttr(translation.label) +
           '">' +
-          '<span class="translation-quick__primary">' +
+          '<span class="translation-quick__primary' + translationLabelClass(translation) + '">' +
           escapeHtml(translation.label) +
           "</span>" +
           "</button>" +
           '<button type="button" class="translation-quick__unpin" data-remove-pinned-translation="' +
           escapeAttr(translation.id) +
           '" aria-label="' +
-          escapeAttr(translation.label + " aus Schnellwahl entfernen") +
-          '" title="Aus Schnellwahl entfernen">×</button>' +
+          escapeAttr(t("js.translationUi.quickRemove", { label: translation.label })) +
+          '" title="' +
+          escapeAttr(t("js.translationUi.quickRemoveTitle")) +
+          '">×</button>' +
           "</div>";
       });
       var extraPinCount = pinnedQuickTranslationIds.filter(function (id) {
@@ -245,23 +314,28 @@
       }).length;
       var pinnedQuickSlotsFull = extraPinCount >= MAX_PINNED_QUICK_TRANSLATIONS;
       var morePickerLabel = pinnedQuickSlotsFull
-        ? "Übersetzungen in der Schnellwahl wechseln"
-        : "Weitere Übersetzungen zur Schnellwahl hinzufügen";
+        ? t("js.translationUi.morePickerLabelReplace")
+        : t("js.translationUi.morePickerLabelAdd");
       var morePickerTitle = pinnedQuickSlotsFull
-        ? "Weitere Übersetzungen auswählen oder eine ersetzen"
-        : "Weitere Übersetzungen hinzufügen";
-      var moreButtonInner = '<span class="translation-quick__more-label">Weitere Übersetzungen</span>';
+        ? t("js.translationUi.morePickerTitleReplace")
+        : t("js.translationUi.morePickerTitleAdd");
+      var moreButtonInner = '<span class="translation-quick__more-label">' + escapeHtml(t("js.translationUi.moreTranslations")) + "</span>";
       return (
-        '<div class="translation-quick" role="group" aria-label="Lesetext wählen">' +
+        '<div class="translation-quick" role="group" aria-label="' + escapeAttr(t("js.translationUi.quickAria")) + '">' +
+        (function () {
+          var primaryQuickTranslation = translationById[getPrimaryQuickTranslationId()] || translationById[quickTranslationDe];
+          return (
         '<button type="button" class="translation-quick__btn" data-translation="' +
-        escapeAttr(quickTranslationDe) +
+        escapeAttr(primaryQuickTranslation.id) +
         '">' +
-        '<span class="translation-quick__primary">Elberfelder 1905</span>' +
-        "</button>" +
+        '<span class="translation-quick__primary' + translationLabelClass(primaryQuickTranslation) + '">' + escapeHtml(primaryQuickTranslation.label) + "</span>" +
+        "</button>"
+          );
+        })() +
         '<button type="button" class="translation-quick__btn" data-translation="' +
         escapeAttr(quickTranslationEl) +
         '">' +
-        '<span class="translation-quick__primary">Griechisch (Urtext)</span>' +
+        '<span class="translation-quick__primary' + translationLabelClass(translationById[quickTranslationEl]) + '">' + escapeHtml(translationById[quickTranslationEl] ? translationById[quickTranslationEl].label : t("js.translationUi.quickDefaultElLabel")) + "</span>" +
         "</button>" +
         extraHtml +
         '<button type="button" class="translation-quick__more" data-open-translation-picker ' +
@@ -287,9 +361,11 @@
         var infoBtn = translation.info
           ? '<button type="button" class="translation-info-btn" data-translation-info="' +
             escapeAttr(translation.id) +
-            '" aria-label="Hinweis zu ' +
-            escapeAttr(translation.label) +
-            '" title="Kurzinfo">i</button>'
+            '" aria-label="' +
+            escapeAttr(t("js.translationUi.hintFor", { label: translation.label })) +
+            '" title="' +
+            escapeAttr(t("js.translationUi.shortInfo")) +
+            '">i</button>'
           : "";
         return (
           '<div class="translation-picker-row">' +
@@ -298,7 +374,7 @@
           '" data-translation="' +
           escapeAttr(translation.id) +
           '">' +
-          '<span class="translation-picker-card__name">' +
+          '<span class="translation-picker-card__name' + translationLabelClass(translation) + '">' +
           escapeHtml(translation.labelLong || translation.label) +
           "</span>" +
           "</button>" +
@@ -316,7 +392,7 @@
           '<section class="translation-picker-group" aria-labelledby="tp-g-' +
           escapeAttr(groupId) +
           '">' +
-          '<h3 class="translation-picker-group__title" id="tp-g-' +
+          '<h3 class="translation-picker-group__title' + translationGroupLabelClass(langKey) + '" id="tp-g-' +
           escapeAttr(groupId) +
           '">' +
           escapeHtml(title) +
@@ -357,17 +433,17 @@
       var deGrid = gridOnlyForLang("de");
       if (deGrid) {
         blocks.push(
-          megaSection("de", "Deutsche Übersetzungen", '<div class="translation-picker-grid">' + deGrid + "</div>"),
+          megaSection("de", t("js.translationUi.germanTranslations"), '<div class="translation-picker-grid">' + deGrid + "</div>"),
         );
       }
 
       var ancientInner = "";
       ANCIENT_LANG_KEYS.forEach(function (key) {
-        var title = key === "el" ? "Griechisch" : key === "la" ? "Latein" : translationGroupLabel(key);
+        var title = key === "el" ? t("js.translationUi.greek") : key === "la" ? t("js.translationUi.latin") : translationGroupLabel(key);
         ancientInner += sectionForLang(key, title);
       });
       if (ancientInner) {
-        blocks.push(megaSection("ancient", "Alte Sprachen", ancientInner));
+        blocks.push(megaSection("ancient", t("js.translationUi.ancientLanguages"), ancientInner));
       }
 
       var modernInner = "";
@@ -387,10 +463,10 @@
           if (block) modernInner += block;
         });
       if (byLang._ && byLang._.length) {
-        modernInner += sectionForLang("_", "Sonstige");
+        modernInner += sectionForLang("_", t("js.translationUi.other"));
       }
       if (modernInner) {
-        blocks.push(megaSection("more", "Weitere Sprachen", modernInner));
+        blocks.push(megaSection("more", t("js.translationUi.moreLanguages"), modernInner));
       }
 
       return '<div class="translation-picker-overview translation-picker-overview--mega">' + blocks.join("") + "</div>";
@@ -464,7 +540,7 @@
       body.textContent = "";
       body.appendChild(document.createTextNode(translation.info.trimEnd()));
       if (translation.infoUrl) {
-        body.appendChild(document.createTextNode(" Weitere Informationen: "));
+        body.appendChild(document.createTextNode(t("js.translationUi.moreInfoPrefix")));
         var link = document.createElement("a");
         link.href = translation.infoUrl;
         link.target = "_blank";

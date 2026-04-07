@@ -124,6 +124,7 @@
     ],
     presetGroups: [
       {
+        id: "occurrence",
         label: "Kommt im Ereignis vor",
         presets: [
           { id: "has_mt", label: "Matthäus", title: "Nur Zeilen, in denen Matthäus vorkommt" },
@@ -133,6 +134,7 @@
         ],
       },
       {
+        id: "patterns",
         label: "Muster & Synopse",
         presets: [
           {
@@ -153,6 +155,7 @@
         ],
       },
       {
+        id: "unique",
         label: "Sondergut",
         presets: [
           {
@@ -177,7 +180,7 @@
       { key: "it", label: "Italiano" },
       { key: "es", label: "Español" },
       { key: "la", label: "Latina" },
-      { key: "el", label: "Griechisch · Urtext" },
+      { key: "el", label: "Ἑλληνικὴ κοινή" },
     ],
     translations: [
       {
@@ -246,7 +249,7 @@
       {
         id: "greek_slb",
         lang: "el",
-        label: "Griechisch (Urtext)",
+        label: "Ἑλληνικὴ κοινή",
         path: "/data/translations/greek/greek_slb.json",
         info:
           "Das SBL Greek New Testament (SBLGNT) ist eine kritisch edierte Ausgabe des griechischen Neuen Testaments; die erste Ausgabe erschien 2010 (Society of Biblical Literature). Der Text steht frei in elektronischer Form zur Verfügung und richtet sich an Studium, Lehre und Forschung.",
@@ -264,11 +267,11 @@
       {
         id: "web",
         lang: "en",
-        label: "English WEB",
-        labelLong: "World English Bible (WEB)",
+        label: "World English Translation",
+        labelLong: "World English Translation (WEB)",
         path: "/data/translations/english/WEB.json",
         info:
-          "The World English Bible (WEB) is a modern English translation in the public domain, derived in part from the American Standard Version (1901). It is widely used for digital distribution and comparison.",
+          "The World English Translation (WEB) is a modern English translation in the public domain, derived in part from the American Standard Version (1901). It is widely used for digital distribution and comparison.",
         infoUrl: "https://worldenglish.bible/",
       },
       {
@@ -329,6 +332,10 @@
       },
     ],
     quickTranslationDe: "elberfelder_1905",
+    quickTranslationEn: "web",
+    quickTranslationFr: "segond_1910",
+    quickTranslationIt: "riveduta_1927",
+    quickTranslationEs: "sparv",
     quickTranslationEl: "greek_slb",
     defaultStarterAlands: [18, 269, 352],
   };

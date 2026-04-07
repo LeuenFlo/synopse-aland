@@ -4,17 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <script src="/js/theme-head.js"></script>
+  <script src="/js/i18n/de.js"></script>
+  <script src="/js/i18n/en.js"></script>
+  <script src="/js/i18n/fr.js"></script>
+  <script src="/js/i18n/it.js"></script>
+  <script src="/js/i18n/es.js"></script>
+  <script src="/js/i18n/events/de.js"></script>
+  <script src="/js/i18n/events/en.js"></script>
+  <script src="/js/i18n/events/fr.js"></script>
+  <script src="/js/i18n/events/it.js"></script>
+  <script src="/js/i18n/events/es.js"></script>
+  <script src="/js/i18n/core.js"></script>
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
   <meta
+    id="list-description-meta"
     name="description"
     content="Ereignisse der vier Evangelien suchen, parallel lesen, merken und als Link teilen."
   />
   <meta property="og:locale" content="de_CH" />
   <meta property="og:site_name" content="Synopse der vier Evangelien" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ereignis suchen · Synopse der vier Evangelien" />
+  <meta id="list-og-title" property="og:title" content="Ereignis suchen · Synopse der vier Evangelien" />
   <meta
+    id="list-og-description"
     property="og:description"
     content="Ereignisse der vier Evangelien suchen, parallel lesen, merken und als Link teilen."
   />
@@ -25,7 +38,7 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Synopse der vier Evangelien mit stilisierten farbigen Evangelienlinien." />
   <script src="/js/plausible-init.js"></script>
-  <title>Ereignis suchen · Synopse der vier Evangelien</title>
+  <title id="list-title-meta">Ereignis suchen · Synopse der vier Evangelien</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,9 +49,26 @@
 <body class="liste-page">
   <div class="wrap liste-page-wrap">
     <header class="compare-home-header compare-home-header--landing liste-page__header">
-      <a href="/" class="liste-nav-back">← Startseite</a>
-      <h1 class="compare-home-header__mark">Ereignis suchen</h1>
+      <a href="/" class="liste-nav-back" id="list-back-home">← Startseite</a>
+      <h1 class="compare-home-header__mark" id="list-page-title">Ereignis suchen</h1>
       <div class="compare-home-header__right">
+        <details class="lang-switch">
+          <summary class="lang-switch__trigger" aria-label="Language" title="Language">
+            <svg class="lang-switch__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18"></path>
+              <path d="M12 3a14 14 0 0 1 0 18"></path>
+              <path d="M12 3a14 14 0 0 0 0 18"></path>
+            </svg>
+          </summary>
+          <div class="lang-switch__menu" role="group" aria-label="Language">
+            <button type="button" class="lang-switch__btn" data-lang-switch="de">DE</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="en">EN</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="fr">FR</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="it">IT</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="es">ES</button>
+          </div>
+        </details>
         <div class="compare-home-theme">
           <span class="theme-switch-label" id="theme-mode-label">Dark-Mode</span>
           <button
@@ -55,7 +85,7 @@
       </div>
     </header>
 
-    <section class="liste-page__search" aria-label="Suche und Filter">
+    <section class="liste-page__search" id="liste-search-section" aria-label="Suche und Filter">
       <div class="liste-page__search-row">
         <div class="liste-page__search-col">
           <div class="filter-toolbar" id="filter-accordion">
@@ -73,6 +103,7 @@
             </div>
             <details class="filter-acc-panel" name="filter-acc" data-filter-kind="presets">
               <summary
+                id="filter-presets-summary"
                 class="filter-acc-summary filter-acc-summary--toolbar"
                 title="Filter nach Evangelien öffnen oder schliessen"
               >
@@ -116,7 +147,7 @@
       </section>
     </div>
 
-    <section class="list-section" aria-label="Ereignisliste">
+    <section class="list-section" id="list-section" aria-label="Ereignisliste">
       <div class="section-list-heading" id="section-list-heading" hidden>
         <h2 class="section-list-heading__title" id="section-list-heading-title"></h2>
         <a href="/liste/" class="section-list-heading__all" id="section-list-heading-clear" hidden>Zurücksetzen</a>
@@ -127,11 +158,11 @@
 
     <footer class="liste-page__footer">
       <p>
-        <a href="/">Zur Startseite</a>
+        <a href="/" id="list-footer-home-link">Zur Startseite</a>
         ·
-        <a href="/sources/">Quellen &amp; Lizenzen</a>
+        <a href="/sources/" id="list-footer-sources-link">Quellen &amp; Lizenzen</a>
       </p>
-      <p>
+      <p id="list-footer-text">
         Die Darstellung basiert auf einer eigenen Zusammenstellung in Anlehnung an die <strong>Synopsis Quattuor Evangeliorum</strong> von Kurt Aland.
       </p>
     </footer>
@@ -157,7 +188,7 @@
   >
     <div class="compare-modal-backdrop" id="compare-modal-backdrop" aria-hidden="true"></div>
     <div class="compare-modal-shell">
-      <section class="compare-translations-bar translation-toolbar-wrap" aria-label="Lesetexte">
+      <section class="compare-translations-bar translation-toolbar-wrap" id="compare-translations-bar" aria-label="Lesetexte">
         <div class="translation-toolbar">
           <div class="translation-toolbar__pickers compare-modal-translations-box compare-translations-box--wide">
             <div class="translation-buttons translation-buttons--lang-strip" id="compare-modal-translation-buttons"></div>
@@ -165,7 +196,7 @@
         </div>
       </section>
       <div class="compare-modal-panel" id="compare-modal-panel">
-        <div class="compare-modal-actions" aria-label="Aktionen">
+        <div class="compare-modal-actions" id="compare-modal-actions" aria-label="Aktionen">
           <button
             type="button"
             class="compare-modal-favorite"

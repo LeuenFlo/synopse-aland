@@ -25,25 +25,31 @@
         .trim();
     }
 
-    var verseSearchBooks = {
-      matthew: { label: "Matthäus", refKey: "ref_matthew", maxChapter: 28, aliases: ["matthäus", "matthaus", "mt"] },
-      mark: { label: "Markus", refKey: "ref_mark", maxChapter: 16, aliases: ["markus", "mk"] },
-      luke: { label: "Lukas", refKey: "ref_luke", maxChapter: 24, aliases: ["lukas", "lk"] },
-      john: { label: "Johannes", refKey: "ref_john", maxChapter: 21, aliases: ["johannes", "jn", "john"] },
-    };
-
-    var searchBookDefs = Object.entries(verseSearchBooks).map(function (entry) {
-      var id = entry[0];
-      var book = entry[1];
-      return {
-        id: id,
-        label: book.label,
-        maxChapter: book.maxChapter,
-        aliases: (book.aliases || []).map(function (alias) {
-          return normalizeSearchToken(alias);
-        }),
+    var getVerseSearchBooks =
+      options.getVerseSearchBooks ||
+      function () {
+        return {
+          matthew: { label: "Matthäus", refKey: "ref_matthew", maxChapter: 28, aliases: ["matthäus", "matthaus", "mt"] },
+          mark: { label: "Markus", refKey: "ref_mark", maxChapter: 16, aliases: ["markus", "mk"] },
+          luke: { label: "Lukas", refKey: "ref_luke", maxChapter: 24, aliases: ["lukas", "lk"] },
+          john: { label: "Johannes", refKey: "ref_john", maxChapter: 21, aliases: ["johannes", "jn", "john"] },
+        };
       };
-    });
+
+    function getSearchBookDefs() {
+      return Object.entries(getVerseSearchBooks()).map(function (entry) {
+        var id = entry[0];
+        var book = entry[1];
+        return {
+          id: id,
+          label: book.label,
+          maxChapter: book.maxChapter,
+          aliases: (book.aliases || []).map(function (alias) {
+            return normalizeSearchToken(alias);
+          }),
+        };
+      });
+    }
 
     function getSearchAssistState(rawValue) {
       var raw = String(rawValue || "");
@@ -55,6 +61,7 @@
       var first = parts[0] || "";
       var rest = parts.slice(1).join(" ").trim();
 
+      var searchBookDefs = getSearchBookDefs();
       var exactBook = searchBookDefs.find(function (book) {
         return book.aliases.includes(first);
       });
@@ -154,7 +161,7 @@
 
     function formatVerseQueryLabel(query) {
       if (!query) return "";
-      var book = verseSearchBooks[query.book];
+      var book = getVerseSearchBooks()[query.book];
       if (!book) return "";
       return book.label + " " + query.chapter;
     }
@@ -196,7 +203,7 @@
 
     function rowMatchesVerseQuery(row, query) {
       if (!row || !query) return false;
-      var book = verseSearchBooks[query.book];
+      var book = getVerseSearchBooks()[query.book];
       if (!book) return false;
       return refContainsChapter(row[book.refKey] || "", query.chapter);
     }
@@ -228,8 +235,8 @@
     }
 
     return {
-      verseSearchBooks: verseSearchBooks,
-      searchBookDefs: searchBookDefs,
+      getVerseSearchBooks: getVerseSearchBooks,
+      getSearchBookDefs: getSearchBookDefs,
       normalizeSearchToken: normalizeSearchToken,
       getSearchAssistState: getSearchAssistState,
       renderSearchAssist: renderSearchAssist,

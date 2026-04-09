@@ -230,6 +230,35 @@
       "moreInfoPrefix": " Plus d’informations : ",
       "shortInfo": "Brève info",
       "hintFor": "Note sur {label}"
+    },
+    "greekTools": {
+      "modeLabel": "Affichage grec",
+      "modes": {
+        "reading": "Texte",
+        "wordinfo": "Infos mot",
+        "interlinear": "Interlineaire"
+      },
+      "hints": {
+        "reading": "Vue de lecture calme sans donnees lexicales visibles.",
+        "wordinfo": "Touchez ou survolez un mot pour voir le lemme, la morphologie et le glossaire.",
+        "interlinear": "Aide mot a mot compacte sous le texte grec. Touchez un mot pour ouvrir son analyse dans une fenetre separee."
+      },
+      "empty": {
+        "wordinfo": "Touchez un mot pour voir le lemme, la morphologie, Strong et le glossaire.",
+        "interlinear": "Touchez un mot pour voir davantage d’informations lexicales."
+      },
+      "labels": {
+        "lemma": "Lemme",
+        "morphology": "Morphologie",
+        "transliteration": "Translitteration",
+        "strong": "Strong",
+        "gloss": "Glossaire",
+        "reference": "Reference",
+        "clause": "Clause",
+        "code": "Code",
+        "otQuote": "Citation AT",
+        "closeCard": "Fermer les infos du mot"
+      }
     }
   }
 };

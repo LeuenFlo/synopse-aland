@@ -224,6 +224,35 @@
       "moreInfoPrefix": " Weitere Informationen: ",
       "shortInfo": "Kurzinfo",
       "hintFor": "Hinweis zu {label}"
+    },
+    "greekTools": {
+      "modeLabel": "Griechische Darstellung",
+      "modes": {
+        "reading": "Lesetext",
+        "wordinfo": "Wortinfos",
+        "interlinear": "Interlinear"
+      },
+      "hints": {
+        "reading": "Ruhige Leseansicht ohne eingeblendete Wortdaten.",
+        "wordinfo": "Wort antippen oder mit der Maus anfahren, um Lemma, Morphologie und Gloss zu sehen.",
+        "interlinear": "Kompakte Wort-für-Wort-Hilfe unter dem griechischen Text. Ein Wort öffnet die Analyse in einem eigenen Fenster."
+      },
+      "empty": {
+        "wordinfo": "Ein Wort antippen, um Lemma, Morphologie, Strong und Gloss zu sehen.",
+        "interlinear": "Ein Wort antippen, um weitere Wortinfos zu sehen."
+      },
+      "labels": {
+        "lemma": "Lemma",
+        "morphology": "Morphologie",
+        "transliteration": "Transliteration",
+        "strong": "Strong",
+        "gloss": "Gloss",
+        "reference": "Stelle",
+        "clause": "Klausel",
+        "code": "Code",
+        "otQuote": "AT-Zitat",
+        "closeCard": "Wortinfos schliessen"
+      }
     }
   }
 };

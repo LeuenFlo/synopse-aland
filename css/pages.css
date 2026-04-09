@@ -974,23 +974,26 @@ button.compare-home-pill {
   height: 2.35rem;
   margin: 0;
   padding: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-muted);
-  color: var(--paper);
-  font-size: 1.4rem;
+  border: 1.5px solid color-mix(in srgb, var(--border) 92%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg2) 98%, white 2%);
+  color: color-mix(in srgb, var(--paper) 96%, var(--heading) 4%);
+  font-size: 1.65rem;
+  font-weight: 600;
   line-height: 1;
   cursor: pointer;
   transition:
-    border-color 0.12s,
-    color 0.12s,
-    background 0.12s;
+    border-color 0.12s ease,
+    color 0.12s ease,
+    background 0.12s ease,
+    transform 0.12s ease;
 }
 
 .compare-home-example-layer__close:hover {
-  border-color: var(--accent-ring);
+  border-color: color-mix(in srgb, var(--accent-ring) 58%, var(--border));
   color: var(--accent);
-  background: var(--accent-soft);
+  background: color-mix(in srgb, var(--accent-soft) 36%, var(--bg2));
+  transform: translateY(-1px);
 }
 
 .compare-home-example-layer__close:focus-visible {

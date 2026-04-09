@@ -594,12 +594,12 @@
 
   function escapeHtml(s) {
     const d = document.createElement("div");
-    d.textContent = s;
+    d.textContent = String(s == null ? "" : s);
     return d.innerHTML;
   }
 
   function escapeAttr(s) {
-    return s.replace(/"/g, "&quot;");
+    return String(s == null ? "" : s).replace(/"/g, "&quot;");
   }
 
   function matchesPreset(r, id) {
@@ -802,6 +802,31 @@
   const focusTranslationQuickControl = translationTools
     ? translationTools.focusTranslationQuickControl
     : function () {};
+  const greekCompareToolsFactory =
+    window.SYNOPSE_GREEK_TOOLS && typeof window.SYNOPSE_GREEK_TOOLS.createGreekCompareTools === "function"
+      ? window.SYNOPSE_GREEK_TOOLS.createGreekCompareTools
+      : null;
+  const greekCompareTools = greekCompareToolsFactory
+    ? greekCompareToolsFactory({
+        t: t,
+        escapeHtml: escapeHtml,
+        escapeAttr: escapeAttr,
+        getBookLabel: getBookLabel,
+        effectiveTranslationId: effectiveTranslationId,
+        invalidateOpenPanels: function (options) {
+          invalidateOpenPanels(options);
+        },
+        fetchJson: function (path) {
+          return fetchJsonIfExists(path);
+        },
+        getCompareGridEl: function (which) {
+          return document.getElementById(which === "modal" ? "compare-modal-grid" : "compare-main-grid");
+        },
+        onModeChange: function () {
+          syncVerseMarkerToggleButtons();
+        },
+      })
+    : null;
 
   const compareModal = document.getElementById("compare-modal");
   const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
@@ -829,17 +854,34 @@
   }
 
   function syncVerseMarkerToggleButtons() {
-    [compareModalMarkerToggleBtn, compareMainMarkerToggleBtn].forEach(function (button) {
+    [
+      { button: compareModalMarkerToggleBtn, which: "modal" },
+      { button: compareMainMarkerToggleBtn, which: "main" },
+    ].forEach(function (entry) {
+      const button = entry.button;
       if (!button) return;
-      button.classList.toggle("is-active", verseMarkersEnabled);
-      button.setAttribute("aria-pressed", verseMarkersEnabled ? "true" : "false");
+      const suppressed = !!(
+        greekCompareTools &&
+        typeof greekCompareTools.suppressesVerseMarkers === "function" &&
+        greekCompareTools.suppressesVerseMarkers(entry.which)
+      );
+      button.classList.toggle("is-active", verseMarkersEnabled && !suppressed);
+      button.classList.toggle("is-disabled", suppressed);
+      button.disabled = suppressed;
+      button.setAttribute("aria-pressed", verseMarkersEnabled && !suppressed ? "true" : "false");
       button.setAttribute(
         "aria-label",
-        verseMarkersEnabled ? "Experimentelle Marker ausblenden" : "Experimentelle Marker einblenden",
+        suppressed
+          ? "Experimentelle Marker in der Interlinearansicht deaktiviert"
+          : verseMarkersEnabled
+            ? "Experimentelle Marker ausblenden"
+            : "Experimentelle Marker einblenden",
       );
-      button.title = verseMarkersEnabled
-        ? "Experimentelle Marker ausblenden"
-        : "Experimentelle Marker einblenden";
+      button.title = suppressed
+        ? "Experimentelle Marker in der Interlinearansicht deaktiviert"
+        : verseMarkersEnabled
+          ? "Experimentelle Marker ausblenden"
+          : "Experimentelle Marker einblenden";
     });
   }
 
@@ -922,6 +964,10 @@
     const mainPanel = document.getElementById("compare-main-panel");
     if (modalPanel) modalPanel.classList.toggle("is-greek-script", greekModal);
     if (mainPanel) mainPanel.classList.toggle("is-greek-script", greekMain);
+    if (greekCompareTools) {
+      greekCompareTools.syncPanel("modal");
+      greekCompareTools.syncPanel("main");
+    }
   }
 
   function closeCompareModal() {
@@ -933,6 +979,7 @@
     }
     const panel = document.getElementById("compare-modal-panel");
     if (panel) panel.classList.remove("is-greek-script");
+    if (greekCompareTools) greekCompareTools.clearSelection("modal");
     compareModal.classList.remove("is-open");
     syncCompareModalShareButton(null);
     syncCompareModalFavoriteButton(null);
@@ -960,6 +1007,7 @@
     compareModalRowId = id;
     lastFocusBeforeModal = focusSourceEl || document.activeElement;
     translationSwapSeq += 1;
+    if (greekCompareTools) greekCompareTools.clearSelection("modal");
 
     const alandEl = document.getElementById("compare-modal-aland");
     const titleEl = document.getElementById("compare-modal-title");
@@ -1175,6 +1223,7 @@
     if (!grid) return;
     translationSwapSeq += 1;
     compareMainRowId = row.row_id;
+    if (greekCompareTools) greekCompareTools.clearSelection("main");
     const alandEl = document.getElementById("compare-main-aland");
     const titleEl = document.getElementById("compare-main-title");
     const secEl = document.getElementById("compare-main-sec");
@@ -1216,6 +1265,7 @@
 
   function closeExampleLayer() {
     if (!exampleLayer || exampleLayer.hidden) return;
+    if (greekCompareTools) greekCompareTools.clearSelection("main");
     exampleLayer.setAttribute("hidden", "");
     exampleLayer.setAttribute("aria-hidden", "true");
     document.body.classList.remove("compare-home-example-is-open");
@@ -1487,6 +1537,11 @@
   async function fillCompareGrid(grid, r, which, options) {
     options = options || {};
     const tid = effectiveTranslationId(which);
+    const useGreekEnhancedMode = !!(
+      greekCompareTools &&
+      tid === "greek_slb" &&
+      greekCompareTools.supportsEnhancedMode(which)
+    );
     syncGreekScriptClass();
     if (!grid || grid.dataset.filled === "1") return;
     grid.innerHTML =
@@ -1497,13 +1552,74 @@
     let cache = null;
     const SC = window.SYNOPTIC_COMPARE;
     try {
-      cache = await getVerseCache(tid);
+      if (!useGreekEnhancedMode) {
+        cache = await getVerseCache(tid);
+      }
+      if (!isCompareRowActive(r, which)) return;
+      if ((!cache && !useGreekEnhancedMode) || !SC) {
+        grid.innerHTML =
+          '<p class="compare-note">' +
+          (translationIsSourceTextForId(tid) ? t("js.noGreekData") : t("js.noTranslationData")) +
+          "</p>";
+        grid.dataset.filled = "1";
+        triggerCompareGridReveal(grid, options.skipReveal);
+        return;
+      }
+
+      const cacheForColumns = cache || { idx: Object.create(null), maxV: Object.create(null), aliases: Object.create(null) };
+      const { idx, maxV, aliases } = cacheForColumns;
+      const cols = [
+        { book: 40, label: getBookLabel("matthew"), cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
+        { book: 41, label: getBookLabel("mark"), cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
+        { book: 42, label: getBookLabel("luke"), cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
+        { book: 43, label: getBookLabel("john"), cls: "jn", inKey: "in_john", refKey: "ref_john" },
+      ];
+
+      const active = cols.filter((c) => r[c.inKey]);
+      if (!active.length) {
+        grid.innerHTML =
+          '<p class="compare-note">' + t("js.noLinkedGospelText") + "</p>";
+        grid.dataset.filled = "1";
+        grid.style.gridTemplateColumns = "";
+        triggerCompareGridReveal(grid, options.skipReveal);
+        return;
+      }
+
+      const n = active.length;
+      grid.style.gridTemplateColumns = "repeat(" + n + ", minmax(0, 1fr))";
+
+      const suppressVerseMarkers = !!(
+        greekCompareTools &&
+        typeof greekCompareTools.suppressesVerseMarkers === "function" &&
+        greekCompareTools.suppressesVerseMarkers(which)
+      );
+      const markerMap = verseMarkersEnabled && !suppressVerseMarkers ? await getVerseMarkerMap(r, tid, which) : null;
+      const colMeta = compareColumnMetaHtmlForTranslation(tid);
+      const columnHtml = await Promise.all(
+        active.map(async function (c) {
+          const ref = r[c.refKey] || "";
+          const renderedBody =
+            useGreekEnhancedMode
+              ? await greekCompareTools.renderColumnHtml({
+                  which: which,
+                  book: c.book,
+                  label: c.label,
+                  ref: ref,
+                  cache: { idx: idx, maxV: maxV, aliases: aliases },
+                })
+              : SC.renderColumnHtml(c.book, c.label, ref, idx, maxV, aliases);
+          const body = applyVerseMarkers(c.book, renderedBody, markerMap);
+          return `<div class="text-col ${c.cls}"><h4>${c.label}<span class="ref-tag">${escapeHtml(ref)}</span></h4>${colMeta}<div class="text-col-body">${body}</div></div>`;
+        }),
+      );
+      if (!isCompareRowActive(r, which)) return;
+      grid.innerHTML = columnHtml.join("");
+      grid.dataset.filled = "1";
+      if (greekCompareTools) greekCompareTools.syncPanel(which);
+      triggerCompareGridReveal(grid, options.skipReveal);
     } catch (err) {
       if (!isCompareRowActive(r, which)) return;
-      const detail =
-        err && err.message
-          ? " " + err.message
-          : "";
+      const detail = err && err.message ? " " + err.message : "";
       grid.innerHTML =
         '<p class="compare-note">' +
         (translationIsSourceTextForId(tid)
@@ -1513,51 +1629,7 @@
         "</p>";
       grid.dataset.filled = "1";
       triggerCompareGridReveal(grid, options.skipReveal);
-      return;
     }
-    if (!isCompareRowActive(r, which)) return;
-    if (!cache || !SC) {
-      grid.innerHTML =
-        '<p class="compare-note">' +
-        (translationIsSourceTextForId(tid) ? t("js.noGreekData") : t("js.noTranslationData")) +
-        "</p>";
-      grid.dataset.filled = "1";
-      triggerCompareGridReveal(grid, options.skipReveal);
-      return;
-    }
-
-    const { idx, maxV, aliases } = cache;
-    const cols = [
-      { book: 40, label: getBookLabel("matthew"), cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
-      { book: 41, label: getBookLabel("mark"), cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
-      { book: 42, label: getBookLabel("luke"), cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
-      { book: 43, label: getBookLabel("john"), cls: "jn", inKey: "in_john", refKey: "ref_john" },
-    ];
-
-    const active = cols.filter((c) => r[c.inKey]);
-    if (!active.length) {
-      grid.innerHTML =
-        '<p class="compare-note">' + t("js.noLinkedGospelText") + "</p>";
-      grid.dataset.filled = "1";
-      grid.style.gridTemplateColumns = "";
-      triggerCompareGridReveal(grid, options.skipReveal);
-      return;
-    }
-
-    const n = active.length;
-    grid.style.gridTemplateColumns = "repeat(" + n + ", minmax(0, 1fr))";
-
-    const markerMap = verseMarkersEnabled ? await getVerseMarkerMap(r, tid, which) : null;
-    const colMeta = compareColumnMetaHtmlForTranslation(tid);
-    grid.innerHTML = active
-      .map((c) => {
-        const ref = r[c.refKey] || "";
-        const body = applyVerseMarkers(c.book, SC.renderColumnHtml(c.book, c.label, ref, idx, maxV, aliases), markerMap);
-        return `<div class="text-col ${c.cls}"><h4>${c.label}<span class="ref-tag">${escapeHtml(ref)}</span></h4>${colMeta}<div class="text-col-body">${body}</div></div>`;
-      })
-      .join("");
-    grid.dataset.filled = "1";
-    triggerCompareGridReveal(grid, options.skipReveal);
   }
 
   function refillCompareGrid(which, options) {

@@ -276,17 +276,23 @@
     return d.innerHTML;
   }
 
-  function renderColumnHtml(book, label, ref, idx, maxV, aliases) {
-
+  function getColumnBlocks(book, ref, idx, maxV, aliases) {
     const ex = expandRefToVerses(ref, book, maxV);
     if (!ex.ok) {
-      return '<p class="compare-note">' + escHtml(ex.note || "") + "</p>";
+      return { ok: false, note: ex.note || "" };
     }
     if (!ex.verses.length) {
-      return '<p class="compare-note">Keine Versangaben.</p>';
+      return { ok: false, note: "Keine Versangaben." };
     }
-    const blocks = lookupVerses(book, ex.verses, idx, aliases);
-    return blocks
+    return { ok: true, blocks: lookupVerses(book, ex.verses, idx, aliases) };
+  }
+
+  function renderColumnHtml(book, label, ref, idx, maxV, aliases) {
+    const resolved = getColumnBlocks(book, ref, idx, maxV, aliases);
+    if (!resolved.ok) {
+      return '<p class="compare-note">' + escHtml(resolved.note || "") + "</p>";
+    }
+    return resolved.blocks
       .map(function (b) {
         const addr = b.ch + "," + b.v;
         const t =
@@ -309,6 +315,7 @@
     buildVerseIndex: buildVerseIndex,
     normalizeRef: normalizeRef,
     expandRefToVerses: expandRefToVerses,
+    getColumnBlocks: getColumnBlocks,
     renderColumnHtml: renderColumnHtml,
     normalizeTranslationData: normalizeTranslationData,
     initFromTranslationData: function (raw) {

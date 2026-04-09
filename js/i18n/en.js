@@ -224,6 +224,35 @@
       "moreInfoPrefix": " More information: ",
       "shortInfo": "Short info",
       "hintFor": "Note on {label}"
+    },
+    "greekTools": {
+      "modeLabel": "Greek display",
+      "modes": {
+        "reading": "Reading text",
+        "wordinfo": "Word info",
+        "interlinear": "Interlinear"
+      },
+      "hints": {
+        "reading": "Calm reading view without embedded word data.",
+        "wordinfo": "Tap or hover a word to see lemma, morphology, and gloss.",
+        "interlinear": "Compact word-for-word help beneath the Greek text. Click a word to open its analysis in a separate window."
+      },
+      "empty": {
+        "wordinfo": "Tap a word to see lemma, morphology, Strong, and gloss.",
+        "interlinear": "Tap a word to see more word-level information."
+      },
+      "labels": {
+        "lemma": "Lemma",
+        "morphology": "Morphology",
+        "transliteration": "Transliteration",
+        "strong": "Strong",
+        "gloss": "Gloss",
+        "reference": "Reference",
+        "clause": "Clause",
+        "code": "Code",
+        "otQuote": "OT quotation",
+        "closeCard": "Close word info"
+      }
     }
   }
 };

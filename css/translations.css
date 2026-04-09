@@ -1287,6 +1287,98 @@ html[data-theme="dark"] .site-info-dialog {
   margin: 0 0 0.55rem;
 }
 
+.compare-greek-verse {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.18rem 0.28rem;
+  vertical-align: top;
+}
+
+.compare-greek-verse--interlinear {
+  gap: 0.48rem 0.44rem;
+}
+
+.compare-greek-token {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  padding: 0.04rem 0.12rem;
+  border-radius: 0.42rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.14s ease, box-shadow 0.14s ease, color 0.14s ease;
+}
+
+.compare-greek-token--static {
+  cursor: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+
+.compare-greek-token__surface {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.02rem;
+}
+
+.compare-greek-token__word {
+  white-space: nowrap;
+}
+
+.compare-greek-token__punct {
+  white-space: nowrap;
+}
+
+.compare-greek-token:hover,
+.compare-greek-token:focus-visible {
+  background: color-mix(in srgb, var(--accent-soft) 86%, transparent);
+  outline: none;
+}
+
+.compare-greek-token--static:hover,
+.compare-greek-token--static:focus-visible {
+  background: transparent;
+}
+
+.compare-greek-token.is-selected {
+  background: color-mix(in srgb, var(--accent-soft) 100%, transparent);
+  color: var(--paper);
+  box-shadow: 0 0 0 1px rgba(13, 74, 92, 0.18) inset;
+}
+
+.compare-greek-token.is-related {
+  background: color-mix(in srgb, var(--bg-muted) 80%, transparent);
+}
+
+.compare-greek-token--interlinear {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.08rem;
+  min-width: min-content;
+  padding: 0.12rem 0.14rem 0.16rem;
+}
+
+.compare-greek-token__gloss {
+  display: block;
+  max-width: 9.5ch;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.63rem;
+  line-height: 1.12;
+  color: var(--muted);
+  white-space: normal;
+  text-wrap: pretty;
+}
+
+.compare-main-panel.is-greek-script .compare-greek-token__gloss,
+.compare-modal-panel.is-greek-script .compare-greek-token__gloss {
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
 .verse-line--marked {
   padding-top: 0.08rem;
   padding-bottom: 0.14rem;

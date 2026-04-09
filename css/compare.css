@@ -260,6 +260,13 @@
   box-shadow: 0 0 0 1px rgba(255, 240, 200, 0.55) inset;
 }
 
+.compare-marker-toggle.is-disabled,
+.compare-marker-toggle:disabled {
+  opacity: 0.46;
+  cursor: default;
+  box-shadow: none;
+}
+
 .compare-modal-favorite.is-active .compare-modal-favorite__svg path {
   fill: currentColor;
   stroke: currentColor;
@@ -273,8 +280,7 @@
 
 .compare-marker-toggle.is-active:hover {
   border-color: rgba(169, 120, 10, 0.54);
-  color: #4f3908;
-  background: color-mix(in srgb, #efd489 78%, var(--bg));
+  background: linear-gradient(180deg, #936e25 0%, #6b4c13 100%);
 }
 
 .compare-modal-close:focus-visible,
@@ -840,8 +846,983 @@ html[data-theme="dark"] .compare-marker-toggle.is-active {
     margin-bottom: 0.22rem;
   }
 
-  .verse-addr {
-    font-size: 0.56rem;
-    margin-right: 0.16rem;
+.verse-addr {
+  font-size: 0.56rem;
+  margin-right: 0.16rem;
+}
+}
+
+.compare-greek-tools {
+  margin: 0.15rem 0 0.95rem;
+  padding: 0.88rem 0.98rem 0.96rem;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  border-radius: calc(var(--radius) - 8px);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 84%, transparent), color-mix(in srgb, var(--bg) 92%, transparent));
+  box-shadow: 0 10px 22px rgba(11, 25, 34, 0.04);
+}
+
+.compare-greek-tools__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.compare-greek-tools__label {
+  display: inline-block;
+  padding-top: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.compare-greek-tools__buttons {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.compare-greek-tools__btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.42rem 0.78rem;
+  font: inherit;
+  font-size: 0.79rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.compare-greek-tools__btn:hover,
+.compare-greek-tools__btn:focus-visible {
+  border-color: var(--accent-ring);
+  background: color-mix(in srgb, var(--accent-soft) 78%, var(--bg));
+  color: var(--paper);
+  outline: none;
+}
+
+.compare-greek-tools__btn.is-active {
+  border-color: rgba(13, 74, 92, 0.2);
+  background: color-mix(in srgb, var(--accent-soft) 88%, var(--bg));
+  color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(13, 74, 92, 0.08) inset;
+}
+
+.compare-greek-tools__hint {
+  margin: 0.72rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.48;
+  color: var(--muted);
+  max-width: 66ch;
+}
+
+.compare-greek-card {
+  margin-top: 0.78rem;
+  padding: 0.92rem 1rem 0.98rem;
+  border: 1px solid color-mix(in srgb, var(--border) 94%, transparent);
+  border-radius: calc(var(--radius) - 10px);
+  background: color-mix(in srgb, var(--bg) 94%, white 6%);
+}
+
+.compare-greek-card--empty {
+  color: var(--muted);
+}
+
+.compare-greek-card--empty p {
+  margin: 0;
+  line-height: 1.48;
+}
+
+.compare-greek-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-bottom: 0.88rem;
+}
+
+.compare-greek-card__title-wrap {
+  min-width: 0;
+}
+
+.compare-greek-card__word {
+  margin: 0;
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  font-size: 1.18rem;
+  line-height: 1.16;
+  color: var(--paper);
+}
+
+.compare-greek-card__meta {
+  margin: 0.26rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.compare-greek-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.42rem;
+}
+
+.compare-greek-card__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.45rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-muted) 86%, transparent);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.compare-greek-card__badge--quote {
+  background: color-mix(in srgb, #f4e3b1 72%, var(--bg));
+  color: #7a5a14;
+}
+
+.compare-greek-card__close {
+  appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.08rem;
+  line-height: 1;
+  transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
+}
+
+.compare-greek-card__close:hover,
+.compare-greek-card__close:focus-visible {
+  border-color: var(--accent-ring);
+  background: color-mix(in srgb, var(--accent-soft) 72%, var(--bg));
+  color: var(--accent);
+  outline: none;
+}
+
+.compare-greek-card__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.82rem 1rem;
+  margin: 0;
+}
+
+.compare-greek-card__field {
+  margin: 0;
+  min-width: 0;
+}
+
+.compare-greek-card__field dt {
+  margin: 0 0 0.22rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.compare-greek-card__field dd {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--paper);
+  word-break: break-word;
+}
+
+.verse-line[data-greek-open-verse] {
+  cursor: pointer;
+  border-radius: 0.45rem;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease, color 0.14s ease;
+}
+
+.verse-line[data-greek-open-verse]:hover {
+  background: color-mix(in srgb, var(--accent-soft) 72%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-strong) 16%, transparent);
+}
+
+.verse-line[data-greek-open-verse]:hover .verse-addr,
+.verse-line[data-greek-open-verse].is-open .verse-addr {
+  color: var(--accent);
+}
+
+.verse-line[data-greek-open-verse].is-open {
+  background: color-mix(in srgb, var(--accent-soft) 88%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-strong) 22%, transparent);
+}
+
+.verse-line[data-greek-open-verse]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 0.4rem;
+}
+
+.greek-verse-dialog {
+  width: min(var(--layout-max-width), calc(100vw - 1.5rem));
+  max-width: none;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.greek-verse-dialog::backdrop {
+  background: color-mix(in srgb, var(--dialog-backdrop) 84%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.greek-verse-dialog-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.45rem 1.3rem;
+  max-height: calc(100vh - 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--border) 94%, transparent);
+  border-radius: calc(var(--radius) + 2px);
+  background: color-mix(in srgb, var(--bg2) 96%, white 4%);
+  box-shadow: 0 30px 56px rgba(18, 27, 35, 0.16);
+  transform: translateY(18px) scale(0.985);
+  opacity: 0;
+}
+
+.greek-verse-dialog.is-visible .greek-verse-dialog-inner {
+  animation: greekWordDialogIn 220ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+.greek-verse-dialog.is-closing .greek-verse-dialog-inner {
+  animation: greekWordDialogOut 220ms cubic-bezier(0.4, 0, 0.25, 1) forwards;
+}
+
+#greek-verse-dialog-close.translation-info-dialog-x {
+  top: 0.95rem;
+  right: 0.95rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-muted);
+  color: var(--paper);
+  font-size: 1.35rem;
+  line-height: 1;
+  transition:
+    border-color 0.14s ease,
+    color 0.14s ease,
+    background 0.14s ease,
+    box-shadow 0.14s ease,
+    opacity 0.14s ease;
+}
+
+#greek-verse-dialog-close.translation-info-dialog-x:hover {
+  border-color: var(--accent-ring);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+#greek-verse-dialog-close.translation-info-dialog-x:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.greek-verse-dialog__head {
+  flex: 0 0 auto;
+  margin-bottom: 1.2rem;
+  padding: 0 3.2rem 1rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+}
+
+.greek-verse-dialog__ref {
+  margin: 0 0 0.34rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.greek-verse-dialog__title {
+  margin-bottom: 0;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3.4vw, 2.35rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+}
+
+.greek-verse-dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 0.12rem;
+}
+
+.greek-verse-dialog-body.is-swapping {
+  animation: greekWordDialogBodySwap 220ms ease;
+}
+
+.greek-verse-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(21rem, 24rem);
+  gap: 0 2.4rem;
+}
+
+.greek-verse-layout__verse {
+  min-width: 0;
+  padding-right: 2.4rem;
+  border-right: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+}
+
+.greek-verse-layout__hint {
+  margin: 0 0 1.22rem;
+  max-width: 44rem;
+  font-size: 0.86rem;
+  line-height: 1.52;
+  color: var(--muted);
+}
+
+.greek-verse-layout__tokens {
+  width: 100%;
+  gap: 0.9rem 0.96rem;
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  font-size: 1.52rem;
+  line-height: 1.72;
+  color: var(--paper);
+}
+
+.greek-verse-layout__tokens .compare-greek-token--interlinear {
+  min-width: 0;
+  padding: 0.16rem 0.18rem 0.22rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  box-shadow: none;
+  gap: 0.14rem;
+  align-items: flex-start;
+}
+
+.greek-verse-layout__tokens .compare-greek-token__word {
+  font-size: 1.08em;
+}
+
+.greek-verse-layout__tokens .compare-greek-token__gloss {
+  max-width: 12ch;
+  font-size: 0.72rem;
+  line-height: 1.18;
+}
+
+.greek-verse-layout__tokens .compare-greek-token:hover,
+.greek-verse-layout__tokens .compare-greek-token:focus-visible {
+  background: color-mix(in srgb, var(--accent-soft) 62%, transparent);
+}
+
+.greek-verse-layout__tokens .compare-greek-token.is-selected {
+  background: color-mix(in srgb, var(--accent-soft) 78%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-strong) 42%, transparent);
+}
+
+.greek-verse-layout__tokens .compare-greek-token.is-selected .compare-greek-token__gloss {
+  color: color-mix(in srgb, var(--paper) 64%, var(--muted));
+}
+
+.greek-verse-layout__tokens .compare-greek-token.is-related {
+  background: color-mix(in srgb, var(--bg-muted) 66%, transparent);
+}
+
+.greek-verse-layout__sidebar {
+  min-width: 0;
+}
+
+.greek-verse-layout__word-pane {
+  position: sticky;
+  top: 0;
+}
+
+.greek-verse-word--empty p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.greek-verse-word__title {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.44rem;
+  flex-wrap: wrap;
+  font-size: 1.58rem;
+  line-height: 1.18;
+  color: var(--heading);
+}
+
+.greek-verse-word__title-main {
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  font-size: 1.16em;
+}
+
+.greek-verse-word__title-meta {
+  font-size: 0.66em;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.greek-verse-word__gloss {
+  margin: 0.54rem 0 1.32rem;
+  font-size: 1.14rem;
+  line-height: 1.4;
+  color: var(--paper);
+}
+
+.greek-verse-word__facts {
+  margin: 0;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.greek-verse-word__fact {
+  margin: 0;
+  padding-top: 0.95rem;
+  border-top: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+}
+
+.greek-verse-word__fact:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.greek-verse-word__term {
+  margin: 0 0 0.28rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.greek-verse-word__value {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.52;
+  color: var(--heading);
+}
+
+.greek-verse-word__value--lemma {
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  font-size: 1.2rem;
+  color: var(--paper);
+}
+
+.greek-verse-word__value--strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.92rem;
+  padding: 0.14rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-strong) 28%, transparent);
+  background: color-mix(in srgb, var(--accent-soft) 64%, white 36%);
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.greek-word-dialog {
+  width: min(40rem, calc(100vw - 1.5rem));
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.greek-word-dialog::backdrop {
+  background: color-mix(in srgb, var(--dialog-backdrop) 86%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.greek-word-dialog-inner {
+  padding: 1.2rem 1.18rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  border-radius: calc(var(--radius) + 4px);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, #fff1c6 26%, transparent) 0%, transparent 36%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg2) 92%, white 8%) 0%, color-mix(in srgb, var(--bg) 96%, white 4%) 100%);
+  box-shadow:
+    0 26px 52px rgba(18, 27, 35, 0.18),
+    0 0 0 1px rgba(255, 247, 222, 0.45) inset;
+  transform: translateY(18px) scale(0.985);
+  opacity: 0;
+}
+
+.greek-word-dialog.is-visible .greek-word-dialog-inner {
+  animation: greekWordDialogIn 220ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+.greek-word-dialog.is-closing .greek-word-dialog-inner {
+  animation: greekWordDialogOut 220ms cubic-bezier(0.4, 0, 0.25, 1) forwards;
+}
+
+@keyframes greekWordDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes greekWordDialogOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+}
+
+.greek-word-dialog__head {
+  margin-bottom: 1rem;
+  padding: 0.15rem 0 0.88rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+}
+
+.greek-word-dialog__ref {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.7rem;
+  margin: 0 0 0.38rem;
+  padding: 0.18rem 0.62rem;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-muted) 84%, white 16%);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.greek-word-dialog__title {
+  margin-bottom: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.38rem;
+  flex-wrap: wrap;
+  font-size: 1.7rem;
+  line-height: 1.16;
+  color: var(--heading);
+}
+
+.greek-word-dialog__title-main {
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  color: var(--heading);
+}
+
+.greek-word-dialog__title-separator {
+  color: color-mix(in srgb, var(--muted) 72%, transparent);
+}
+
+.greek-word-dialog__title-meta {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  font-size: 0.68em;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.greek-word-dialog-body.is-swapping {
+  animation: greekWordDialogBodySwap 220ms ease;
+}
+
+@keyframes greekWordDialogBodySwap {
+  0% {
+    opacity: 0.58;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.greek-word-dialog-body .compare-greek-card {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.greek-word-sheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "gloss gloss"
+    "morph morph"
+    "lemma strong";
+  gap: 0.82rem;
+}
+
+.greek-word-sheet__panel {
+  min-width: 0;
+  padding: 0.88rem 0.92rem 0.94rem;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 90%, white 10%) 0%, color-mix(in srgb, var(--bg) 94%, white 6%) 100%);
+  box-shadow:
+    0 10px 20px rgba(14, 24, 31, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.16) inset;
+}
+
+.greek-word-sheet__panel--gloss {
+  grid-area: gloss;
+  padding: 0.96rem 1rem 1rem;
+  background:
+    radial-gradient(circle at top right, rgba(255, 239, 186, 0.58) 0%, transparent 34%),
+    linear-gradient(180deg, #fffaf1 0%, #f7f1e3 100%);
+  border-color: color-mix(in srgb, #e5d2a2 44%, var(--border));
+}
+
+.greek-word-sheet__panel--morphology {
+  grid-area: morph;
+}
+
+.greek-word-sheet__panel--lemma {
+  grid-area: lemma;
+  padding-bottom: 1.1rem;
+}
+
+.greek-word-sheet__panel--strong {
+  grid-area: strong;
+  align-self: start;
+}
+
+.greek-word-sheet__label {
+  margin: 0 0 0.34rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.greek-word-sheet__value {
+  margin: 0;
+  color: var(--heading);
+  line-height: 1.46;
+  word-break: break-word;
+}
+
+.greek-word-sheet__value--gloss {
+  font-size: 1.38rem;
+  line-height: 1.18;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.greek-word-sheet__value--lemma {
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  font-size: 1.34rem;
+  line-height: 1.24;
+  color: var(--paper);
+}
+
+.greek-word-sheet__value--strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.95rem;
+  padding: 0.16rem 0.62rem;
+  border: 1px solid color-mix(in srgb, var(--accent-strong) 34%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-soft) 74%, white 26%);
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.greek-word-sheet__morph-summary {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.48;
+  color: var(--heading);
+}
+
+html[data-theme="dark"] .greek-word-dialog-inner {
+  background:
+    radial-gradient(circle at top right, rgba(176, 132, 40, 0.18) 0%, transparent 38%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg2) 94%, black 6%) 0%, color-mix(in srgb, var(--bg) 96%, black 4%) 100%);
+  box-shadow:
+    0 28px 54px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(255, 233, 177, 0.06) inset;
+}
+
+html[data-theme="dark"] .greek-verse-dialog-inner {
+  background: color-mix(in srgb, var(--bg2) 96%, black 4%);
+  box-shadow: 0 28px 54px rgba(0, 0, 0, 0.38);
+}
+
+html[data-theme="dark"] .greek-word-dialog__ref {
+  background: color-mix(in srgb, var(--bg-muted) 84%, black 16%);
+}
+
+html[data-theme="dark"] #greek-verse-dialog-close.translation-info-dialog-x {
+  border-color: rgba(220, 187, 109, 0.34);
+  background: color-mix(in srgb, #3f3420 68%, var(--bg2));
+  color: #ebd087;
+}
+
+html[data-theme="dark"] #greek-verse-dialog-close.translation-info-dialog-x:hover {
+  border-color: rgba(233, 203, 132, 0.52);
+  background: color-mix(in srgb, #52411f 78%, var(--bg2));
+  color: #f6df9a;
+}
+
+html[data-theme="dark"] .greek-verse-dialog__ref {
+  background: transparent;
+}
+
+html[data-theme="dark"] .greek-verse-sheet__lead,
+html[data-theme="dark"] .greek-verse-sheet__interlinear {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 92%, black 8%) 0%, color-mix(in srgb, var(--bg2) 92%, black 8%) 100%);
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(255, 233, 177, 0.05) inset;
+}
+
+html[data-theme="dark"] .greek-verse-sheet__lead {
+  background:
+    radial-gradient(circle at top right, rgba(191, 152, 62, 0.18) 0%, transparent 38%),
+    linear-gradient(180deg, #30281d 0%, #241d15 100%);
+  border-color: color-mix(in srgb, #81642b 44%, var(--border));
+}
+
+html[data-theme="dark"] .greek-verse-dialog-body .compare-greek-token--interlinear {
+  background: color-mix(in srgb, var(--bg2) 90%, black 10%);
+  border-color: color-mix(in srgb, var(--border) 78%, transparent);
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 233, 177, 0.05) inset;
+}
+
+html[data-theme="dark"] .greek-verse-layout__tokens .compare-greek-token--interlinear {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .verse-line[data-greek-open-verse]:hover {
+  background: color-mix(in srgb, var(--accent-soft) 26%, rgba(255, 255, 255, 0.03) 74%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-strong) 24%, transparent);
+}
+
+html[data-theme="dark"] .verse-line[data-greek-open-verse].is-open {
+  background: color-mix(in srgb, var(--accent-soft) 32%, rgba(255, 255, 255, 0.03) 68%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-strong) 28%, transparent);
+}
+
+html[data-theme="dark"] .greek-verse-layout__tokens .compare-greek-token:hover,
+html[data-theme="dark"] .greek-verse-layout__tokens .compare-greek-token:focus-visible {
+  background: color-mix(in srgb, var(--accent-soft) 24%, rgba(255, 255, 255, 0.04) 76%);
+}
+
+html[data-theme="dark"] .greek-verse-layout__tokens .compare-greek-token.is-selected {
+  background: color-mix(in srgb, var(--accent-soft) 28%, rgba(255, 255, 255, 0.04) 72%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f0d58f 42%, transparent);
+}
+
+html[data-theme="dark"] .greek-verse-layout__tokens .compare-greek-token.is-related {
+  background: color-mix(in srgb, var(--bg-muted) 60%, rgba(255, 255, 255, 0.03) 40%);
+}
+
+html[data-theme="dark"] .greek-verse-word__value--strong {
+  background: color-mix(in srgb, var(--accent-soft) 22%, rgba(255, 255, 255, 0.04) 78%);
+  border-color: color-mix(in srgb, var(--accent-strong) 42%, transparent);
+  color: #f2dec1;
+}
+
+html[data-theme="dark"] .greek-word-sheet__panel {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 92%, black 8%) 0%, color-mix(in srgb, var(--bg2) 92%, black 8%) 100%);
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(255, 233, 177, 0.05) inset;
+}
+
+html[data-theme="dark"] .greek-word-sheet__panel--gloss {
+  background:
+    radial-gradient(circle at top right, rgba(191, 152, 62, 0.18) 0%, transparent 38%),
+    linear-gradient(180deg, #30281d 0%, #241d15 100%);
+  border-color: color-mix(in srgb, #81642b 44%, var(--border));
+}
+
+html[data-theme="dark"] .greek-word-sheet__value--strong {
+  background: color-mix(in srgb, var(--accent-soft) 22%, rgba(255, 255, 255, 0.04) 78%);
+  border-color: color-mix(in srgb, var(--accent-strong) 42%, transparent);
+  color: #f2dec1;
+}
+
+@media (max-width: 980px) {
+  .greek-verse-layout {
+    grid-template-columns: 1fr;
+    gap: 1.35rem;
+  }
+
+  .greek-verse-layout__verse {
+    padding-right: 0;
+    padding-bottom: 1.3rem;
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  }
+
+  .greek-verse-layout__word-pane {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .compare-greek-tools {
+    padding: 0.8rem 0.82rem 0.86rem;
+  }
+
+  .compare-greek-tools__buttons {
+    width: 100%;
+  }
+
+  .compare-greek-card {
+    padding: 0.86rem 0.88rem 0.92rem;
+  }
+
+  .compare-greek-card__grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .greek-word-dialog {
+    width: calc(100vw - 1rem);
+  }
+
+  .greek-verse-dialog {
+    width: 100vw;
+    min-width: 100vw;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .greek-verse-dialog-inner {
+    min-height: 100dvh;
+    padding:
+      max(1rem, env(safe-area-inset-top))
+      max(0.92rem, env(safe-area-inset-right))
+      max(1rem, env(safe-area-inset-bottom))
+      max(0.92rem, env(safe-area-inset-left));
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .greek-verse-dialog__title {
+    font-size: 1.42rem;
+  }
+
+  #greek-verse-dialog-close.translation-info-dialog-x {
+    top: 0.82rem;
+    right: 0.82rem;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    font-size: 1.35rem;
+  }
+
+  .greek-verse-dialog__head {
+    padding-right: 3rem;
+  }
+
+  .greek-verse-dialog-body {
+    flex: 0 0 auto;
+    min-height: auto;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .greek-verse-layout {
+    gap: 1.08rem;
+  }
+
+  .greek-verse-layout__verse {
+    padding-bottom: 1.05rem;
+  }
+
+  .greek-verse-layout__hint {
+    margin-bottom: 0.96rem;
+    font-size: 0.82rem;
+  }
+
+  .greek-verse-layout__tokens {
+    gap: 0.68rem 0.74rem;
+    font-size: 1.28rem;
+    line-height: 1.62;
+  }
+
+  .greek-verse-word__title {
+    font-size: 1.34rem;
+  }
+
+  .greek-verse-word__gloss {
+    margin-bottom: 1.05rem;
+    font-size: 1rem;
+  }
+
+  .greek-word-dialog-inner {
+    padding: 1rem 0.92rem 0.92rem;
+  }
+
+  .greek-word-dialog__title {
+    font-size: 1.42rem;
+  }
+
+  .greek-word-sheet {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "gloss"
+      "morph"
+      "lemma"
+      "strong";
+  }
+
+  .greek-word-sheet__value--gloss {
+    font-size: 1.22rem;
   }
 }

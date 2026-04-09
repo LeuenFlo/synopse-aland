@@ -411,8 +411,10 @@
       main: null,
       verse: null,
     };
-    const interlinearBookCache = Object.create(null);
-    const interlinearBookPromises = Object.create(null);
+    const interlinearBookIndexCache = Object.create(null);
+    const interlinearBookIndexPromises = Object.create(null);
+    const interlinearChapterCache = Object.create(null);
+    const interlinearChapterPromises = Object.create(null);
     let activeDialogPanel = "";
     let activeVerseDialog = null;
     let suppressDialogCloseHandler = false;
@@ -713,13 +715,22 @@
       return parts.join(" - ");
     }
 
+    function interlinearChapterCacheKey(book, chapter) {
+      return String(book) + ":" + String(chapter);
+    }
+
+    function getCachedInterlinearChapter(book, chapter) {
+      const key = interlinearChapterCacheKey(book, chapter);
+      return Object.prototype.hasOwnProperty.call(interlinearChapterCache, key) ? interlinearChapterCache[key] : null;
+    }
+
     function getTokenFromSelection(selection) {
       if (!selection) return null;
-      const bookData = interlinearBookCache[String(selection.book)];
+      const chapterData = getCachedInterlinearChapter(selection.book, selection.chapter);
       const verseTokens =
-        bookData &&
-        bookData.verses &&
-        bookData.verses[selection.chapter + ":" + selection.verse];
+        chapterData &&
+        chapterData.verses &&
+        chapterData.verses[selection.chapter + ":" + selection.verse];
       return verseTokens && verseTokens[selection.index] ? verseTokens[selection.index] : null;
     }
 
@@ -1097,44 +1108,62 @@
       };
     }
 
-    async function ensureInterlinearBook(book) {
+    async function ensureInterlinearBookIndex(book) {
       const key = String(book);
-      if (interlinearBookCache[key]) return interlinearBookCache[key];
-      if (interlinearBookPromises[key]) return interlinearBookPromises[key];
-      interlinearBookPromises[key] = fetchJson("/data/interlinear/opengnt-gospels/" + key + ".json")
+      if (Object.prototype.hasOwnProperty.call(interlinearBookIndexCache, key)) return interlinearBookIndexCache[key];
+      if (interlinearBookIndexPromises[key]) return interlinearBookIndexPromises[key];
+      interlinearBookIndexPromises[key] = fetchJson("/data/interlinear/opengnt-gospels/" + key + "/index.json")
         .then(function (json) {
-          interlinearBookCache[key] = json || null;
-          delete interlinearBookPromises[key];
-          return interlinearBookCache[key];
+          interlinearBookIndexCache[key] = json || null;
+          delete interlinearBookIndexPromises[key];
+          return interlinearBookIndexCache[key];
         })
         .catch(function () {
-          interlinearBookCache[key] = null;
-          delete interlinearBookPromises[key];
+          interlinearBookIndexCache[key] = null;
+          delete interlinearBookIndexPromises[key];
           return null;
         });
-      return interlinearBookPromises[key];
+      return interlinearBookIndexPromises[key];
     }
 
-    function interlinearMaxVerseMap(book, bookData) {
-      if (!bookData || !bookData.verses) return Object.create(null);
-      if (bookData._maxVerseMap) return bookData._maxVerseMap;
+    async function ensureInterlinearChapter(book, chapter) {
+      if (!Number.isFinite(chapter)) return null;
+      const key = interlinearChapterCacheKey(book, chapter);
+      if (Object.prototype.hasOwnProperty.call(interlinearChapterCache, key)) return interlinearChapterCache[key];
+      if (interlinearChapterPromises[key]) return interlinearChapterPromises[key];
+      interlinearChapterPromises[key] = fetchJson("/data/interlinear/opengnt-gospels/" + String(book) + "/" + String(chapter) + ".json")
+        .then(function (json) {
+          interlinearChapterCache[key] = json || null;
+          delete interlinearChapterPromises[key];
+          return interlinearChapterCache[key];
+        })
+        .catch(function () {
+          interlinearChapterCache[key] = null;
+          delete interlinearChapterPromises[key];
+          return null;
+        });
+      return interlinearChapterPromises[key];
+    }
+
+    function interlinearMaxVerseMap(book, bookIndex) {
+      if (!bookIndex || !bookIndex.chapters) return Object.create(null);
+      if (bookIndex._maxVerseMap) return bookIndex._maxVerseMap;
       const maxV = Object.create(null);
-      Object.keys(bookData.verses).forEach(function (verseKey) {
-        const parts = verseKey.split(":");
-        if (parts.length !== 2) return;
-        const chapter = Number(parts[0]);
-        const verse = Number(parts[1]);
-        if (!Number.isFinite(chapter) || !Number.isFinite(verse)) return;
+      Object.keys(bookIndex.chapters).forEach(function (chapterKey) {
+        const chapter = Number(chapterKey);
+        const chapterMeta = bookIndex.chapters[chapterKey];
+        const maxVerse = chapterMeta ? Number(chapterMeta.max_verse) : NaN;
+        if (!Number.isFinite(chapter) || !Number.isFinite(maxVerse)) return;
         const key = String(book) + ":" + String(chapter);
-        maxV[key] = Math.max(maxV[key] || 0, verse);
+        maxV[key] = Math.max(maxV[key] || 0, maxVerse);
       });
-      bookData._maxVerseMap = maxV;
+      bookIndex._maxVerseMap = maxV;
       return maxV;
     }
 
-    function resolveInterlinearBlocks(compareApi, args, bookData) {
+    function resolveInterlinearBlocks(compareApi, args, bookIndex) {
       if (!compareApi || typeof compareApi.expandRefToVerses !== "function") return null;
-      const ex = compareApi.expandRefToVerses(args.ref, args.book, interlinearMaxVerseMap(args.book, bookData));
+      const ex = compareApi.expandRefToVerses(args.ref, args.book, interlinearMaxVerseMap(args.book, bookIndex));
       if (!ex.ok) {
         return { ok: false, note: ex.note || "" };
       }
@@ -1411,8 +1440,8 @@
 
       const referenceTranslationId = getReferenceTranslationId();
       const referenceLabel = referenceTranslationId ? translationVerboseLabelForId(referenceTranslationId) : "";
-      const [bookData, referenceResult] = await Promise.all([
-        ensureInterlinearBook(target.book),
+      const [chapterData, referenceResult] = await Promise.all([
+        ensureInterlinearChapter(target.book, target.chapter),
         referenceTranslationId
           ? getVerseCache(referenceTranslationId)
               .then(function (cache) {
@@ -1424,7 +1453,7 @@
           : Promise.resolve({ cache: null, loadFailed: false }),
       ]);
       if (requestSeq !== verseDialogRequestSeq || !sameVerseTarget(activeVerseDialog, target)) return;
-      const verseMap = bookData && bookData.verses ? bookData.verses : null;
+      const verseMap = chapterData && chapterData.verses ? chapterData.verses : null;
       const tokens = verseMap ? verseMap[target.chapter + ":" + target.verse] : null;
       hintEl.hidden = !(Array.isArray(tokens) && tokens.length);
       selectedTokenByPanel.verse = ensureVerseSelection(target, tokens);

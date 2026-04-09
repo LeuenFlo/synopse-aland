@@ -1442,9 +1442,7 @@
     }
     const canonicalTranslationId = "elberfelder_1905";
     const translationJson = await fetchJsonIfExists(
-      "/data/verse_markers/cross_references/" +
-        encodeURIComponent(canonicalTranslationId) +
-        "/" +
+      "/data/cross_references/" +
         encodeURIComponent(String(row.aland_no)) +
         ".json",
     );

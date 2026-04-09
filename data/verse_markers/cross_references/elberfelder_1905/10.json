@@ -1,0 +1,15 @@
+{
+  "aland_no": 10,
+  "title": "The Flight into Egypt and Return",
+  "title_de": "Flucht nach Ägypten und Rückkehr",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "2.13-21",
+    "mark": "",
+    "luke": "",
+    "john": ""
+  },
+  "groups": []
+}

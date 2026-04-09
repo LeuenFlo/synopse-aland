@@ -1,0 +1,69 @@
+{
+  "aland_no": 67,
+  "title": "On Anxiety",
+  "title_de": "Zur Sorge",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "6.25-34",
+    "mark": "",
+    "luke": "12.22-32",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Deshalb sage ich euch: Seid nicht besorgt für euer Leben, was ihr essen und was ihr tri…",
+      "marker": "apricot",
+      "verses": [
+        "40:6:25",
+        "40:6:28",
+        "40:6:31",
+        "40:6:34",
+        "42:12:22",
+        "42:12:24",
+        "42:12:27",
+        "42:12:29"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Sehet hin auf die Vögel des Himmels, daß sie nicht säen noch ernten, noch in Scheunen s…",
+      "marker": "blush",
+      "verses": [
+        "40:6:26",
+        "40:6:32",
+        "42:12:30"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Wer aber unter euch vermag mit Sorgen seiner Größe eine Elle zuzusetzen?",
+      "marker": "fog",
+      "verses": [
+        "40:6:27",
+        "42:12:25",
+        "42:12:26"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Wenn aber Gott das Gras des Feldes, das heute ist und morgen in den Ofen geworfen wird,…",
+      "marker": "mint",
+      "verses": [
+        "40:6:30",
+        "42:12:28"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Trachtet aber zuerst nach dem Reiche Gottes und nach seiner Gerechtigkeit, und dies all…",
+      "marker": "lilac",
+      "verses": [
+        "40:6:33",
+        "42:12:31"
+      ]
+    }
+  ]
+}

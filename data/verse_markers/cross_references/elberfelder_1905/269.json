@@ -1,0 +1,55 @@
+{
+  "aland_no": 269,
+  "title": "The Triumphal Entry",
+  "title_de": "Der Einzug in Jerusalem",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "21.1-9",
+    "mark": "11.1-10",
+    "luke": "19.28-40",
+    "john": "12.12-19"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "da sandte Jesus zwei Jünger und sprach zu ihnen: Gehet hin in das Dorf, das euch gegenü…",
+      "marker": "apricot",
+      "verses": [
+        "40:21:2",
+        "41:11:2"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Dies alles aber ist geschehen, auf daß erfüllt würde, was durch den Propheten geredet i…",
+      "marker": "blush",
+      "verses": [
+        "40:21:4",
+        "43:12:15"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Die Volksmengen aber, welche vor ihm hergingen und nachfolgten, riefen und sprachen: Ho…",
+      "marker": "fog",
+      "verses": [
+        "40:21:9",
+        "41:11:9",
+        "41:11:10",
+        "42:19:38",
+        "43:12:13"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Und sie führten es zu Jesu; und sie warfen ihre Kleider auf das Füllen und setzten Jesu…",
+      "marker": "mint",
+      "verses": [
+        "42:19:35",
+        "43:12:14"
+      ]
+    }
+  ]
+}

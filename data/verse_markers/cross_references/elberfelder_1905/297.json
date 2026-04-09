@@ -1,0 +1,53 @@
+{
+  "aland_no": 297,
+  "title": "The Parable of the Good Servant and the Wicked Servant",
+  "title_de": "Vom guten und vom bösen Knecht",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.45-51",
+    "mark": "",
+    "luke": "12.41-46",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wer ist nun der treue und kluge Knecht, den sein Herrüber sein Gesinde gesetzt hat, um…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:45",
+        "40:24:46",
+        "42:12:42"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wahrlich, ich sage euch, er wird ihnüber seine ganze Habe setzen.",
+      "marker": "blush",
+      "verses": [
+        "40:24:47",
+        "42:12:44"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Wenn aber jener böse Knecht in seinem Herzen sagt: Mein Herr verzieht zu kommen,",
+      "marker": "fog",
+      "verses": [
+        "40:24:48",
+        "42:12:45"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "und wird ihn entzweischneiden und ihm sein Teil setzen mit den Heuchlern: da wird sein…",
+      "marker": "mint",
+      "verses": [
+        "40:24:51",
+        "42:12:46"
+      ]
+    }
+  ]
+}

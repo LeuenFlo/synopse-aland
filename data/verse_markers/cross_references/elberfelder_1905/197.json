@@ -1,0 +1,28 @@
+{
+  "aland_no": 197,
+  "title": "The Sin against the Holy Spirit",
+  "title_de": "Die Sünde gegen den Heiligen Geist",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.31-32",
+    "mark": "3.28-30",
+    "luke": "12.10",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Deshalb sage ich euch: Jede Sünde und Lästerung wird den Menschen vergeben werden; aber…",
+      "marker": "apricot",
+      "verses": [
+        "40:12:31",
+        "40:12:32",
+        "41:3:28",
+        "41:3:29",
+        "42:12:10"
+      ]
+    }
+  ]
+}

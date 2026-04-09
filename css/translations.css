@@ -1287,6 +1287,348 @@ html[data-theme="dark"] .site-info-dialog {
   margin: 0 0 0.55rem;
 }
 
+.verse-line--marked {
+  padding-top: 0.08rem;
+  padding-bottom: 0.14rem;
+}
+
+/*
+ * Textmarker: mehrere „Züge“, leichte Schräglage, Körnung, weiche Kanten.
+ * drop-shadow nach außen = weicher Farbsaum wie bei echtem Stift (nicht nur Kasten).
+ */
+.compare-marker {
+  --marker-ink: #ccc;
+  --marker-final-filter:
+    drop-shadow(0.04em 0.06em 0.08em color-mix(in srgb, var(--marker-ink) 28%, transparent))
+    drop-shadow(-0.03em 0.04em 0.06em color-mix(in srgb, var(--marker-ink) 18%, transparent))
+    drop-shadow(0.02em -0.02em 0.04em color-mix(in srgb, var(--marker-ink) 12%, transparent));
+  --marker-blur-filter:
+    drop-shadow(0 0 0.22em color-mix(in srgb, var(--marker-ink) 26%, transparent))
+    drop-shadow(0 0 0.4em color-mix(in srgb, var(--marker-ink) 16%, transparent));
+  --marker-final-box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.48) inset,
+    0 -1.5px 0 rgba(0, 0, 0, 0.045) inset,
+    1px 0 0 rgba(255, 255, 255, 0.12) inset;
+  --marker-blur-box-shadow:
+    0 0 0.28em color-mix(in srgb, var(--marker-ink) 18%, transparent),
+    0 0 0.12em rgba(255, 255, 255, 0.18) inset;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  display: inline;
+  padding: 0.1em 0.38em 0.16em;
+  border-radius: 0.18em 0.62em 0.28em 0.32em;
+  transform: rotate(-0.42deg) skewX(-0.55deg);
+  transform-origin: center left;
+  mix-blend-mode: multiply;
+  /* Minikörnung (horizontal feine Streifen) wie Papier/Zug */
+  background:
+    repeating-linear-gradient(
+      88deg,
+      transparent 0 3px,
+      rgba(255, 255, 255, 0.04) 3px 4px,
+      transparent 4px 7px
+    ),
+    radial-gradient(
+      ellipse 140% 95% at 18% 42%,
+      color-mix(in srgb, var(--marker-ink) 52%, transparent) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 120% 90% at 82% 58%,
+      color-mix(in srgb, var(--marker-ink) 38%, transparent) 0%,
+      transparent 52%
+    ),
+    linear-gradient(
+      93deg,
+      transparent 0%,
+      color-mix(in srgb, var(--marker-ink) 42%, transparent) 4%,
+      color-mix(in srgb, var(--marker-ink) 82%, transparent) 46%,
+      color-mix(in srgb, var(--marker-ink) 48%, transparent) 78%,
+      transparent 100%
+    ),
+    linear-gradient(
+      101deg,
+      transparent 0%,
+      color-mix(in srgb, var(--marker-ink) 32%, transparent) 7%,
+      color-mix(in srgb, var(--marker-ink) 22%, transparent) 58%,
+      transparent 96%
+    ),
+    linear-gradient(
+      108deg,
+      transparent 0%,
+      color-mix(in srgb, var(--marker-ink) 28%, transparent) 12%,
+      transparent 88%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0 7%,
+      color-mix(in srgb, var(--marker-ink) 58%, transparent) 7% 93%,
+      transparent 93% 100%
+    );
+  background-position:
+    left top,
+    left top,
+    left top,
+    left top,
+    left top,
+    left top,
+    left top;
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  background-blend-mode: soft-light, normal, normal, multiply, multiply, multiply, multiply;
+  box-shadow: var(--marker-final-box-shadow);
+  filter: var(--marker-final-filter);
+  text-shadow: 0 0.02em 0 rgba(255, 255, 255, 0.22);
+}
+
+.compare-marker--enter {
+  animation: compare-marker-soft-in 620ms cubic-bezier(0.18, 0.88, 0.22, 1) both;
+  animation-delay: var(--marker-delay, 0ms);
+  will-change: filter, box-shadow;
+}
+
+.compare-marker--exit {
+  animation: compare-marker-soft-out 420ms cubic-bezier(0.45, 0, 0.2, 1) both;
+  animation-delay: var(--marker-delay, 0ms);
+  will-change: filter, box-shadow;
+}
+
+@keyframes compare-marker-soft-in {
+  0% {
+    background-size:
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%;
+    box-shadow: var(--marker-blur-box-shadow);
+    filter: var(--marker-blur-filter);
+  }
+  68% {
+    background-size:
+      108% 100%,
+      106% 100%,
+      109% 100%,
+      107% 100%,
+      106% 100%,
+      108% 100%,
+      104% 100%;
+    box-shadow:
+      0 0 0.5em color-mix(in srgb, var(--marker-ink) 28%, transparent),
+      0 0 0.22em rgba(255, 255, 255, 0.24) inset;
+    filter:
+      drop-shadow(0 0 0.34em color-mix(in srgb, var(--marker-ink) 36%, transparent))
+      drop-shadow(0 0 0.56em color-mix(in srgb, var(--marker-ink) 26%, transparent));
+  }
+  100% {
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%;
+    box-shadow: var(--marker-final-box-shadow);
+    filter: var(--marker-final-filter);
+  }
+}
+
+@keyframes compare-marker-soft-out {
+  0% {
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%;
+    box-shadow: var(--marker-final-box-shadow);
+    filter: var(--marker-final-filter);
+  }
+  28% {
+    background-size:
+      106% 100%,
+      105% 100%,
+      107% 100%,
+      106% 100%,
+      105% 100%,
+      106% 100%,
+      103% 100%;
+    box-shadow:
+      0 0 0.38em color-mix(in srgb, var(--marker-ink) 24%, transparent),
+      0 0 0.14em rgba(255, 255, 255, 0.18) inset;
+    filter:
+      drop-shadow(0 0 0.24em color-mix(in srgb, var(--marker-ink) 28%, transparent))
+      drop-shadow(0 0 0.44em color-mix(in srgb, var(--marker-ink) 18%, transparent));
+  }
+  100% {
+    background-size:
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%,
+      0% 100%;
+    box-shadow:
+      0 0 0.42em color-mix(in srgb, var(--marker-ink) 16%, transparent),
+      0 0 0.14em rgba(255, 255, 255, 0.12) inset;
+    filter:
+      drop-shadow(0 0 0.28em color-mix(in srgb, var(--marker-ink) 20%, transparent))
+      drop-shadow(0 0 0.56em color-mix(in srgb, var(--marker-ink) 12%, transparent));
+  }
+}
+
+.compare-marker--example {
+  --marker-ink: #f4e59d;
+}
+
+.compare-marker--gold,
+.compare-marker--apricot {
+  --marker-ink: #efc5a6;
+}
+
+.compare-marker--blue,
+.compare-marker--blush {
+  --marker-ink: #e3c4d2;
+}
+
+.compare-marker--rose,
+.compare-marker--fog {
+  --marker-ink: #d5dbe6;
+}
+
+.compare-marker--sand {
+  --marker-ink: #e7d7b7;
+}
+
+.compare-marker--mint {
+  --marker-ink: #d1e1d4;
+}
+
+.compare-marker--lilac {
+  --marker-ink: #ddd1e9;
+}
+
+.compare-marker--peach {
+  --marker-ink: #f0d1bf;
+}
+
+.compare-marker--pearl {
+  --marker-ink: #e3dfd5;
+}
+
+.compare-marker--sage {
+  --marker-ink: #d7ddc7;
+}
+
+.compare-marker--mauve {
+  --marker-ink: #e5d7e1;
+}
+
+.compare-marker--sky {
+  --marker-ink: #d4dee8;
+}
+
+.compare-marker--clay {
+  --marker-ink: #e2c8bc;
+}
+
+html[data-theme="dark"] .compare-marker {
+  mix-blend-mode: plus-lighter;
+  --marker-final-filter:
+    drop-shadow(0.03em 0.05em 0.12em rgba(0, 0, 0, 0.45))
+    drop-shadow(-0.04em 0.04em 0.1em color-mix(in srgb, var(--marker-ink) 55%, transparent))
+    drop-shadow(0.02em -0.02em 0.08em color-mix(in srgb, var(--marker-ink) 35%, transparent));
+  --marker-blur-filter:
+    drop-shadow(0 0 0.22em rgba(0, 0, 0, 0.24))
+    drop-shadow(0 0 0.34em color-mix(in srgb, var(--marker-ink) 48%, transparent));
+  --marker-final-box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 -1.5px 0 rgba(0, 0, 0, 0.35) inset,
+    1px 0 0 rgba(0, 0, 0, 0.12) inset;
+  --marker-blur-box-shadow:
+    0 0 0.34em color-mix(in srgb, var(--marker-ink) 18%, transparent),
+    0 0 0.12em rgba(255, 255, 255, 0.06) inset;
+  /* Auf dunklem Grund: weicher Leuchtsaum statt multiply-Schatten */
+  box-shadow: var(--marker-final-box-shadow);
+  filter: var(--marker-final-filter);
+  text-shadow: 0 0.03em 0.06em rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .compare-marker--example {
+  --marker-ink: #8b7630;
+}
+
+html[data-theme="dark"] .compare-marker--gold,
+html[data-theme="dark"] .compare-marker--apricot {
+  --marker-ink: #8d6542;
+}
+
+html[data-theme="dark"] .compare-marker--blue,
+html[data-theme="dark"] .compare-marker--blush {
+  --marker-ink: #846174;
+}
+
+html[data-theme="dark"] .compare-marker--rose,
+html[data-theme="dark"] .compare-marker--fog {
+  --marker-ink: #687280;
+}
+
+html[data-theme="dark"] .compare-marker--sand {
+  --marker-ink: #847255;
+}
+
+html[data-theme="dark"] .compare-marker--mint {
+  --marker-ink: #647b69;
+}
+
+html[data-theme="dark"] .compare-marker--lilac {
+  --marker-ink: #716384;
+}
+
+html[data-theme="dark"] .compare-marker--peach {
+  --marker-ink: #8b6b5a;
+}
+
+html[data-theme="dark"] .compare-marker--pearl {
+  --marker-ink: #7b756d;
+}
+
+html[data-theme="dark"] .compare-marker--sage {
+  --marker-ink: #6d775a;
+}
+
+html[data-theme="dark"] .compare-marker--mauve {
+  --marker-ink: #7c6d78;
+}
+
+html[data-theme="dark"] .compare-marker--sky {
+  --marker-ink: #667583;
+}
+
+html[data-theme="dark"] .compare-marker--clay {
+  --marker-ink: #84675c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compare-marker--enter,
+  .compare-marker--exit {
+    animation: none;
+  }
+}
+
 .verse-addr {
   font-size: 0.68rem;
   color: var(--muted);

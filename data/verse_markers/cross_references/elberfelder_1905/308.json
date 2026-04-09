@@ -1,0 +1,26 @@
+{
+  "aland_no": 308,
+  "title": "Preparation for the Passover",
+  "title_de": "Vorbereitung des Passah",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "26.17-20",
+    "mark": "14.12-17",
+    "luke": "22.7-14",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Als es aber Abend geworden war, legte er sich mit den Zwölfen zu Tische.",
+      "marker": "apricot",
+      "verses": [
+        "40:26:20",
+        "41:14:17",
+        "42:22:14"
+      ]
+    }
+  ]
+}

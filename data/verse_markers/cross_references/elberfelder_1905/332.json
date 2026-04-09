@@ -1,0 +1,68 @@
+{
+  "aland_no": 332,
+  "title": "Jesus before the Sanhedrin (Peter's Denial)",
+  "title_de": "Jesus vor dem Sanhedrin (Petrusverleugnung)",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "26.57-68",
+    "mark": "14.53-65",
+    "luke": "22.54-71",
+    "john": "18.13-24"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Jesus aber schwieg. Und der Hohepriester hob an und sprach zu ihm: Ich beschwöre dich b…",
+      "marker": "apricot",
+      "verses": [
+        "40:26:63",
+        "41:14:61"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Jesus spricht zu ihm: Du hast es gesagt. Doch ich sage euch: Von nun an werdet ihr den…",
+      "marker": "blush",
+      "verses": [
+        "40:26:64",
+        "41:14:62",
+        "42:22:69",
+        "42:22:70"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Da zerriß der Hohepriester seine Kleider und sprach: Er hat gelästert; was bedürfen wir…",
+      "marker": "fog",
+      "verses": [
+        "40:26:65",
+        "41:14:63"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Er ist des Todes schuldig. Dann spieen sie ihm ins Angesicht und schlugen ihn mit Fäust…",
+      "marker": "mint",
+      "verses": [
+        "40:26:67",
+        "40:26:68",
+        "41:14:65",
+        "42:22:63",
+        "43:18:22"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und Petrus folgte ihm von ferne bis hinein in den Hof des Hohenpriesters; und er saß mi…",
+      "marker": "lilac",
+      "verses": [
+        "41:14:54",
+        "42:22:54",
+        "43:18:15",
+        "43:18:18"
+      ]
+    }
+  ]
+}

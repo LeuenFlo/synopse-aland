@@ -1,0 +1,68 @@
+{
+  "aland_no": 160,
+  "title": "\"If Any Man would Come after Me\"",
+  "title_de": "„Will jemand mir nachkommen“",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "16.24-28",
+    "mark": "8.34-9.1",
+    "luke": "9.23-27",
+    "john": "12.25"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Dann sprach Jesus zu seinen Jüngern: Wenn jemand mir nachkommen will, der verleugne sic…",
+      "marker": "apricot",
+      "verses": [
+        "40:16:24",
+        "41:8:34"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Denn wer irgend sein Leben erretten will, wird es verlieren; wer aber irgend sein Leben…",
+      "marker": "blush",
+      "verses": [
+        "40:16:25",
+        "41:8:35",
+        "42:9:23",
+        "42:9:24",
+        "43:12:25"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Denn was wird es einem Menschen nützen, wenn er die ganze Welt gewönne, aber seine Seel…",
+      "marker": "fog",
+      "verses": [
+        "40:16:26",
+        "41:8:36",
+        "41:8:37",
+        "42:9:25"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Denn der Sohn des Menschen wird kommen in der Herrlichkeit seines Vaters mit seinen Eng…",
+      "marker": "mint",
+      "verses": [
+        "40:16:27",
+        "41:8:38",
+        "42:9:26"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Wahrlich, ich sage euch: Es sind etliche von denen, die hier stehen, welche den Tod nic…",
+      "marker": "lilac",
+      "verses": [
+        "40:16:28",
+        "41:9:1",
+        "42:9:27"
+      ]
+    }
+  ]
+}

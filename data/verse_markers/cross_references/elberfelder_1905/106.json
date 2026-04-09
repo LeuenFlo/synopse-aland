@@ -1,0 +1,35 @@
+{
+  "aland_no": 106,
+  "title": "John the Baptist's Question and Jesus' Answer",
+  "title_de": "Die Frage des Johannes und Jesu Antwort",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "11.2-6",
+    "mark": "",
+    "luke": "7.18-23",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Blinde werden sehend, und Lahme wandeln, Aussätzige werden gereinigt, und Taube hören,…",
+      "marker": "apricot",
+      "verses": [
+        "40:11:5",
+        "42:7:21",
+        "42:7:22"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "und glückselig ist, wer irgend sich nicht an mirärgern wird!",
+      "marker": "blush",
+      "verses": [
+        "40:11:6",
+        "42:7:23"
+      ]
+    }
+  ]
+}

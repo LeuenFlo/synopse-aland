@@ -1,0 +1,25 @@
+{
+  "aland_no": 76,
+  "title": "The Effect of the Sermon",
+  "title_de": "Die Wirkung der Rede",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.28-29",
+    "mark": "1.21-22",
+    "luke": "",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und es geschah, als Jesus diese Worte vollendet hatte, da erstaunten die Volksmengen se…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:28",
+        "41:1:22"
+      ]
+    }
+  ]
+}

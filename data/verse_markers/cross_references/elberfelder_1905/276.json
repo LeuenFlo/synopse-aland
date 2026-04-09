@@ -1,0 +1,25 @@
+{
+  "aland_no": 276,
+  "title": "The Question about Authority",
+  "title_de": "Die Frage nach der Vollmacht",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "21.23-27",
+    "mark": "11.27-33",
+    "luke": "20.1-8",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wenn wir aber sagen: Von Menschen, wir fürchten die Volksmenge, denn alle halten Johann…",
+      "marker": "apricot",
+      "verses": [
+        "40:21:26",
+        "42:20:6"
+      ]
+    }
+  ]
+}

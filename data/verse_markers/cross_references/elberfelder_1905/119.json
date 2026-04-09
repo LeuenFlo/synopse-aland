@@ -1,0 +1,35 @@
+{
+  "aland_no": 119,
+  "title": "The Sign of Jonah",
+  "title_de": "Das Zeichen des Jona",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.38-42 16.1-2a,4",
+    "mark": "8.11-12",
+    "luke": "11.16 11.29-32",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Dann antworteten ihm etliche der Schriftgelehrten und Pharisäer und sprachen: Lehrer, w…",
+      "marker": "apricot",
+      "verses": [
+        "40:12:38",
+        "41:8:11",
+        "42:11:16"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und in seinem Geiste tief seufzend, spricht er: Was begehrt dieses Geschlecht ein Zeich…",
+      "marker": "blush",
+      "verses": [
+        "41:8:12",
+        "42:11:29"
+      ]
+    }
+  ]
+}

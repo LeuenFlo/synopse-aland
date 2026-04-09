@@ -1,0 +1,46 @@
+{
+  "aland_no": 281,
+  "title": "The Question about the Resurrection",
+  "title_de": "Die Frage nach der Auferstehung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "22.23-33",
+    "mark": "12.18-27",
+    "luke": "20.27-40",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Jesus aber antwortete und sprach zu ihnen: Ihr irret, indem ihr die Schriften nicht ken…",
+      "marker": "apricot",
+      "verses": [
+        "40:22:29",
+        "41:12:24"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "denn in der Auferstehung heiraten sie nicht, noch werden sie verheiratet, sondern sie s…",
+      "marker": "blush",
+      "verses": [
+        "40:22:30",
+        "41:12:25",
+        "42:20:34",
+        "42:20:35",
+        "42:20:36"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Was aber die Toten betrifft, daß sie auferstehen, habt ihr nicht in dem Buche Moses' ge…",
+      "marker": "fog",
+      "verses": [
+        "41:12:26",
+        "42:20:37"
+      ]
+    }
+  ]
+}

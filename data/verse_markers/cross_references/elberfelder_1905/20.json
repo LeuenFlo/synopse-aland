@@ -1,0 +1,87 @@
+{
+  "aland_no": 20,
+  "title": "The Temptation",
+  "title_de": "Die Versuchung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "4.1-11",
+    "mark": "1.12-13",
+    "luke": "4.1-13",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Dann wurde Jesus von dem Geiste in die Wüste hinaufgeführt, um von dem Teufel versucht…",
+      "marker": "apricot",
+      "verses": [
+        "40:4:1",
+        "41:1:12",
+        "41:1:13",
+        "42:4:1"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "und als er vierzig Tage und vierzig Nächte gefastet hatte, hungerte ihn danach.",
+      "marker": "blush",
+      "verses": [
+        "40:4:2",
+        "42:4:2"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und der Versucher trat zu ihm hin und sprach: Wenn du Gottes Sohn bist, so sprich, daß…",
+      "marker": "fog",
+      "verses": [
+        "40:4:3",
+        "42:4:3"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Es steht geschrieben:\"Nicht von Brot allein soll der Mensch leben, sondern von jedem Wo…",
+      "marker": "mint",
+      "verses": [
+        "40:4:4",
+        "40:4:6",
+        "40:4:7",
+        "40:4:10",
+        "42:4:4",
+        "42:4:8",
+        "42:4:10",
+        "42:4:12"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Dann nimmt der Teufel ihn mit in die heilige Stadt und stellt ihn auf die Zinne des Tem…",
+      "marker": "lilac",
+      "verses": [
+        "40:4:5",
+        "42:4:9"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Wiederum nimmt der Teufel ihn mit auf einen sehr hohen Berg und zeigt ihm alle Reiche d…",
+      "marker": "peach",
+      "verses": [
+        "40:4:8",
+        "42:4:5"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Dann verläßt ihn der Teufel, und siehe, Engel kamen herzu und dienten ihm.",
+      "marker": "pearl",
+      "verses": [
+        "40:4:11",
+        "42:4:13"
+      ]
+    }
+  ]
+}

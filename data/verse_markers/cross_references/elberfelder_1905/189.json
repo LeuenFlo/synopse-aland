@@ -1,0 +1,35 @@
+{
+  "aland_no": 189,
+  "title": "The Return of the Evil Spirit",
+  "title_de": "Die Rückkehr des bösen Geistes",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.43-45",
+    "mark": "",
+    "luke": "11.24-26",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wenn aber der unreine Geist von dem Menschen ausgefahren ist, so durchwandert er dürreÖ…",
+      "marker": "apricot",
+      "verses": [
+        "40:12:43",
+        "42:11:24",
+        "42:11:25"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Dann geht er hin und nimmt sieben andere Geister mit sich, böser als er selbst, und sie…",
+      "marker": "blush",
+      "verses": [
+        "40:12:45",
+        "42:11:26"
+      ]
+    }
+  ]
+}

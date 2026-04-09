@@ -1,0 +1,26 @@
+{
+  "aland_no": 53,
+  "title": "The Light of the World",
+  "title_de": "Das Licht der Welt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "5.14-16",
+    "mark": "4.21",
+    "luke": "8.16",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Man zündet auch nicht eine Lampe an und setzt sie unter den Scheffel sondern auf das La…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:15",
+        "41:4:21",
+        "42:8:16"
+      ]
+    }
+  ]
+}

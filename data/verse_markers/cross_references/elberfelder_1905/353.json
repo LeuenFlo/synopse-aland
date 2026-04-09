@@ -1,0 +1,53 @@
+{
+  "aland_no": 353,
+  "title": "Jesus Appears to the Women",
+  "title_de": "Jesus erscheint den Frauen",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "28.9-10",
+    "mark": "16.9-11",
+    "luke": "24.10-11",
+    "john": "20.14-18"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Als sie aber hingingen, es seinen Jüngern zu verkünden, siehe, da kam Jesus ihnen entge…",
+      "marker": "apricot",
+      "verses": [
+        "40:28:9",
+        "41:16:9",
+        "43:20:14"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Da spricht Jesus zu ihnen: Fürchtet euch nicht; gehet hin, verkündet meinen Brüdern, da…",
+      "marker": "blush",
+      "verses": [
+        "40:28:10",
+        "43:20:17"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und als jene hörten, daß er lebe und von ihr gesehen worden sei, glaubten sie es nicht.",
+      "marker": "fog",
+      "verses": [
+        "41:16:11",
+        "42:24:11"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Es waren aber die Maria Magdalene und Johanna und Maria, des Jakobus Mutter, und dieübr…",
+      "marker": "mint",
+      "verses": [
+        "42:24:10",
+        "43:20:18"
+      ]
+    }
+  ]
+}

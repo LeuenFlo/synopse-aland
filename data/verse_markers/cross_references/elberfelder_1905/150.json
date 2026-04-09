@@ -1,0 +1,121 @@
+{
+  "aland_no": 150,
+  "title": "Defilement - Traditional and Real",
+  "title_de": "Unreinheit – überliefert und wirklich",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "15.1-20",
+    "mark": "7.1-23",
+    "luke": "11.37-41 6.39",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Warumübertreten deine Jünger dieÜberlieferung derÄltesten? Denn sie waschen ihre Hände…",
+      "marker": "apricot",
+      "verses": [
+        "40:15:2",
+        "41:7:2",
+        "41:7:5",
+        "42:11:38"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "und ihr habt so das Gebot Gottes ungültig gemacht um eurerÜberlieferung willen.",
+      "marker": "blush",
+      "verses": [
+        "40:15:6",
+        "41:7:3",
+        "41:7:9",
+        "41:7:13"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Heuchler! Trefflich hat Jesaiasüber euch geweissagt, indem er spricht:",
+      "marker": "fog",
+      "verses": [
+        "40:15:7",
+        "40:15:8",
+        "40:15:9",
+        "41:7:6",
+        "41:7:7",
+        "42:11:39",
+        "42:11:40",
+        "42:11:41"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Und er rief die Volksmenge herzu und sprach zu ihnen: Höret und verstehet!",
+      "marker": "mint",
+      "verses": [
+        "40:15:10",
+        "41:7:14"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Nicht was in den Mund eingeht, verunreinigt den Menschen, sondern was aus dem Munde aus…",
+      "marker": "lilac",
+      "verses": [
+        "40:15:11",
+        "40:15:18",
+        "40:15:20",
+        "41:7:15",
+        "41:7:20"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Laßt sie; sie sind blinde Leiter der Blinden. Wenn aber ein Blinder einen Blinden leite…",
+      "marker": "peach",
+      "verses": [
+        "40:15:14",
+        "42:6:39"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Petrus aber antwortete und sprach zu ihm: Deute uns dieses Gleichnis.",
+      "marker": "pearl",
+      "verses": [
+        "40:15:15",
+        "41:7:17"
+      ]
+    },
+    {
+      "id": "crossref_08",
+      "label": "Er aber sprach: Seid auch ihr noch unverständig?",
+      "marker": "sage",
+      "verses": [
+        "40:15:16",
+        "41:7:18"
+      ]
+    },
+    {
+      "id": "crossref_09",
+      "label": "Begreifet ihr noch nicht, daß alles, was in den Mund eingeht, in den Bauch geht und in…",
+      "marker": "mauve",
+      "verses": [
+        "40:15:17",
+        "41:7:19"
+      ]
+    },
+    {
+      "id": "crossref_10",
+      "label": "Denn aus dem Herzen kommen hervor böse Gedanken, Mord, Ehebruch, Hurerei, Dieberei, fal…",
+      "marker": "sky",
+      "verses": [
+        "40:15:19",
+        "41:7:21",
+        "41:7:22",
+        "41:7:23"
+      ]
+    }
+  ]
+}

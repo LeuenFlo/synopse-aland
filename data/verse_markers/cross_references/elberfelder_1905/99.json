@@ -1,0 +1,95 @@
+{
+  "aland_no": 99,
+  "title": "Commissioning the Twelve",
+  "title_de": "Sendung der Zwölf",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "10.1-16",
+    "mark": "6.7 3.13-19 6.8-11",
+    "luke": "9.1 6.12-16 9.2-5 10.3",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als er seine zwölf Jünger herzugerufen hatte, gab er ihnen Gewaltüber unreine Geist…",
+      "marker": "apricot",
+      "verses": [
+        "40:10:1",
+        "40:10:8",
+        "41:3:14",
+        "41:3:15",
+        "42:6:13"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Philippus und Bartholomäus; Thomas und Matthäus, der Zöllner; Jakobus, der Sohn des Alp…",
+      "marker": "blush",
+      "verses": [
+        "40:10:3",
+        "41:3:18"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Indem ihr aber hingehet, prediget und sprechet: Das Reich der Himmel ist nahe gekommen.",
+      "marker": "fog",
+      "verses": [
+        "40:10:7",
+        "42:9:2"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "In welche Stadt aber oder in welches Dorf irgend ihr eintretet, erforschet, wer darin w…",
+      "marker": "mint",
+      "verses": [
+        "40:10:11",
+        "41:6:10",
+        "42:9:4"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und wer irgend euch nicht aufnehmen, noch eure Worte hören wird, gehet hinaus aus jenem…",
+      "marker": "lilac",
+      "verses": [
+        "40:10:14",
+        "40:10:15",
+        "41:6:11",
+        "42:9:5"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Siehe, ich sende euch wie Schafe inmitten von Wölfen; so seid nun klug wie die Schlange…",
+      "marker": "peach",
+      "verses": [
+        "40:10:16",
+        "42:10:3"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Und er steigt auf den Berg und ruft herzu, welche er selbst wollte. Und sie kamen zu ih…",
+      "marker": "pearl",
+      "verses": [
+        "41:3:13",
+        "41:6:7",
+        "42:9:1"
+      ]
+    },
+    {
+      "id": "crossref_08",
+      "label": "Und er gebot ihnen, daß sie nichts mit auf den Weg nehmen sollten, als nur einen Stab;…",
+      "marker": "sage",
+      "verses": [
+        "41:6:8",
+        "42:9:3"
+      ]
+    }
+  ]
+}

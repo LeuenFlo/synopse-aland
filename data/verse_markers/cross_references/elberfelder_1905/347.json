@@ -1,0 +1,78 @@
+{
+  "aland_no": 347,
+  "title": "The Death of Jesus",
+  "title_de": "Der Tod Jesu",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.45-54",
+    "mark": "15.33-39",
+    "luke": "23.44-48",
+    "john": "19.28-30"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Aber von der sechsten Stunde an kam eine Finsternisüber das ganze Land bis zur neunten…",
+      "marker": "apricot",
+      "verses": [
+        "40:27:45",
+        "40:27:52",
+        "41:15:33",
+        "42:23:44"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "um die neunte Stunde aber schrie Jesus auf mit lauter Stimme und sagte: Eli, eli, lama…",
+      "marker": "blush",
+      "verses": [
+        "40:27:46",
+        "41:15:34"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und alsbald lief einer von ihnen und nahm einen Schwamm, füllte ihn mit Essig und steck…",
+      "marker": "fog",
+      "verses": [
+        "40:27:48",
+        "41:15:36",
+        "43:19:29"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Jesus aber schrie wiederum mit lauter Stimme und gab den Geist auf.",
+      "marker": "mint",
+      "verses": [
+        "40:27:50",
+        "41:15:37",
+        "42:23:46",
+        "43:19:28",
+        "43:19:30"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und siehe, der Vorhang des Tempels zerriß in zwei Stücke, von oben bis unten; und die E…",
+      "marker": "lilac",
+      "verses": [
+        "40:27:51",
+        "41:15:38",
+        "42:23:45"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Als aber der Hauptmann und die mit ihm Jesum bewachten, das Erdbeben sahen und das, was…",
+      "marker": "peach",
+      "verses": [
+        "40:27:54",
+        "41:15:39",
+        "42:23:47"
+      ]
+    }
+  ]
+}

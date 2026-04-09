@@ -1,0 +1,47 @@
+{
+  "aland_no": 310,
+  "title": "Jesus Foretells His Betrayal",
+  "title_de": "Jesus sagt den Verrat voraus",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "26.21-25",
+    "mark": "14.18-21",
+    "luke": "22.21-23",
+    "john": "13.21-30"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und während sie aßen, sprach er: Wahrlich, ich sage euch: Einer von euch wird michüberl…",
+      "marker": "apricot",
+      "verses": [
+        "40:26:21",
+        "41:14:18",
+        "43:13:21"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Ich bin es doch nicht, Herr? Er aber antwortete und sprach: Der mit mir die Hand in die…",
+      "marker": "blush",
+      "verses": [
+        "40:26:23",
+        "41:14:20",
+        "42:22:21",
+        "43:13:26"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Der Sohn des Menschen geht zwar dahin, wieüber ihn geschrieben steht; wehe aber jenem M…",
+      "marker": "fog",
+      "verses": [
+        "40:26:24",
+        "41:14:21",
+        "42:22:22"
+      ]
+    }
+  ]
+}

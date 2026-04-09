@@ -1,0 +1,36 @@
+{
+  "aland_no": 121,
+  "title": "Jesus' True Kindred",
+  "title_de": "Jesu wahre Verwandtschaft",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.46-50",
+    "mark": "3.31-35",
+    "luke": "8.19-21",
+    "john": "15.14"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und er streckte seine Hand ausüber seine Jünger und sprach: Siehe da, meine Mutter und…",
+      "marker": "apricot",
+      "verses": [
+        "40:12:49",
+        "41:3:34"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "denn wer irgend den Willen meines Vaters tun wird, der in den Himmeln ist, derselbe ist…",
+      "marker": "blush",
+      "verses": [
+        "40:12:50",
+        "41:3:35",
+        "42:8:21",
+        "43:15:14"
+      ]
+    }
+  ]
+}

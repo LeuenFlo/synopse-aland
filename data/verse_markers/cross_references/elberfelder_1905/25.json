@@ -1,0 +1,47 @@
+{
+  "aland_no": 25,
+  "title": "The Cleansing of the Temple",
+  "title_de": "Tempelreinigung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "21.12-13",
+    "mark": "11.15-17",
+    "luke": "19.45-46",
+    "john": "2.14-22"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und Jesus trat in den Tempel Gottes ein und trieb alle hinaus, die im Tempel verkauften…",
+      "marker": "apricot",
+      "verses": [
+        "40:21:12",
+        "42:19:45",
+        "43:2:15",
+        "43:2:17"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und er spricht zu ihnen: Es steht geschrieben:\"Mein Haus wird ein Bethaus genannt werde…",
+      "marker": "blush",
+      "verses": [
+        "40:21:13",
+        "41:11:17",
+        "42:19:46",
+        "43:2:16"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und sie kommen nach Jerusalem. Und als er in den Tempel eingetreten war, fing er an aus…",
+      "marker": "fog",
+      "verses": [
+        "41:11:15",
+        "43:2:14"
+      ]
+    }
+  ]
+}

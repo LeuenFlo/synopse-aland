@@ -1,0 +1,34 @@
+{
+  "aland_no": 170,
+  "title": "On Reproving One's Brother",
+  "title_de": "Zur Zurechtweisung des Bruders",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "18.15-18",
+    "mark": "",
+    "luke": "17.3",
+    "john": "20.23"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wenn aber dein Bruder wider dich sündigt, so gehe hin,überführe ihn zwischen dir und ih…",
+      "marker": "apricot",
+      "verses": [
+        "40:18:15",
+        "42:17:3"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wahrlich, ich sage euch: Was irgend ihr auf der Erde binden werdet, wird im Himmel gebu…",
+      "marker": "blush",
+      "verses": [
+        "40:18:18",
+        "43:20:23"
+      ]
+    }
+  ]
+}

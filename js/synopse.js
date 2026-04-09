@@ -807,12 +807,113 @@
   const compareModalBackdrop = document.getElementById("compare-modal-backdrop");
   const compareModalShareBtn = document.getElementById("compare-modal-share");
   const compareModalFavoriteBtn = document.getElementById("compare-modal-favorite");
+  const compareModalMarkerToggleBtn = document.getElementById("compare-modal-marker-toggle");
+  const compareMainMarkerToggleBtn = document.getElementById("compare-main-marker-toggle");
   const compareModalCloseBtn = document.getElementById("compare-modal-close");
   const translationPickerOverlay = document.getElementById("translation-picker-overlay");
+  const VERSE_MARKERS_STORAGE_KEY = "synopse-verse-markers-enabled";
+  const VERSE_MARKER_ANIMATION_DURATION_MS = 420;
+  const VERSE_MARKER_ANIMATION_STEP_MS = 0;
+  const VERSE_MARKER_ANIMATION_MAX_DELAY_MS = 0;
+  let verseMarkersEnabled = true;
   let compareModalRowId = null;
   let compareMainRowId = null;
   let lastFocusBeforeModal = null;
   let translationSwapSeq = 0;
+
+  try {
+    const storedVerseMarkersEnabled = localStorage.getItem(VERSE_MARKERS_STORAGE_KEY);
+    if (storedVerseMarkersEnabled === "0") verseMarkersEnabled = false;
+  } catch (e) {
+    /* ignore */
+  }
+
+  function syncVerseMarkerToggleButtons() {
+    [compareModalMarkerToggleBtn, compareMainMarkerToggleBtn].forEach(function (button) {
+      if (!button) return;
+      button.classList.toggle("is-active", verseMarkersEnabled);
+      button.setAttribute("aria-pressed", verseMarkersEnabled ? "true" : "false");
+      button.setAttribute(
+        "aria-label",
+        verseMarkersEnabled ? "Experimentelle Marker ausblenden" : "Experimentelle Marker einblenden",
+      );
+      button.title = verseMarkersEnabled
+        ? "Experimentelle Marker ausblenden"
+        : "Experimentelle Marker einblenden";
+    });
+  }
+
+  function setVerseMarkersPreference(nextValue) {
+    verseMarkersEnabled = !!nextValue;
+    try {
+      localStorage.setItem(VERSE_MARKERS_STORAGE_KEY, verseMarkersEnabled ? "1" : "0");
+    } catch (e) {
+      /* ignore */
+    }
+    syncVerseMarkerToggleButtons();
+  }
+
+  function animateMarkerExitInGrid(grid) {
+    if (!grid) return 0;
+    const markers = Array.from(grid.querySelectorAll(".compare-marker"));
+    if (!markers.length) return 0;
+    markers.forEach(function (marker, index) {
+      marker.classList.remove("compare-marker--enter");
+      marker.classList.add("compare-marker--exit");
+      marker.style.setProperty(
+        "--marker-delay",
+        String(Math.min(index * VERSE_MARKER_ANIMATION_STEP_MS, VERSE_MARKER_ANIMATION_MAX_DELAY_MS)) + "ms",
+      );
+    });
+    return (
+      VERSE_MARKER_ANIMATION_DURATION_MS +
+      Math.min((markers.length - 1) * VERSE_MARKER_ANIMATION_STEP_MS, VERSE_MARKER_ANIMATION_MAX_DELAY_MS)
+    );
+  }
+
+  function removeMarkersInGrid(grid) {
+    if (!grid) return;
+    grid.querySelectorAll(".compare-marker").forEach(function (marker) {
+      const line = marker.closest(".verse-line");
+      const parent = marker.parentNode;
+      if (!parent) return;
+      while (marker.firstChild) {
+        parent.insertBefore(marker.firstChild, marker);
+      }
+      parent.removeChild(marker);
+      if (line && !line.querySelector(".compare-marker")) {
+        line.classList.remove("verse-line--marked");
+      }
+    });
+  }
+
+  function setVerseMarkersEnabled(nextValue) {
+    nextValue = !!nextValue;
+    if (nextValue === verseMarkersEnabled) return;
+    if (!nextValue) {
+      const modalDelay =
+        compareModal && compareModal.classList.contains("is-open")
+          ? animateMarkerExitInGrid(document.getElementById("compare-modal-grid"))
+          : 0;
+      const mainDelay = compareMainRowId !== null ? animateMarkerExitInGrid(document.getElementById("compare-main-grid")) : 0;
+      const delay = Math.max(modalDelay, mainDelay);
+      if (delay > 0) {
+        setVerseMarkersPreference(false);
+        window.setTimeout(function () {
+          if (verseMarkersEnabled) return;
+          removeMarkersInGrid(document.getElementById("compare-modal-grid"));
+          removeMarkersInGrid(document.getElementById("compare-main-grid"));
+        }, delay);
+        return;
+      }
+      setVerseMarkersPreference(false);
+      removeMarkersInGrid(document.getElementById("compare-modal-grid"));
+      removeMarkersInGrid(document.getElementById("compare-main-grid"));
+      return;
+    }
+    setVerseMarkersPreference(nextValue);
+    invalidateOpenPanels({ skipSwap: true, skipReveal: true });
+  }
 
   function syncGreekScriptClass() {
     const greekModal = translationIsSourceTextForId(getActiveTranslationId());
@@ -1091,6 +1192,14 @@
 
   refreshTranslationUI();
   renderExplorerMenu();
+  syncVerseMarkerToggleButtons();
+
+  [compareModalMarkerToggleBtn, compareMainMarkerToggleBtn].forEach(function (button) {
+    if (!button) return;
+    button.addEventListener("click", function () {
+      setVerseMarkersEnabled(!verseMarkersEnabled);
+    });
+  });
 
   const translationPickerCloseBtn = document.getElementById("translation-picker-close");
   if (translationPickerCloseBtn) {
@@ -1291,14 +1400,94 @@
     return compareModalRowId === r.row_id;
   }
 
-  function triggerCompareGridReveal(grid) {
-    if (!grid) return;
+  function triggerCompareGridReveal(grid, skipReveal) {
+    if (!grid || skipReveal) return;
     grid.classList.remove("compare-grid--reveal");
     void grid.offsetWidth;
     grid.classList.add("compare-grid--reveal");
   }
 
-  async function fillCompareGrid(grid, r, which) {
+  const verseMarkerMapCache = Object.create(null);
+
+  async function fetchJsonIfExists(path) {
+    try {
+      const res = await fetch(path);
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function buildVerseMarkerMapFromJson(json) {
+    const map = Object.create(null);
+    if (!json || !Array.isArray(json.groups)) return null;
+    json.groups.forEach(function (group) {
+      const marker = group && typeof group.marker === "string" ? group.marker.trim() : "";
+      const verses = group && Array.isArray(group.verses) ? group.verses : [];
+      if (!marker) return;
+      verses.forEach(function (verseKey) {
+        if (!verseKey) return;
+        map[String(verseKey)] = "compare-marker--" + marker;
+      });
+    });
+    return Object.keys(map).length ? map : null;
+  }
+
+  async function getVerseMarkerMap(row, translationId, which) {
+    if (!row) return null;
+    const cacheKey = "vm:" + row.aland_no;
+    if (Object.prototype.hasOwnProperty.call(verseMarkerMapCache, cacheKey)) {
+      return verseMarkerMapCache[cacheKey];
+    }
+    const canonicalTranslationId = "elberfelder_1905";
+    const translationJson = await fetchJsonIfExists(
+      "/data/verse_markers/cross_references/" +
+        encodeURIComponent(canonicalTranslationId) +
+        "/" +
+        encodeURIComponent(String(row.aland_no)) +
+        ".json",
+    );
+    verseMarkerMapCache[cacheKey] = buildVerseMarkerMapFromJson(translationJson);
+    return verseMarkerMapCache[cacheKey];
+  }
+
+  function applyVerseMarkers(book, html, markerMap) {
+    if (!markerMap || !html) return html;
+    const wrap = document.createElement("div");
+    wrap.innerHTML = html;
+    let markedIndex = 0;
+    wrap.querySelectorAll(".verse-line").forEach(function (line) {
+      const addrEl = line.querySelector(".verse-addr");
+      if (!addrEl) return;
+      const addr = (addrEl.textContent || "").trim().replace(/\s+/g, "");
+      const parts = addr.split(",");
+      if (parts.length !== 2) return;
+      const verseKey = book + ":" + parts[0] + ":" + parts[1];
+      const markerClass = markerMap[verseKey];
+      if (!markerClass) return;
+
+      const marker = document.createElement("span");
+      marker.className = "compare-marker compare-marker--enter compare-marker--example " + markerClass;
+      marker.style.setProperty(
+        "--marker-delay",
+        String(Math.min(markedIndex * VERSE_MARKER_ANIMATION_STEP_MS, VERSE_MARKER_ANIMATION_MAX_DELAY_MS)) + "ms",
+      );
+      let node = addrEl.nextSibling;
+      while (node) {
+        const next = node.nextSibling;
+        marker.appendChild(node);
+        node = next;
+      }
+      line.appendChild(marker);
+      line.classList.add("verse-line--marked");
+      markedIndex += 1;
+    });
+    return wrap.innerHTML;
+  }
+
+  async function fillCompareGrid(grid, r, which, options) {
+    options = options || {};
     const tid = effectiveTranslationId(which);
     syncGreekScriptClass();
     if (!grid || grid.dataset.filled === "1") return;
@@ -1325,7 +1514,7 @@
         escapeHtml(detail) +
         "</p>";
       grid.dataset.filled = "1";
-      triggerCompareGridReveal(grid);
+      triggerCompareGridReveal(grid, options.skipReveal);
       return;
     }
     if (!isCompareRowActive(r, which)) return;
@@ -1335,7 +1524,7 @@
         (translationIsSourceTextForId(tid) ? t("js.noGreekData") : t("js.noTranslationData")) +
         "</p>";
       grid.dataset.filled = "1";
-      triggerCompareGridReveal(grid);
+      triggerCompareGridReveal(grid, options.skipReveal);
       return;
     }
 
@@ -1353,32 +1542,34 @@
         '<p class="compare-note">' + t("js.noLinkedGospelText") + "</p>";
       grid.dataset.filled = "1";
       grid.style.gridTemplateColumns = "";
-      triggerCompareGridReveal(grid);
+      triggerCompareGridReveal(grid, options.skipReveal);
       return;
     }
 
     const n = active.length;
     grid.style.gridTemplateColumns = "repeat(" + n + ", minmax(0, 1fr))";
 
+    const markerMap = verseMarkersEnabled ? await getVerseMarkerMap(r, tid, which) : null;
     const colMeta = compareColumnMetaHtmlForTranslation(tid);
     grid.innerHTML = active
       .map((c) => {
         const ref = r[c.refKey] || "";
-        const body = SC.renderColumnHtml(c.book, c.label, ref, idx, maxV, aliases);
+        const body = applyVerseMarkers(c.book, SC.renderColumnHtml(c.book, c.label, ref, idx, maxV, aliases), markerMap);
         return `<div class="text-col ${c.cls}"><h4>${c.label}<span class="ref-tag">${escapeHtml(ref)}</span></h4>${colMeta}<div class="text-col-body">${body}</div></div>`;
       })
       .join("");
     grid.dataset.filled = "1";
-    triggerCompareGridReveal(grid);
+    triggerCompareGridReveal(grid, options.skipReveal);
   }
 
-  function refillCompareGrid(which) {
+  function refillCompareGrid(which, options) {
+    options = options || {};
     const gridId = which === "modal" ? "compare-modal-grid" : "compare-main-grid";
     const rowId = which === "modal" ? compareModalRowId : compareMainRowId;
     const grid = document.getElementById(gridId);
     if (!grid || rowId === null) return;
     const seq = (translationSwapSeq += 1);
-    grid.classList.add("is-swapping");
+    if (!options.skipSwap) grid.classList.add("is-swapping");
     window.setTimeout(function () {
       if (seq !== translationSwapSeq) return;
       const modalOk =
@@ -1404,7 +1595,7 @@
         grid.classList.remove("is-swapping");
         return;
       }
-      fillCompareGrid(grid, row, which)
+      fillCompareGrid(grid, row, which, options)
         .then(function () {
           if (seq !== translationSwapSeq) return;
           grid.classList.remove("is-swapping");
@@ -1412,17 +1603,18 @@
         .catch(function () {
           grid.classList.remove("is-swapping");
         });
-    }, 140);
+    }, options.skipSwap ? 0 : 140);
   }
 
-  function invalidateOpenPanels() {
+  function invalidateOpenPanels(options) {
+    options = options || {};
     refreshQuickStripOnly();
     syncTranslationButtons();
     if (compareModal && compareModal.classList.contains("is-open") && compareModalRowId !== null) {
-      refillCompareGrid("modal");
+      refillCompareGrid("modal", options);
     }
     if (compareMainRowId !== null) {
-      refillCompareGrid("main");
+      refillCompareGrid("main", options);
     }
   }
 

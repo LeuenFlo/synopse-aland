@@ -1,0 +1,55 @@
+{
+  "aland_no": 254,
+  "title": "The Rich Young Man",
+  "title_de": "Der reiche Jüngling",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "19.16-22",
+    "mark": "10.17-22",
+    "luke": "18.18-23",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Er aber sprach zu ihm: Was fragst du michüber das Gute? Einer ist gut. Wenn du aber ins…",
+      "marker": "apricot",
+      "verses": [
+        "40:19:17",
+        "41:10:18",
+        "42:18:19"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Jesus sprach zu ihm: Wenn du vollkommen sein willst, so gehe hin, verkaufe deine Habe u…",
+      "marker": "blush",
+      "verses": [
+        "40:19:21",
+        "41:10:21",
+        "42:18:22"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Als aber der Jüngling das Wort hörte, ging er betrübt hinweg, denn er hatte viele Güter.",
+      "marker": "fog",
+      "verses": [
+        "40:19:22",
+        "41:10:22",
+        "42:18:23"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Die Gebote weißt du:\"Du sollst nicht ehebrechen; du sollst nicht töten; du sollst nicht…",
+      "marker": "mint",
+      "verses": [
+        "41:10:19",
+        "42:18:20"
+      ]
+    }
+  ]
+}

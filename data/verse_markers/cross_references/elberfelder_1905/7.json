@@ -1,0 +1,35 @@
+{
+  "aland_no": 7,
+  "title": "The Birth of Jesus",
+  "title_de": "Die Geburt Jesu",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "1.18-25",
+    "mark": "",
+    "luke": "2.1-7",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Die Geburt Jesu Christi war aber also: Als nämlich Maria, seine Mutter, dem Joseph verl…",
+      "marker": "apricot",
+      "verses": [
+        "40:1:18",
+        "40:1:20",
+        "42:2:4"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "und er erkannte sie nicht, bis sie ihren erstgeborenen Sohn geboren hatte; und er hieß…",
+      "marker": "blush",
+      "verses": [
+        "40:1:25",
+        "42:2:7"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "aland_no": 334,
+  "title": "Jesus Delivered to Pilate",
+  "title_de": "Jesus wird dem Pilatus übergeben",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.1-2",
+    "mark": "15.1",
+    "luke": "23.1",
+    "john": "18.28"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Als es aber Morgen geworden war, hielten alle Hohenpriester undÄltesten des Volkes Rat…",
+      "marker": "apricot",
+      "verses": [
+        "40:27:1",
+        "41:15:1"
+      ]
+    }
+  ]
+}

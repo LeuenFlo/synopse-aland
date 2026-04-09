@@ -1,0 +1,31 @@
+{
+  "aland_no": 166,
+  "title": "True Greatness",
+  "title_de": "Wahre Grösse",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "18.1-5",
+    "mark": "9.33-37",
+    "luke": "9.46-48",
+    "john": "13.20"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "In jener Stunde traten die Jünger zu Jesu und sprachen: Wer ist denn der Größte im Reic…",
+      "marker": "apricot",
+      "verses": [
+        "40:18:1",
+        "40:18:4",
+        "40:18:5",
+        "41:9:37",
+        "42:9:46",
+        "42:9:47",
+        "42:9:48",
+        "43:13:20"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "aland_no": 293,
+  "title": "The Time of the Coming: the Parable of the Fig Tree",
+  "title_de": "Die Zeit des Kommens: Gleichnis vom Feigenbaum",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.32-36",
+    "mark": "13.28-32",
+    "luke": "21.29-33",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Von dem Feigenbaum aber lernet das Gleichnis: Wenn sein Zweig schon weich geworden ist…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:32",
+        "41:13:28"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wahrlich, ich sage euch: Dieses Geschlecht wird nicht vergehen, bis alles dieses gesche…",
+      "marker": "blush",
+      "verses": [
+        "40:24:34",
+        "41:13:30",
+        "42:21:32"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Der Himmel und die Erde werden vergehen, meine Worte aber sollen nicht vergehen.",
+      "marker": "fog",
+      "verses": [
+        "40:24:35",
+        "41:13:31",
+        "42:21:33"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Von jenem Tage aber und jener Stunde weiß niemand, auch nicht die Engel der Himmel, son…",
+      "marker": "mint",
+      "verses": [
+        "40:24:36",
+        "41:13:32"
+      ]
+    }
+  ]
+}

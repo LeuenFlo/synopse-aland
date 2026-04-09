@@ -1,0 +1,44 @@
+{
+  "aland_no": 344,
+  "title": "The Crucifixion",
+  "title_de": "Die Kreuzigung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.33-37",
+    "mark": "15.22-26",
+    "luke": "23.33-34",
+    "john": "19.17b-27"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "gaben sie ihm Essig mit Galle vermischt zu trinken; und als er es geschmeckt hatte, wol…",
+      "marker": "apricot",
+      "verses": [
+        "40:27:34",
+        "41:15:23"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Als sie ihn aber gekreuzigt hatten, verteilten sie seine Kleider, indem sie das Los war…",
+      "marker": "blush",
+      "verses": [
+        "40:27:35",
+        "41:15:24",
+        "42:23:34"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und sie befestigten obenüber seinem Haupte seine Beschuldigungsschrift: Dieser ist Jesu…",
+      "marker": "fog",
+      "verses": [
+        "40:27:37",
+        "41:15:26"
+      ]
+    }
+  ]
+}

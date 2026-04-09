@@ -1,0 +1,49 @@
+{
+  "aland_no": 8,
+  "title": "The Adoration of the Infant Jesus",
+  "title_de": "Die Anbetung des Jesuskindes",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "2.1-12",
+    "mark": "",
+    "luke": "2.8-20",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Als aber Jesus zu Bethlehem in Judäa geboren war, in den Tagen Herodes', des Königs, si…",
+      "marker": "apricot",
+      "verses": [
+        "40:2:1",
+        "40:2:5",
+        "42:2:11",
+        "42:2:15"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wo ist der König der Juden, der geboren worden ist? Denn wir haben seinen Stern im Morg…",
+      "marker": "blush",
+      "verses": [
+        "40:2:2",
+        "40:2:9",
+        "40:2:11",
+        "42:2:12",
+        "42:2:16"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Als sie aber den Stern sahen, freuten sie sich mit sehr großer Freude.",
+      "marker": "fog",
+      "verses": [
+        "40:2:10",
+        "42:2:10",
+        "42:2:20"
+      ]
+    }
+  ]
+}

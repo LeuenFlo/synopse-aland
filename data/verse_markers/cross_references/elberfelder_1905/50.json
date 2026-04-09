@@ -1,0 +1,27 @@
+{
+  "aland_no": 50,
+  "title": "Occasion of the Sermon",
+  "title_de": "Anlass der Bergpredigt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "4.24-5.2",
+    "mark": "3.7-13 a",
+    "luke": "6.17-20a",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und es folgten ihm große Volksmengen von Galiläa und Dekapolis und Jerusalem und Judäa…",
+      "marker": "apricot",
+      "verses": [
+        "40:4:25",
+        "40:5:1",
+        "41:3:7",
+        "41:3:13"
+      ]
+    }
+  ]
+}

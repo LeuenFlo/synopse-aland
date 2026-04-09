@@ -1,0 +1,92 @@
+{
+  "aland_no": 100,
+  "title": "The Fate of the Disciples",
+  "title_de": "Das Schicksal der Jünger",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "10.17-25 24.9-14",
+    "mark": "13.9-13",
+    "luke": "12.11-12 6.40 21.12-19",
+    "john": "13.16"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Hütet euch aber vor den Menschen; denn sie werden euch an Synedrienüberliefern und in i…",
+      "marker": "apricot",
+      "verses": [
+        "40:10:17",
+        "40:10:18",
+        "41:13:9"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wenn sie euch aberüberliefern, so seid nicht besorgt, wie oder was ihr reden sollt; den…",
+      "marker": "blush",
+      "verses": [
+        "40:10:19",
+        "41:13:11",
+        "42:12:11",
+        "42:21:14"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Denn nicht ihr seid die Redenden, sondern der Geist eures Vaters, der in euch redet.",
+      "marker": "fog",
+      "verses": [
+        "40:10:20",
+        "42:12:12",
+        "42:21:15"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Es wird aber der Bruder den Bruder zum Todeüberliefern, und der Vater das Kind; und Kin…",
+      "marker": "mint",
+      "verses": [
+        "40:10:21",
+        "40:24:10",
+        "41:13:12",
+        "42:21:16"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und ihr werdet von allen gehaßt werden um meines Namens willen. Wer aber ausharrt bis a…",
+      "marker": "lilac",
+      "verses": [
+        "40:10:22",
+        "40:24:9",
+        "40:24:13",
+        "41:13:13",
+        "42:21:12",
+        "42:21:17",
+        "42:21:19"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Ein Jünger ist nichtüber den Lehrer, und ein Knecht nichtüber seinen Herrn.",
+      "marker": "peach",
+      "verses": [
+        "40:10:24",
+        "40:10:25",
+        "42:6:40",
+        "43:13:16"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Und dieses Evangelium des Reiches wird gepredigt werden auf dem ganzen Erdkreis, allen…",
+      "marker": "pearl",
+      "verses": [
+        "40:24:14",
+        "41:13:10"
+      ]
+    }
+  ]
+}

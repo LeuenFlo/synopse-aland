@@ -1,0 +1,25 @@
+{
+  "aland_no": 280,
+  "title": "On Paying Tribute to Caesar",
+  "title_de": "Zur Kaisermünze",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "22.15-22",
+    "mark": "12.13-17",
+    "luke": "20.20-26",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und sie senden ihre Jünger mit den Herodianern zu ihm und sagen: Lehrer, wir wissen, da…",
+      "marker": "apricot",
+      "verses": [
+        "40:22:16",
+        "42:20:21"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "aland_no": 311,
+  "title": "The Last Supper",
+  "title_de": "Das letzte Abendmahl",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "26.26-29",
+    "mark": "14.22-25",
+    "luke": "22.15-20",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Während sie aber aßen, nahm Jesus Brot, segnete, brach und gab es den Jüngern und sprac…",
+      "marker": "apricot",
+      "verses": [
+        "40:26:26",
+        "40:26:28",
+        "41:14:22",
+        "41:14:24",
+        "42:22:17",
+        "42:22:19",
+        "42:22:20"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und er nahm den Kelch und dankte und gab ihnen denselben und sprach: Trinket alle darau…",
+      "marker": "blush",
+      "verses": [
+        "40:26:27",
+        "41:14:23"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Ich sage euch aber, daß ich von nun an nicht mehr von diesem Gewächs des Weinstocks tri…",
+      "marker": "fog",
+      "verses": [
+        "40:26:29",
+        "41:14:25",
+        "42:22:18"
+      ]
+    }
+  ]
+}

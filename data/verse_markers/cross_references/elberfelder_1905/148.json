@@ -1,0 +1,25 @@
+{
+  "aland_no": 148,
+  "title": "Healings at Gennesaret",
+  "title_de": "Heilungen in Gennesaret",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "14.34-36",
+    "mark": "6.53-56",
+    "luke": "",
+    "john": "6.22-25"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als sie hinübergefahren waren, kamen sie in das Land Genezareth und legten an.",
+      "marker": "apricot",
+      "verses": [
+        "41:6:53",
+        "43:6:24"
+      ]
+    }
+  ]
+}

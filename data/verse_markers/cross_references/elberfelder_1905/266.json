@@ -1,0 +1,47 @@
+{
+  "aland_no": 266,
+  "title": "The Parable of the Pounds",
+  "title_de": "Das Gleichnis von den Pfunden",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "25.14-30",
+    "mark": "13.34",
+    "luke": "19.11-27",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Denn gleichwie ein Mensch, der außer Landes reiste, seine eigenen Knechte rief und ihne…",
+      "marker": "apricot",
+      "verses": [
+        "40:25:14",
+        "40:25:15",
+        "41:13:34",
+        "42:19:13"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Sein Herr sprach zu ihm: Wohl, du guter und treuer Knecht!Über weniges warst du treu,üb…",
+      "marker": "blush",
+      "verses": [
+        "40:25:21",
+        "40:25:23",
+        "42:19:17"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "denn jedem, der da hat, wird gegeben werden, und er wirdÜberfluß haben; von dem aber, d…",
+      "marker": "fog",
+      "verses": [
+        "40:25:29",
+        "42:19:25",
+        "42:19:26"
+      ]
+    }
+  ]
+}

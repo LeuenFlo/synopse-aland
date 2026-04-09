@@ -1,0 +1,35 @@
+{
+  "aland_no": 14,
+  "title": "John's Preaching of Repentance",
+  "title_de": "Johannes Busspredigt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "3.7-10",
+    "mark": "",
+    "luke": "3.7-9",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Bringet nun der Buße würdige Frucht;",
+      "marker": "apricot",
+      "verses": [
+        "40:3:8",
+        "40:3:9",
+        "42:3:8"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Schon ist aber die Axt an die Wurzel der Bäume gelegt; jeder Baum nun, der nicht gute F…",
+      "marker": "blush",
+      "verses": [
+        "40:3:10",
+        "42:3:9"
+      ]
+    }
+  ]
+}

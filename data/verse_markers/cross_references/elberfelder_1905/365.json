@@ -1,0 +1,15 @@
+{
+  "aland_no": 365,
+  "title": "The Ending of Luke: Jesus' Last Words and Ascension",
+  "title_de": "Schluss des Lukas: letzte Worte und Himmelfahrt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "",
+    "mark": "16.15,19",
+    "luke": "24.44-53",
+    "john": ""
+  },
+  "groups": []
+}

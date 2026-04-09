@@ -1,0 +1,25 @@
+{
+  "aland_no": 274,
+  "title": "The Chief Priests and Scribes Conspire against Jesus",
+  "title_de": "Hohepriester und Schriftgelehrte verschwören sich",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "",
+    "mark": "11.18-19",
+    "luke": "19.47-48",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und die Hohenpriester und die Schriftgelehrten hörten es und suchten, wie sie ihn umbrä…",
+      "marker": "apricot",
+      "verses": [
+        "41:11:18",
+        "42:19:47"
+      ]
+    }
+  ]
+}

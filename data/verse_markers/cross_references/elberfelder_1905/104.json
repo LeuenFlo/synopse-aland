@@ -1,0 +1,37 @@
+{
+  "aland_no": 104,
+  "title": "Rewards of Discipleship",
+  "title_de": "Lohn der Jüngerschaft",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "10.40-42",
+    "mark": "9.41",
+    "luke": "10.16",
+    "john": "13.20 12.44-45 5.23"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wer euch aufnimmt, nimmt mich auf, und wer mich aufnimmt, nimmt den auf, der mich gesan…",
+      "marker": "apricot",
+      "verses": [
+        "40:10:40",
+        "42:10:16",
+        "43:5:23",
+        "43:12:44",
+        "43:13:20"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und wer irgend einen dieser Kleinen nur mit einem Becher kalten Wassers tränken wird in…",
+      "marker": "blush",
+      "verses": [
+        "40:10:42",
+        "41:9:41"
+      ]
+    }
+  ]
+}

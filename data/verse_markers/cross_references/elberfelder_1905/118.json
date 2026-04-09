@@ -1,0 +1,53 @@
+{
+  "aland_no": 118,
+  "title": "The Sin against the Holy Spirit",
+  "title_de": "Die Sünde gegen den Heiligen Geist",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.31-37 7.16-20",
+    "mark": "3.28-30",
+    "luke": "12.10 6.43-45",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "An ihren Früchten werdet ihr sie erkennen. Liest man etwa von Dornen eine Traube, oder…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:16",
+        "40:7:20",
+        "40:12:33",
+        "42:6:43",
+        "42:6:44"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Also bringt jeder gute Baum gute Früchte, aber der faule Baum bringt schlechte Früchte.",
+      "marker": "blush",
+      "verses": [
+        "40:7:17",
+        "40:12:34",
+        "40:12:35",
+        "40:12:36",
+        "40:12:37",
+        "42:6:45"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Deshalb sage ich euch: Jede Sünde und Lästerung wird den Menschen vergeben werden; aber…",
+      "marker": "fog",
+      "verses": [
+        "40:12:31",
+        "40:12:32",
+        "41:3:28",
+        "41:3:29",
+        "42:12:10"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "aland_no": 139,
+  "title": "Jesus is Rejected at Nazareth",
+  "title_de": "Jesus wird in Nazareth abgewiesen",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "13.53-58",
+    "mark": "6.1-6a",
+    "luke": "4.16-30",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ist dieser nicht der Sohn des Zimmermanns? Heißt nicht seine Mutter Maria, und seine Br…",
+      "marker": "apricot",
+      "verses": [
+        "40:13:55",
+        "42:4:22"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und sieärgerten sich an ihm. Jesus aber sprach zu ihnen: Ein Prophet ist nicht ohne Ehr…",
+      "marker": "blush",
+      "verses": [
+        "40:13:57",
+        "42:4:24"
+      ]
+    }
+  ]
+}

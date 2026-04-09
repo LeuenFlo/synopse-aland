@@ -1,0 +1,38 @@
+{
+  "aland_no": 18,
+  "title": "The Baptism of Jesus",
+  "title_de": "Die Taufe Jesu",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "3.13-17",
+    "mark": "1.9-11",
+    "luke": "3.21-22",
+    "john": "1.29-34"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als Jesus getauft war, stieg er alsbald von dem Wasser herauf; und siehe, die Himme…",
+      "marker": "apricot",
+      "verses": [
+        "40:3:16",
+        "41:1:10",
+        "42:3:21"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und siehe, eine Stimme kommt aus den Himmeln, welche spricht: Dieser ist mein geliebter…",
+      "marker": "blush",
+      "verses": [
+        "40:3:17",
+        "41:1:11",
+        "42:3:22",
+        "43:1:32",
+        "43:1:34"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "aland_no": 138,
+  "title": "Jairus' Daughter and the Woman with a Hemorrhage",
+  "title_de": "Tochter des Jairus und die blutflüssige Frau",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "9.18-26",
+    "mark": "5.21-43",
+    "luke": "8.40-56",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und siehe, ein Weib, das zwölf Jahre blutflüssig war, trat von hinten herzu und rührte…",
+      "marker": "apricot",
+      "verses": [
+        "40:9:20",
+        "40:9:21",
+        "41:5:25",
+        "41:5:26",
+        "42:8:43",
+        "42:8:44"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Jesus aber wandte sich um, und als er sie sah, sprach er: Sei gutes Mutes, Tochter; dei…",
+      "marker": "blush",
+      "verses": [
+        "40:9:22",
+        "41:5:29",
+        "41:5:34",
+        "42:8:48"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Als aber die Volksmenge hinausgetrieben war, ging er hinein und ergriff sie bei der Han…",
+      "marker": "fog",
+      "verses": [
+        "40:9:25",
+        "42:8:54"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Und als Jesus in dem Schiffe wieder an das jenseitige Ufer hinübergefahren war, versamm…",
+      "marker": "mint",
+      "verses": [
+        "41:5:21",
+        "42:8:40"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und alsbald erkannte Jesus in sich selbst die Kraft, die von ihm ausgegangen war, wandt…",
+      "marker": "lilac",
+      "verses": [
+        "41:5:30",
+        "42:8:46"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Das Weib aber, voll Furcht und Zittern, wissend, was ihr geschehen war, kam und fiel vo…",
+      "marker": "peach",
+      "verses": [
+        "41:5:33",
+        "42:8:47"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Als aber Jesus das Wort reden hörte, spricht er alsbald zu dem Synagogenvorsteher: Fürc…",
+      "marker": "pearl",
+      "verses": [
+        "41:5:36",
+        "42:8:50"
+      ]
+    }
+  ]
+}

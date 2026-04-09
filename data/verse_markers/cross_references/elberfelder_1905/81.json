@@ -1,0 +1,40 @@
+{
+  "aland_no": 81,
+  "title": "On Judging",
+  "title_de": "Zum Richten",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.1-5",
+    "mark": "4.24-25",
+    "luke": "6.37-42",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Richtet nicht, auf daß ihr nicht gerichtet werdet;",
+      "marker": "apricot",
+      "verses": [
+        "40:7:1",
+        "40:7:3",
+        "40:7:4",
+        "40:7:5",
+        "42:6:37",
+        "42:6:41",
+        "42:6:42"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "denn mit welchem Gericht ihr richtet, werdet ihr gerichtet werden, und mit welchem Maße…",
+      "marker": "blush",
+      "verses": [
+        "40:7:2",
+        "41:4:24",
+        "42:6:38"
+      ]
+    }
+  ]
+}

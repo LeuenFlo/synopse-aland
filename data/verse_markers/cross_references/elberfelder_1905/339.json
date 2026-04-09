@@ -1,0 +1,43 @@
+{
+  "aland_no": 339,
+  "title": "Jesus or Barabbas?",
+  "title_de": "Jesus oder Barabbas?",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.15-23",
+    "mark": "15.6-14",
+    "luke": "23.17-23",
+    "john": "18.39-40"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Sie hatten aber damals einen berüchtigten Gefangenen, genannt Barabbas.",
+      "marker": "apricot",
+      "verses": [
+        "40:27:16",
+        "41:15:7"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Denn er wußte, daß sie ihn aus Neidüberliefert hatten.",
+      "marker": "blush",
+      "verses": [
+        "40:27:18",
+        "41:15:10"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Aber die Hohenpriester und dieÄltestenüberredeten die Volksmengen, daß sie um den Barab…",
+      "marker": "fog",
+      "verses": [
+        "40:27:20",
+        "41:15:11"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "aland_no": 343,
+  "title": "The Road to Golgotha",
+  "title_de": "Der Weg nach Golgatha",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.31b-32",
+    "mark": "15.20b-21",
+    "luke": "23.26-32",
+    "john": "19.17"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als sie ihn wegführten, ergriffen sie einen gewissen Simon von Kyrene, der vom Feld…",
+      "marker": "apricot",
+      "verses": [
+        "42:23:26",
+        "43:19:17"
+      ]
+    }
+  ]
+}

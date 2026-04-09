@@ -1,0 +1,45 @@
+{
+  "aland_no": 163,
+  "title": "Jesus Heals a Boy Possessed by a Spirit",
+  "title_de": "Jesus heilt einen besessenen Knaben",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "17.14-21",
+    "mark": "9.14-29",
+    "luke": "9.37-43a 17.6",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Jesus aber antwortete und sprach: O ungläubiges und verkehrtes Geschlecht! Bis wann sol…",
+      "marker": "apricot",
+      "verses": [
+        "40:17:17",
+        "41:9:19"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Da traten die Jünger zu Jesu besonders und sprachen: Warum haben wir ihn nicht austreib…",
+      "marker": "blush",
+      "verses": [
+        "40:17:19",
+        "41:9:28"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Er aber spricht zu ihnen: Wegen eures Unglaubens; denn wahrlich, ich sage euch, wenn ih…",
+      "marker": "fog",
+      "verses": [
+        "40:17:20",
+        "41:9:23",
+        "41:9:29",
+        "42:17:6"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "aland_no": 255,
+  "title": "On Riches and the Rewards of Discipleship",
+  "title_de": "Reichtum und Lohn der Jüngerschaft",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "19.23-30",
+    "mark": "10.23-31",
+    "luke": "18.24-30 22.28-30",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Jesus aber sprach zu seinen Jüngern: Wahrlich ich sage euch: Schwerlich wird ein Reiche…",
+      "marker": "apricot",
+      "verses": [
+        "40:19:23",
+        "41:10:23",
+        "42:18:24"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wiederum aber sage ich euch: Es ist leichter, daß ein Kamel durch ein Nadelöhr eingehe,…",
+      "marker": "blush",
+      "verses": [
+        "40:19:24",
+        "41:10:25",
+        "42:18:25"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Jesus aber sah sie an und sprach zu ihnen: Bei Menschen ist dies unmöglich, bei Gott ab…",
+      "marker": "fog",
+      "verses": [
+        "40:19:26",
+        "41:10:27",
+        "42:18:27"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Da antwortete Petrus und sprach zu ihm: Siehe, wir haben alles verlassen und sind dir n…",
+      "marker": "mint",
+      "verses": [
+        "40:19:27",
+        "41:10:28",
+        "42:18:28"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Jesus aber sprach zu ihnen: Wahrlich, ich sage euch: Ihr, die ihr mir nachgefolgt seid,…",
+      "marker": "lilac",
+      "verses": [
+        "40:19:28",
+        "42:22:28",
+        "42:22:30"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Und ein jeder, der irgend verlassen hat Häuser, oder Brüder, oder Schwestern, oder Vate…",
+      "marker": "peach",
+      "verses": [
+        "40:19:29",
+        "41:10:29",
+        "41:10:30",
+        "42:18:29",
+        "42:18:30"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Aber viele Erste werden Letzte, und Letzte Erste sein.",
+      "marker": "pearl",
+      "verses": [
+        "40:19:30",
+        "41:10:31"
+      ]
+    }
+  ]
+}

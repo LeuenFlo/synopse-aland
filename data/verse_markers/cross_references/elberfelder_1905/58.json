@@ -1,0 +1,27 @@
+{
+  "aland_no": 58,
+  "title": "On Retaliation",
+  "title_de": "Zur Vergeltung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "5.38-42",
+    "mark": "",
+    "luke": "6.29-30",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ich aber sage euch: Widerstehet nicht dem Bösen, sondern wer irgend dich auf deinen rec…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:39",
+        "40:5:40",
+        "42:6:29",
+        "42:6:30"
+      ]
+    }
+  ]
+}

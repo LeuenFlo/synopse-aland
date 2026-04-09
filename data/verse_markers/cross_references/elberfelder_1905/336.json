@@ -1,0 +1,36 @@
+{
+  "aland_no": 336,
+  "title": "The Trial before Pilate",
+  "title_de": "Der Prozess vor Pilatus",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.11-14",
+    "mark": "15.2-5",
+    "luke": "23.2-5",
+    "john": "18.29-38"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Jesus aber stand vor dem Landpfleger. Und der Landpfleger fragte ihn und sprach: Bist d…",
+      "marker": "apricot",
+      "verses": [
+        "40:27:11",
+        "41:15:2",
+        "42:23:3",
+        "43:18:37"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Pilatus aber sprach zu den Hohenpriestern und den Volksmengen: Ich finde keine Schuld a…",
+      "marker": "blush",
+      "verses": [
+        "42:23:4",
+        "43:18:38"
+      ]
+    }
+  ]
+}

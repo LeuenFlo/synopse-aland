@@ -1,0 +1,49 @@
+{
+  "aland_no": 315,
+  "title": "Peter's Denial Predicted",
+  "title_de": "Petrus Verleugnung vorausgesagt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "26.30-35",
+    "mark": "14.26-31",
+    "luke": "22.31-34",
+    "john": "13.36-38"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Da spricht Jesus zu ihnen: Ihr werdet euch alle in dieser Nacht an mirärgern; denn es s…",
+      "marker": "apricot",
+      "verses": [
+        "40:26:31",
+        "40:26:32",
+        "41:14:27",
+        "41:14:28"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Petrus aber antwortete und sprach zu ihm: Wenn sich alle an dirärgern werden, ich werde…",
+      "marker": "blush",
+      "verses": [
+        "40:26:33",
+        "41:14:29",
+        "41:14:31",
+        "42:22:33"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Jesus sprach zu ihm: Wahrlich, ich sage dir, daß du in dieser Nacht, ehe der Hahn kräht…",
+      "marker": "fog",
+      "verses": [
+        "40:26:34",
+        "41:14:30",
+        "42:22:34",
+        "43:13:38"
+      ]
+    }
+  ]
+}

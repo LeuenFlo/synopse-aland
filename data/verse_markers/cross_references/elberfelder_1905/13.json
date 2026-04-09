@@ -1,0 +1,54 @@
+{
+  "aland_no": 13,
+  "title": "John the Baptist",
+  "title_de": "Johannes der Täufer",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "3.1-6",
+    "mark": "1.2-6",
+    "luke": "3.1-6",
+    "john": "1.19-23"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Tut Buße, denn das Reich der Himmel ist nahe gekommen.",
+      "marker": "apricot",
+      "verses": [
+        "40:3:2",
+        "41:1:4"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Denn dieser ist der, von welchem durch den Propheten Jesaias geredet ist, welcher spric…",
+      "marker": "blush",
+      "verses": [
+        "40:3:3",
+        "41:1:3",
+        "42:3:4",
+        "43:1:23"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Er aber, Johannes, hatte seine Kleidung von Kamelhaaren und einen ledernen Gürtel um se…",
+      "marker": "fog",
+      "verses": [
+        "40:3:4",
+        "41:1:6"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Da ging zu ihm hinaus Jerusalem und ganz Judäa und die ganze Umgegend des Jordan;",
+      "marker": "mint",
+      "verses": [
+        "40:3:5",
+        "41:1:5"
+      ]
+    }
+  ]
+}

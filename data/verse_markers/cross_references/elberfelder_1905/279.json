@@ -1,0 +1,35 @@
+{
+  "aland_no": 279,
+  "title": "The Parable of the Great Supper",
+  "title_de": "Das Gleichnis vom grossen Mahl",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "22.1-14",
+    "mark": "",
+    "luke": "14.15-24",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Dann sagt er zu seinen Knechten: die Hochzeit ist zwar bereit, aber die Geladenen waren…",
+      "marker": "apricot",
+      "verses": [
+        "40:22:8",
+        "42:14:24"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "so gehet nun hin auf die Kreuzwege der Landstraßen, und so viele immer ihr finden werde…",
+      "marker": "blush",
+      "verses": [
+        "40:22:9",
+        "40:22:10",
+        "42:14:23"
+      ]
+    }
+  ]
+}

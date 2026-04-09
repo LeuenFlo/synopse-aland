@@ -1,0 +1,43 @@
+{
+  "aland_no": 161,
+  "title": "The Transfiguration",
+  "title_de": "Die Verklärung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "17.1-9",
+    "mark": "9.2-10",
+    "luke": "9.28-36",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und er wurde vor ihnen umgestaltet. Und sein Angesicht leuchtete wie die Sonne, seine K…",
+      "marker": "apricot",
+      "verses": [
+        "40:17:2",
+        "42:9:29"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Petrus aber hob an und sprach zu Jesu: Herr, es ist gut, daß wir hier sind. Wenn du wil…",
+      "marker": "blush",
+      "verses": [
+        "40:17:4",
+        "42:9:33"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Während er noch redete, siehe, daüberschattete sie eine lichte Wolke, und siehe, eine S…",
+      "marker": "fog",
+      "verses": [
+        "40:17:5",
+        "41:9:7"
+      ]
+    }
+  ]
+}

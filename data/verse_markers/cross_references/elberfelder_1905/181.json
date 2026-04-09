@@ -1,0 +1,44 @@
+{
+  "aland_no": 181,
+  "title": "Jesus' Thanksgiving to the Father, and the Blessedness of the Disciples",
+  "title_de": "Jesu Dank an den Vater und Seligpreisung der Jünger",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "11.25-27 13.16-17",
+    "mark": "",
+    "luke": "10.21-24",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Zu jener Zeit hob Jesus an und sprach: Ich preise dich, Vater, Herr des Himmels und der…",
+      "marker": "apricot",
+      "verses": [
+        "40:11:25",
+        "42:10:21"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Alles ist mirübergeben von meinem Vater; und niemand erkennt den Sohn, als nur der Vate…",
+      "marker": "blush",
+      "verses": [
+        "40:11:27",
+        "42:10:22"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Glückselig aber eure Augen, daß sie sehen, und eure Ohren, daß sie hören;",
+      "marker": "fog",
+      "verses": [
+        "40:13:16",
+        "42:10:23",
+        "42:10:24"
+      ]
+    }
+  ]
+}

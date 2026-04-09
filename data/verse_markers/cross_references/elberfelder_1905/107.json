@@ -1,0 +1,55 @@
+{
+  "aland_no": 107,
+  "title": "Jesus' Witness concerning John",
+  "title_de": "Jesu Zeugnis von Johannes",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "11.7-19",
+    "mark": "",
+    "luke": "7.24-35 16.16",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Denn dieser ist es, von dem geschrieben steht:\"Siehe, ich sende meinen Boten vor deinem…",
+      "marker": "apricot",
+      "verses": [
+        "40:11:10",
+        "42:7:26",
+        "42:7:27"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wahrlich, ich sage euch, unter den von Weibern Geborenen ist kein Größerer aufgestanden…",
+      "marker": "blush",
+      "verses": [
+        "40:11:11",
+        "42:7:28"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Aber von den Tagen Johannes' des Täufers an bis jetzt wird dem Reiche der Himmel Gewalt…",
+      "marker": "fog",
+      "verses": [
+        "40:11:12",
+        "42:7:29",
+        "42:7:30",
+        "42:16:16"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Der Sohn des Menschen ist gekommen, der da ißt und trinkt, und sie sagen: Siehe, ein Fr…",
+      "marker": "mint",
+      "verses": [
+        "40:11:19",
+        "42:7:35"
+      ]
+    }
+  ]
+}

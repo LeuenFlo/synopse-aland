@@ -1,0 +1,53 @@
+{
+  "aland_no": 112,
+  "title": "Healing the Withered Hand",
+  "title_de": "Heilung der verdorrten Hand",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.9-14",
+    "mark": "3.1-6",
+    "luke": "6.6-11",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wieviel vorzüglicher ist nun ein Mensch als ein Schaf! Also ist es erlaubt, an den Sabb…",
+      "marker": "apricot",
+      "verses": [
+        "40:12:12",
+        "41:3:4",
+        "42:6:9"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Die Pharisäer aber gingen hinaus und hielten Rat wider ihn, wie sie ihn umbrächten.",
+      "marker": "blush",
+      "verses": [
+        "40:12:14",
+        "41:3:6"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und sie lauerten auf ihn, ob er ihn am Sabbath heilen würde, auf daß sie ihn anklagen m…",
+      "marker": "fog",
+      "verses": [
+        "41:3:2",
+        "42:6:7"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Und er blickte auf sie umher mit Zorn, betrübtüber die Verstockung ihres Herzens, und s…",
+      "marker": "mint",
+      "verses": [
+        "41:3:5",
+        "42:6:10"
+      ]
+    }
+  ]
+}

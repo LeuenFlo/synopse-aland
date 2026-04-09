@@ -1,0 +1,73 @@
+{
+  "aland_no": 147,
+  "title": "The Walking on the Water",
+  "title_de": "Auf dem Wasser gehen",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "14.22-33",
+    "mark": "6.45-52",
+    "luke": "",
+    "john": "6.16-21"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als er die Volksmengen entlassen hatte, stieg er auf den Berg besonders, um zu bete…",
+      "marker": "apricot",
+      "verses": [
+        "40:14:23",
+        "41:6:46"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Das Schiff aber war schon mitten auf dem See und litt Not von den Wellen, denn der Wind…",
+      "marker": "blush",
+      "verses": [
+        "40:14:24",
+        "41:6:48",
+        "43:6:18"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Aber in der vierten Nachtwache kam er zu ihnen, wandelnd auf dem See.",
+      "marker": "fog",
+      "verses": [
+        "40:14:25",
+        "43:6:19"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Alsbald aber redete Jesus zu ihnen und sprach: Seid gutes Mutes, ich bin's; fürchtet eu…",
+      "marker": "mint",
+      "verses": [
+        "40:14:27",
+        "41:6:50",
+        "43:6:20"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und als sie in das Schiff gestiegen waren, legte sich der Wind.",
+      "marker": "lilac",
+      "verses": [
+        "40:14:32",
+        "41:6:51",
+        "43:6:21"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Und alsbald nötigte er seine Jünger, in das Schiff zu steigen und an das jenseitige Ufe…",
+      "marker": "peach",
+      "verses": [
+        "41:6:45",
+        "43:6:17"
+      ]
+    }
+  ]
+}

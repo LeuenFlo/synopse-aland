@@ -1,0 +1,26 @@
+{
+  "aland_no": 256,
+  "title": "The Parable of the Laborers in the Vineyard",
+  "title_de": "Das Gleichnis von den Arbeitern im Weinberg",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "20.1-16",
+    "mark": "10.31",
+    "luke": "13.30",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Also werden die Letzten Erste, und die Ersten Letzte sein; denn viele sind Berufene, we…",
+      "marker": "apricot",
+      "verses": [
+        "40:20:16",
+        "41:10:31",
+        "42:13:30"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "aland_no": 275,
+  "title": "The Fig Tree is Withered",
+  "title_de": "Der Feigenbaum ist verdorrert",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "21.20-22 6.14-15",
+    "mark": "11.20-26",
+    "luke": "",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Denn wenn ihr den Menschen ihre Vergehungen vergebet, so wird euer himmlischer Vater au…",
+      "marker": "apricot",
+      "verses": [
+        "40:6:14",
+        "40:6:15",
+        "41:11:25"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Jesus aber antwortete und sprach zu ihnen: Wahrlich, ich sage euch: Wenn ihr Glauben ha…",
+      "marker": "blush",
+      "verses": [
+        "40:21:21",
+        "41:11:22",
+        "41:11:23"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und alles, was irgend ihr im Gebet glaubend begehret, werdet ihr empfangen.",
+      "marker": "fog",
+      "verses": [
+        "40:21:22",
+        "41:11:24"
+      ]
+    }
+  ]
+}

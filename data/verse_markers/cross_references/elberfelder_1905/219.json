@@ -1,0 +1,35 @@
+{
+  "aland_no": 219,
+  "title": "The Parable of the Lost Sheep",
+  "title_de": "Das Gleichnis vom verlorenen Schaf",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "18.12-14",
+    "mark": "",
+    "luke": "15.1-7",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Was dünkt euch? Wenn ein Mensch hundert Schafe hätte, und eines von ihnen sich verirrte…",
+      "marker": "apricot",
+      "verses": [
+        "40:18:12",
+        "40:18:14",
+        "42:15:4"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und wenn es geschieht, daß er es findet, wahrlich, ich sage euch, er freut sich mehrübe…",
+      "marker": "blush",
+      "verses": [
+        "40:18:13",
+        "42:15:7"
+      ]
+    }
+  ]
+}

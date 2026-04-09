@@ -1,0 +1,39 @@
+{
+  "aland_no": 103,
+  "title": "Conditions of Discipleship",
+  "title_de": "Bedingungen der Jüngerschaft",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "10.37-39",
+    "mark": "8.34-35",
+    "luke": "14.25-27 17.33",
+    "john": "12.25"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wer Vater oder Mutter mehr liebt als mich, ist meiner nicht würdig; und wer Sohn oder T…",
+      "marker": "apricot",
+      "verses": [
+        "40:10:37",
+        "40:10:39",
+        "41:8:35",
+        "42:14:26",
+        "42:17:33",
+        "43:12:25"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "und wer nicht sein Kreuz aufnimmt und mir nachfolgt, ist meiner nicht würdig.",
+      "marker": "blush",
+      "verses": [
+        "40:10:38",
+        "41:8:34",
+        "42:14:27"
+      ]
+    }
+  ]
+}

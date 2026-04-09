@@ -1,0 +1,25 @@
+{
+  "aland_no": 71,
+  "title": "The Golden Rule",
+  "title_de": "Die goldene Regel",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.12",
+    "mark": "",
+    "luke": "6.31",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Alles nun, was immer ihr wollt, daß euch die Menschen tun sollen, also tut auch ihr ihn…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:12",
+        "42:6:31"
+      ]
+    }
+  ]
+}

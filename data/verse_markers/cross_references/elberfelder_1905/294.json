@@ -1,0 +1,40 @@
+{
+  "aland_no": 294,
+  "title": "Conclusion: \"Take Heed, Watch!\" (According to Mark)",
+  "title_de": "Schluss: „Wachet!“ (nach Markus)",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "25.13-15 24.42",
+    "mark": "13.33-37",
+    "luke": "19.12-13 12.40",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wachet also, denn ihr wisset nicht, zu welcher Stunde euer Herr kommt.",
+      "marker": "apricot",
+      "verses": [
+        "40:24:42",
+        "40:25:13",
+        "41:13:33",
+        "41:13:35",
+        "41:13:37",
+        "42:12:40"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Denn gleichwie ein Mensch, der außer Landes reiste, seine eigenen Knechte rief und ihne…",
+      "marker": "blush",
+      "verses": [
+        "40:25:14",
+        "40:25:15",
+        "41:13:34",
+        "42:19:13"
+      ]
+    }
+  ]
+}

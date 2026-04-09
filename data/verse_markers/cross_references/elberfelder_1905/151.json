@@ -1,0 +1,36 @@
+{
+  "aland_no": 151,
+  "title": "The Syrophoenician (Canaanite) Woman",
+  "title_de": "Die syrophönikische (kanaanäische) Frau",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "15.21-28",
+    "mark": "7.24-30",
+    "luke": "",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "und siehe, ein kananäisches Weib, das von jenen Grenzen herkam, schrie zu ihm und sprac…",
+      "marker": "apricot",
+      "verses": [
+        "40:15:22",
+        "41:7:25",
+        "41:7:26"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Er aber antwortete und sprach: Es ist nicht schön, das Brot der Kinder zu nehmen und de…",
+      "marker": "blush",
+      "verses": [
+        "40:15:26",
+        "41:7:27",
+        "41:7:28"
+      ]
+    }
+  ]
+}

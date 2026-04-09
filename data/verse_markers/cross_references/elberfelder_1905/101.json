@@ -1,0 +1,73 @@
+{
+  "aland_no": 101,
+  "title": "Exhortation to Fearless Confession",
+  "title_de": "Ermahnung zum bekennenden Stand",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "10.26-33",
+    "mark": "",
+    "luke": "12.2-9",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Fürchtet euch nun nicht vor ihnen. Denn es ist nichts verdeckt, was nicht aufgedeckt, u…",
+      "marker": "apricot",
+      "verses": [
+        "40:10:26",
+        "40:10:28",
+        "42:12:4",
+        "42:12:5"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Was ich euch sage in der Finsternis, redet in dem Lichte, und was ihr höret ins Ohr, ru…",
+      "marker": "blush",
+      "verses": [
+        "40:10:27",
+        "42:12:3"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Werden nicht zwei Sperlinge um einen Pfennig verkauft? Und nicht einer von ihnen fällt…",
+      "marker": "fog",
+      "verses": [
+        "40:10:29",
+        "42:12:6"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "an euch aber sind selbst die Haare des Hauptes alle gezählt.",
+      "marker": "mint",
+      "verses": [
+        "40:10:30",
+        "40:10:31",
+        "42:12:7"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Ein jeder nun, der mich vor den Menschen bekennen wird, den werde auch ich bekennen vor…",
+      "marker": "lilac",
+      "verses": [
+        "40:10:32",
+        "42:12:8"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Wer aber irgend mich vor den Menschen verleugnen wird, den werde auch ich verleugnen vo…",
+      "marker": "peach",
+      "verses": [
+        "40:10:33",
+        "42:12:9"
+      ]
+    }
+  ]
+}

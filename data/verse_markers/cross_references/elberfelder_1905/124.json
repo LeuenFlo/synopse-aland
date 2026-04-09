@@ -1,0 +1,67 @@
+{
+  "aland_no": 124,
+  "title": "Interpretation of the Parable of the Sower",
+  "title_de": "Auslegung des Gleichnisses vom Sämann",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "13.18-23",
+    "mark": "4.13-20",
+    "luke": "8.11-15",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "So oft jemand das Wort vom Reiche hört und nicht versteht, kommt der Böse und reißt weg…",
+      "marker": "apricot",
+      "verses": [
+        "40:13:19",
+        "41:4:14",
+        "41:4:15",
+        "42:8:11",
+        "42:8:12"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "er hat aber keine Wurzel in sich, sondern ist nur für eine Zeit; und wenn Drangsal ents…",
+      "marker": "blush",
+      "verses": [
+        "40:13:21",
+        "41:4:17"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Der aber unter die Dornen gesät ist, dieser ist es, der das Wort hört, und die Sorge di…",
+      "marker": "fog",
+      "verses": [
+        "40:13:22",
+        "41:4:18",
+        "41:4:19",
+        "42:8:14"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Der aber auf die gute Erde gesät ist, dieser ist es, der das Wort hört und versteht, we…",
+      "marker": "mint",
+      "verses": [
+        "40:13:23",
+        "41:4:20",
+        "42:8:15"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und diese sind es gleicherweise, die auf das Steinichte gesät werden, welche, wenn sie…",
+      "marker": "lilac",
+      "verses": [
+        "41:4:16",
+        "42:8:13"
+      ]
+    }
+  ]
+}

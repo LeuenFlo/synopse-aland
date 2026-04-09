@@ -1,0 +1,27 @@
+{
+  "aland_no": 72,
+  "title": "The Two Ways",
+  "title_de": "Die zwei Wege",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.13-14",
+    "mark": "",
+    "luke": "13.23-24",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Gehet ein durch die enge Pforte; denn weit ist die Pforte und breit der Weg, der zum Ve…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:13",
+        "40:7:14",
+        "42:13:23",
+        "42:13:24"
+      ]
+    }
+  ]
+}

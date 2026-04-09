@@ -1,0 +1,38 @@
+{
+  "aland_no": 16,
+  "title": "John's Messianic Preaching",
+  "title_de": "Johannes messianische Predigt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "3.11-12",
+    "mark": "1.7-8",
+    "luke": "3.15-18",
+    "john": "1.24-28"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ich zwar taufe euch mit Wasser zur Buße; der nach mir Kommende aber ist stärker als ich…",
+      "marker": "apricot",
+      "verses": [
+        "40:3:11",
+        "41:1:7",
+        "41:1:8",
+        "42:3:16",
+        "43:1:26",
+        "43:1:27"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "dessen Worfschaufel in seiner Hand ist, und er wird seine Tenne durch und durch reinige…",
+      "marker": "blush",
+      "verses": [
+        "40:3:12",
+        "42:3:17"
+      ]
+    }
+  ]
+}

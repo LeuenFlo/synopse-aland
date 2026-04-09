@@ -1,0 +1,78 @@
+{
+  "aland_no": 92,
+  "title": "The Healing of the Paralytic",
+  "title_de": "Heilung des Gelähmten",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "9.1-8",
+    "mark": "2.1-12",
+    "luke": "5.17-26",
+    "john": "5.1-7 8-9a"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und siehe, sie brachten einen Gelähmten zu ihm, der auf einem Bette lag; und als Jesus…",
+      "marker": "apricot",
+      "verses": [
+        "40:9:2",
+        "41:2:5",
+        "42:5:20"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und als Jesus ihre Gedanken sah, sprach er: Warum denket ihr Arges in euren Herzen?",
+      "marker": "blush",
+      "verses": [
+        "40:9:4",
+        "41:2:8",
+        "42:5:22"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Denn was ist leichter, zu sagen: Deine Sünden sind vergeben, oder zu sagen: Stehe auf u…",
+      "marker": "fog",
+      "verses": [
+        "40:9:5",
+        "41:2:9",
+        "41:2:10",
+        "41:2:11",
+        "42:5:23",
+        "42:5:24",
+        "42:5:25"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Als aber die Volksmengen es sahen, fürchteten sie sich und verherrlichten Gott, der sol…",
+      "marker": "mint",
+      "verses": [
+        "40:9:8",
+        "41:2:12",
+        "42:5:26"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und da sie wegen der Volksmenge nicht nahe zu ihm kommen konnten, deckten sie das Dach…",
+      "marker": "lilac",
+      "verses": [
+        "41:2:4",
+        "42:5:19"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Was redet dieser also? Er lästert. Wer kann Sünden vergeben, als nur einer, Gott?",
+      "marker": "peach",
+      "verses": [
+        "41:2:7",
+        "42:5:21"
+      ]
+    }
+  ]
+}

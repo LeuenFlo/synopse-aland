@@ -1,0 +1,45 @@
+{
+  "aland_no": 194,
+  "title": "Discourses against the Pharisees and Lawyers",
+  "title_de": "Reden gegen Pharisäer und Schriftgelehrte",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "15.1-9",
+    "mark": "7.1-9",
+    "luke": "11.37-54",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Warumübertreten deine Jünger dieÜberlieferung derÄltesten? Denn sie waschen ihre Hände…",
+      "marker": "apricot",
+      "verses": [
+        "40:15:2",
+        "41:7:2",
+        "41:7:5",
+        "42:11:38"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Heuchler! Trefflich hat Jesaiasüber euch geweissagt, indem er spricht:",
+      "marker": "blush",
+      "verses": [
+        "40:15:7",
+        "40:15:8",
+        "40:15:9",
+        "41:7:6",
+        "41:7:7",
+        "42:11:39",
+        "42:11:40",
+        "42:11:41",
+        "42:11:42",
+        "42:11:43",
+        "42:11:44"
+      ]
+    }
+  ]
+}

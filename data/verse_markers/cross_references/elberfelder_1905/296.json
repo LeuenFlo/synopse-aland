@@ -1,0 +1,59 @@
+{
+  "aland_no": 296,
+  "title": "The Parable of the Flood and Exhortation to Watchfulness",
+  "title_de": "Die Sintflut und die Mahnung zur Wachsamkeit",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.37-44",
+    "mark": "13.35",
+    "luke": "17.26-36 12.39-40",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Aber gleichwie die Tage Noahs waren, also wird auch die Ankunft des Sohnes des Menschen…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:37",
+        "40:24:38",
+        "40:24:39",
+        "42:17:26",
+        "42:17:27"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Alsdann werden zwei auf dem Felde sein, einer wird genommen und einer gelassen;",
+      "marker": "blush",
+      "verses": [
+        "40:24:40",
+        "40:24:41",
+        "42:17:34",
+        "42:17:35"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Wachet also, denn ihr wisset nicht, zu welcher Stunde euer Herr kommt.",
+      "marker": "fog",
+      "verses": [
+        "40:24:42",
+        "40:24:44",
+        "41:13:35",
+        "42:12:40"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Jenes aber erkennet: Wenn der Hausherr gewußt hätte, in welcher Wache der Dieb komme, s…",
+      "marker": "mint",
+      "verses": [
+        "40:24:43",
+        "42:12:39"
+      ]
+    }
+  ]
+}

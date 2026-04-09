@@ -1,0 +1,41 @@
+{
+  "aland_no": 83,
+  "title": "The House Built upon the Rock",
+  "title_de": "Das Haus auf dem Fels",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.21-27",
+    "mark": "",
+    "luke": "6.46-49",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Nicht jeder, der zu mir sagt: Herr, Herr! wird in das Reich der Himmel eingehen, sonder…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:21",
+        "40:7:22",
+        "40:7:23",
+        "42:6:46"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Jeder nun, der irgend diese meine Worte hört und sie tut, den werde ich einem klugen Ma…",
+      "marker": "blush",
+      "verses": [
+        "40:7:24",
+        "40:7:25",
+        "40:7:26",
+        "40:7:27",
+        "42:6:47",
+        "42:6:48",
+        "42:6:49"
+      ]
+    }
+  ]
+}

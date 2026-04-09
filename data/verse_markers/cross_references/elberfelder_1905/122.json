@@ -1,0 +1,26 @@
+{
+  "aland_no": 122,
+  "title": "The Parable of the Sower",
+  "title_de": "Das Gleichnis vom Sämann",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "13.1-9",
+    "mark": "4.1-9",
+    "luke": "8.4-8",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wer Ohren hat zu hören, der höre!",
+      "marker": "apricot",
+      "verses": [
+        "40:13:9",
+        "41:4:3",
+        "41:4:9"
+      ]
+    }
+  ]
+}

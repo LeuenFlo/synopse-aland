@@ -1,0 +1,33 @@
+{
+  "aland_no": 70,
+  "title": "God's Answering of Prayer",
+  "title_de": "Gottes Erhörung des Gebets",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.7-11",
+    "mark": "",
+    "luke": "11.9-13",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Bittet, und es wird euch gegeben werden; suchet, und ihr werdet finden; klopfet an, und…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:7",
+        "40:7:8",
+        "40:7:9",
+        "40:7:10",
+        "40:7:11",
+        "42:11:9",
+        "42:11:10",
+        "42:11:11",
+        "42:11:12",
+        "42:11:13"
+      ]
+    }
+  ]
+}

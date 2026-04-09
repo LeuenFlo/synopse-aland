@@ -1,0 +1,54 @@
+{
+  "aland_no": 290,
+  "title": "The Desolating Sacrilege",
+  "title_de": "Das Gräuel der Verwüstung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.15-22",
+    "mark": "13.14-20",
+    "luke": "21.20-24",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wenn ihr nun den Greuel der Verwüstung, von welchem durch Daniel, den Propheten, gerede…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:15",
+        "41:13:14",
+        "42:21:20"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wehe aber den Schwangeren und den Säugenden in jenen Tagen!",
+      "marker": "blush",
+      "verses": [
+        "40:24:19",
+        "41:13:17",
+        "42:21:23"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "denn alsdann wird große Drangsal sein, dergleichen von Anfang der Welt bis jetzthin nic…",
+      "marker": "fog",
+      "verses": [
+        "40:24:21",
+        "41:13:19"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "und wenn jene Tage nicht verkürzt würden, so würde kein Fleisch gerettet werden; aber u…",
+      "marker": "mint",
+      "verses": [
+        "40:24:22",
+        "41:13:20"
+      ]
+    }
+  ]
+}

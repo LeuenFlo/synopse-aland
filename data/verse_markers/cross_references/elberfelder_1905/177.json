@@ -1,0 +1,82 @@
+{
+  "aland_no": 177,
+  "title": "Commissioning the Seventy",
+  "title_de": "Sendung der Siebzig",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "9.37-38 10.7-16",
+    "mark": "",
+    "luke": "10.1-12",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Dann spricht er zu seinen Jüngern: Die Ernte zwar ist groß, der Arbeiter aber sind weni…",
+      "marker": "apricot",
+      "verses": [
+        "40:9:37",
+        "40:9:38",
+        "42:10:1",
+        "42:10:2"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Heilet Kranke, wecket Tote auf, reiniget Aussätzige, treibet Dämonen aus; umsonst habt…",
+      "marker": "blush",
+      "verses": [
+        "40:10:8",
+        "42:10:9"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "In welche Stadt aber oder in welches Dorf irgend ihr eintretet, erforschet, wer darin w…",
+      "marker": "fog",
+      "verses": [
+        "40:10:11",
+        "42:10:7"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Wenn ihr aber in das Haus eintretet, so grüßet es.",
+      "marker": "mint",
+      "verses": [
+        "40:10:12",
+        "42:10:5"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und wer irgend euch nicht aufnehmen, noch eure Worte hören wird, gehet hinaus aus jenem…",
+      "marker": "lilac",
+      "verses": [
+        "40:10:14",
+        "42:10:10",
+        "42:10:11"
+      ]
+    },
+    {
+      "id": "crossref_06",
+      "label": "Wahrlich, ich sage euch, es wird dem Lande von Sodom und Gomorra erträglicher ergehen a…",
+      "marker": "peach",
+      "verses": [
+        "40:10:15",
+        "42:10:12"
+      ]
+    },
+    {
+      "id": "crossref_07",
+      "label": "Siehe, ich sende euch wie Schafe inmitten von Wölfen; so seid nun klug wie die Schlange…",
+      "marker": "pearl",
+      "verses": [
+        "40:10:16",
+        "42:10:3"
+      ]
+    }
+  ]
+}

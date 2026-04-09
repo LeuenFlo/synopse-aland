@@ -1,0 +1,44 @@
+{
+  "aland_no": 185,
+  "title": "The Lord's Prayer",
+  "title_de": "Das Vaterunser",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "6.9-13",
+    "mark": "",
+    "luke": "11.1-4",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Betet ihr nun also: Unser Vater, der du bist in den Himmeln, geheiligt werde dein Name;…",
+      "marker": "apricot",
+      "verses": [
+        "40:6:9",
+        "42:11:1",
+        "42:11:2"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Unser nötiges Brot gib uns heute;",
+      "marker": "blush",
+      "verses": [
+        "40:6:11",
+        "42:11:3"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "und vergib uns unsere Schulden, wie auch wir unseren Schuldnern vergeben;",
+      "marker": "fog",
+      "verses": [
+        "40:6:12",
+        "42:11:4"
+      ]
+    }
+  ]
+}

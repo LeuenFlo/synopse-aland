@@ -1,0 +1,58 @@
+{
+  "aland_no": 288,
+  "title": "Signs before the End",
+  "title_de": "Zeichen vor dem Ende",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.3-8",
+    "mark": "13.3-8",
+    "luke": "21.7-11",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Als er aber auf demÖlberge saß, traten seine Jünger zu ihm besonders und sprachen: Sage…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:3",
+        "41:13:3",
+        "41:13:4",
+        "42:21:7"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und Jesus antwortete und sprach zu ihnen: Sehet zu, daß euch niemand verführe!",
+      "marker": "blush",
+      "verses": [
+        "40:24:4",
+        "41:13:5",
+        "42:21:8"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Ihr werdet aber von Kriegen und Kriegsgerüchten hören. Sehet zu, erschrecket nicht; den…",
+      "marker": "fog",
+      "verses": [
+        "40:24:6",
+        "41:13:7",
+        "41:13:8",
+        "42:21:9",
+        "42:21:10"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Denn es wird sich Nation wider Nation erheben und Königreich wider Königreich, und es w…",
+      "marker": "mint",
+      "verses": [
+        "40:24:7",
+        "42:21:11"
+      ]
+    }
+  ]
+}

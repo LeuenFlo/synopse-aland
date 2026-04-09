@@ -1,0 +1,26 @@
+{
+  "aland_no": 227,
+  "title": "Concerning Divorce",
+  "title_de": "Zur Ehescheidung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "19.9",
+    "mark": "10.11-12",
+    "luke": "16.18",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ich sage euch aber, daß, wer irgend sein Weib entlassen wird, nicht wegen Hurerei, und…",
+      "marker": "apricot",
+      "verses": [
+        "40:19:9",
+        "41:10:11",
+        "42:16:18"
+      ]
+    }
+  ]
+}

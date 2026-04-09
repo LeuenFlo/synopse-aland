@@ -1,0 +1,27 @@
+{
+  "aland_no": 87,
+  "title": "The Healing of Peter's Mother-in-law",
+  "title_de": "Heilung der Schwiegermutter des Petrus",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "8.14-15",
+    "mark": "1.29-31",
+    "luke": "4.38-39",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als Jesus in das Haus des Petrus gekommen war, sah er dessen Schwiegermutter fieber…",
+      "marker": "apricot",
+      "verses": [
+        "40:8:14",
+        "40:8:15",
+        "41:1:29",
+        "42:4:38"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "aland_no": 48,
+  "title": "Jesus Heals Multitudes by the Sea",
+  "title_de": "Jesus heilt die Scharen am See",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "4.24-25 12.15-16",
+    "mark": "3.7-12",
+    "luke": "6.17-19",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und es folgten ihm große Volksmengen von Galiläa und Dekapolis und Jerusalem und Judäa…",
+      "marker": "apricot",
+      "verses": [
+        "40:4:25",
+        "41:3:7",
+        "42:6:17"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und er bedrohte sie, daß sie ihn nicht offenbar machten;",
+      "marker": "blush",
+      "verses": [
+        "40:12:16",
+        "41:3:12"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Denn er heilte viele, so daß alle, welche Plagen hatten, ihnüberfielen, auf daß sie ihn…",
+      "marker": "fog",
+      "verses": [
+        "41:3:10",
+        "42:6:19"
+      ]
+    }
+  ]
+}

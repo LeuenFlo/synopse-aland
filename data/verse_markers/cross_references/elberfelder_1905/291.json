@@ -1,0 +1,43 @@
+{
+  "aland_no": 291,
+  "title": "False Christs and False Prophets",
+  "title_de": "Falsche Christusse und falsche Propheten",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.23-28",
+    "mark": "13.21-23",
+    "luke": "17.23-24 17.37b",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Alsdann, wenn jemand zu euch sagt: Siehe, hier ist der Christus, oder: Hier! so glaubet…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:23",
+        "41:13:21"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Denn es werden falsche Christi und falsche Propheten aufstehen und werden große Zeichen…",
+      "marker": "blush",
+      "verses": [
+        "40:24:24",
+        "41:13:22"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Denn gleichwie der Blitz ausfährt von Osten und scheint bis gen Westen, also wird die A…",
+      "marker": "fog",
+      "verses": [
+        "40:24:27",
+        "42:17:24"
+      ]
+    }
+  ]
+}

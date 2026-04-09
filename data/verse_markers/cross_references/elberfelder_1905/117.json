@@ -1,0 +1,65 @@
+{
+  "aland_no": 117,
+  "title": "On Collusion with Satan",
+  "title_de": "Zur Beelzebul-Behauptung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.22-30 9.32-34",
+    "mark": "3.22-27",
+    "luke": "11.14-15 11.17-23",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Die Pharisäer aber sagten: Er treibt die Dämonen aus durch den Obersten der Dämonen.",
+      "marker": "apricot",
+      "verses": [
+        "40:9:34",
+        "40:12:24",
+        "41:3:22",
+        "42:11:15"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und wenn der Satan den Satan austreibt, so ist er wider sich selbst entzweit; wie wird…",
+      "marker": "blush",
+      "verses": [
+        "40:12:26",
+        "42:11:18"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Wenn ich aber durch den Geist Gottes die Dämonen austreibe, so ist also das Reich Gotte…",
+      "marker": "fog",
+      "verses": [
+        "40:12:28",
+        "42:11:20"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Oder wie kann jemand in das Haus des Starken eindringen und seinen Hausrat rauben, wenn…",
+      "marker": "mint",
+      "verses": [
+        "40:12:29",
+        "41:3:27",
+        "42:11:21",
+        "42:11:22"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Wer nicht mit mir ist, ist wider mich, und wer nicht mit mir sammelt, zerstreut.",
+      "marker": "lilac",
+      "verses": [
+        "40:12:30",
+        "42:11:23"
+      ]
+    }
+  ]
+}

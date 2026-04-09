@@ -1,0 +1,36 @@
+{
+  "aland_no": 56,
+  "title": "On Adultery and Divorce",
+  "title_de": "Zur Ehebruch und Ehescheidung",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "5.27-32",
+    "mark": "9.43-48",
+    "luke": "16.18",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ich aber sage euch, daß jeder, der ein Weib ansieht, ihrer zu begehren, schon Ehebruch…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:28",
+        "40:5:32",
+        "42:16:18"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wenn aber dein rechtes Auge dichärgert, so reiß es aus und wirf es von dir; denn es ist…",
+      "marker": "blush",
+      "verses": [
+        "40:5:29",
+        "40:5:30",
+        "41:9:43"
+      ]
+    }
+  ]
+}

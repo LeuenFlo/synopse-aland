@@ -1,0 +1,15 @@
+{
+  "aland_no": 207,
+  "title": "Repentance or Destruction (the Parable of the Barren Fig Tree)",
+  "title_de": "Busse oder Untergang (vom unfruchtbaren Feigenbaum)",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "",
+    "mark": "",
+    "luke": "13.1-9",
+    "john": ""
+  },
+  "groups": []
+}

@@ -1,0 +1,47 @@
+{
+  "aland_no": 292,
+  "title": "The Coming of the Son of Man",
+  "title_de": "Das Kommen des Menschensohnes",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "24.29-31",
+    "mark": "13.24-27",
+    "luke": "21.25-28",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Alsbald aber nach der Drangsal jener Tage wird die Sonne verfinstert werden und der Mon…",
+      "marker": "apricot",
+      "verses": [
+        "40:24:29",
+        "41:13:24",
+        "41:13:25",
+        "42:21:25",
+        "42:21:26"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und dann wird das Zeichen des Sohnes des Menschen in dem Himmel erscheinen; und dann we…",
+      "marker": "blush",
+      "verses": [
+        "40:24:30",
+        "41:13:26",
+        "42:21:27"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und er wird seine Engel aussenden mit starkem Posaunenschall, und sie werden seine Ause…",
+      "marker": "fog",
+      "verses": [
+        "40:24:31",
+        "41:13:27"
+      ]
+    }
+  ]
+}

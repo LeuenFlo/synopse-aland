@@ -1,0 +1,25 @@
+{
+  "aland_no": 89,
+  "title": "On Following Jesus",
+  "title_de": "Nachfolge Jesu",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "8.18-22",
+    "mark": "",
+    "luke": "9.57-62",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und Jesus spricht zu ihm: Die Füchse haben Höhlen, und die Vögel des Himmels Nester, ab…",
+      "marker": "apricot",
+      "verses": [
+        "40:8:20",
+        "42:9:58"
+      ]
+    }
+  ]
+}

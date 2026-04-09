@@ -1,0 +1,27 @@
+{
+  "aland_no": 128,
+  "title": "The Parable of the Mustard Seed",
+  "title_de": "Das Gleichnis vom Senfkorn",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "13.31-32",
+    "mark": "4.30-32",
+    "luke": "13.18-19",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ein anderes Gleichnis legte er ihnen vor und sprach: Das Reich der Himmel ist gleich ei…",
+      "marker": "apricot",
+      "verses": [
+        "40:13:31",
+        "41:4:30",
+        "42:13:18",
+        "42:13:19"
+      ]
+    }
+  ]
+}

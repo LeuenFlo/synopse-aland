@@ -1,0 +1,69 @@
+{
+  "aland_no": 352,
+  "title": "The Women at the Tomb",
+  "title_de": "Die Frauen am Grab",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "28.1-8",
+    "mark": "16.1-8",
+    "luke": "24.1-12",
+    "john": "20.1-13"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Sein Ansehen aber war wie der Blitz, und sein Kleid weiß wie Schnee.",
+      "marker": "apricot",
+      "verses": [
+        "40:28:3",
+        "40:28:5",
+        "41:16:5",
+        "42:24:4",
+        "42:24:5",
+        "43:20:8",
+        "43:20:12"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Er ist nicht hier, denn er ist auferstanden, wie er gesagt hat. Kommet her, sehet die S…",
+      "marker": "blush",
+      "verses": [
+        "40:28:6",
+        "41:16:6",
+        "42:24:6",
+        "42:24:12"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "und gehet eilends hin und saget seinen Jüngern, daß er von den Toten auferstanden ist;…",
+      "marker": "fog",
+      "verses": [
+        "40:28:7",
+        "41:16:7"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Und sie gingen eilends von der Gruft hinweg mit Furcht und großer Freude, und liefen, e…",
+      "marker": "mint",
+      "verses": [
+        "40:28:8",
+        "41:16:8"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und sehr früh am ersten Wochentage kommen sie zur Gruft, als die Sonne aufgegangen war.",
+      "marker": "lilac",
+      "verses": [
+        "41:16:2",
+        "42:24:1",
+        "43:20:1"
+      ]
+    }
+  ]
+}

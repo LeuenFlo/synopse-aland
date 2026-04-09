@@ -1,0 +1,65 @@
+{
+  "aland_no": 168,
+  "title": "Warnings concerning Temptations",
+  "title_de": "Warnungen vor Anfechtungen",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "18.6-9 5.13",
+    "mark": "9.42-50",
+    "luke": "17.1-2 14.34-35",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ihr seid das Salz der Erde; wenn aber das Salz kraftlos geworden ist, womit soll es ges…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:13",
+        "41:9:49",
+        "41:9:50",
+        "42:14:34",
+        "42:14:35"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Wer aber irgend eines dieser Kleinen, die an mich glauben,ärgern wird, dem wäre nütze,…",
+      "marker": "blush",
+      "verses": [
+        "40:18:6",
+        "41:9:42",
+        "42:17:2"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Wehe der Welt derÄrgernisse wegen! Denn es ist notwendig, daßÄrgernisse kommen; doch we…",
+      "marker": "fog",
+      "verses": [
+        "40:18:7",
+        "42:17:1"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Wenn aber deine Hand oder dein Fuß dichärgert, so haue ihn ab und wirf ihn von dir. Es…",
+      "marker": "mint",
+      "verses": [
+        "40:18:8",
+        "41:9:43"
+      ]
+    },
+    {
+      "id": "crossref_05",
+      "label": "Und wenn dein Auge dichärgert, so reiß es aus und wirf es von dir. Es ist dir besser, e…",
+      "marker": "lilac",
+      "verses": [
+        "40:18:9",
+        "41:9:47"
+      ]
+    }
+  ]
+}

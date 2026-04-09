@@ -1,0 +1,34 @@
+{
+  "aland_no": 350,
+  "title": "The Burial of Jesus",
+  "title_de": "Die Grablegung Jesu",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "27.57-61",
+    "mark": "15.42-47",
+    "luke": "23.50-56",
+    "john": "19.38-42"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "kam Joseph von Arimathia, ein ehrbarer Ratsherr, der auch selbst das Reich Gottes erwar…",
+      "marker": "apricot",
+      "verses": [
+        "41:15:43",
+        "42:23:51"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und er kaufte feine Leinwand, nahm ihn herab und wickelte ihn in die feine Leinwand und…",
+      "marker": "blush",
+      "verses": [
+        "41:15:46",
+        "42:23:53"
+      ]
+    }
+  ]
+}

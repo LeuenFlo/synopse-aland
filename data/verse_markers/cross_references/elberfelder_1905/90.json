@@ -1,0 +1,56 @@
+{
+  "aland_no": 90,
+  "title": "Stilling the Storm",
+  "title_de": "Sturm beschwichtigt",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "8.23-27",
+    "mark": "4.35-41",
+    "luke": "8.22-25",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als er in das Schiff gestiegen war, folgten ihm seine Jünger.",
+      "marker": "apricot",
+      "verses": [
+        "40:8:23",
+        "41:4:35",
+        "42:8:22"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Und siehe, es erhob sich ein großes Ungestüm auf dem See, so daß das Schiff von den Wel…",
+      "marker": "blush",
+      "verses": [
+        "40:8:24",
+        "41:4:37",
+        "42:8:23"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Und die Jünger traten hinzu, weckten ihn auf und sprachen: Herr, rette uns, wir kommen…",
+      "marker": "fog",
+      "verses": [
+        "40:8:25",
+        "41:4:38"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Und er spricht zu ihnen: Was seid ihr furchtsam, Kleingläubige? Dann stand er auf und b…",
+      "marker": "mint",
+      "verses": [
+        "40:8:26",
+        "41:4:40",
+        "41:4:41",
+        "42:8:25"
+      ]
+    }
+  ]
+}

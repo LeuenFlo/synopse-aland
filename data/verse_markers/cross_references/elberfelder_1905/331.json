@@ -1,0 +1,26 @@
+{
+  "aland_no": 331,
+  "title": "Jesus Arrested",
+  "title_de": "Jesu Festnahme",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "26.47-56",
+    "mark": "14.43-52",
+    "luke": "22.47-53",
+    "john": "18.2-12"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Einer aber von den Dabeistehenden zog das Schwert, schlug den Knecht des Hohenpriesters…",
+      "marker": "apricot",
+      "verses": [
+        "41:14:47",
+        "42:22:50",
+        "43:18:10"
+      ]
+    }
+  ]
+}

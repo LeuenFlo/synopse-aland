@@ -1,0 +1,26 @@
+{
+  "aland_no": 54,
+  "title": "On the Law and the Prophets",
+  "title_de": "Zum Gesetz und den Propheten",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "5.17-20",
+    "mark": "",
+    "luke": "16.16-17",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Wähnet nicht, daß ich gekommen sei, das Gesetz oder die Propheten aufzulösen; ich bin n…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:17",
+        "40:5:18",
+        "42:16:17"
+      ]
+    }
+  ]
+}

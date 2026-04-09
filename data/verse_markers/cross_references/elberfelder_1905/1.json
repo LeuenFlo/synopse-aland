@@ -1,0 +1,25 @@
+{
+  "aland_no": 1,
+  "title": "Prologue",
+  "title_de": "Prolog",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "1.1",
+    "mark": "1.1",
+    "luke": "1.1-4",
+    "john": "1.1-18"
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Anfang des Evangeliums Jesu Christi, des Sohnes Gottes;",
+      "marker": "apricot",
+      "verses": [
+        "41:1:1",
+        "42:1:2"
+      ]
+    }
+  ]
+}

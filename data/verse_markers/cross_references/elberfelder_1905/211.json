@@ -1,0 +1,60 @@
+{
+  "aland_no": 211,
+  "title": "Exclusion from the Kingdom",
+  "title_de": "Ausschluss vom Reich",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "7.13-14 7.22-23 8.11-12 19.30",
+    "mark": "10.31",
+    "luke": "13.22-30",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Gehet ein durch die enge Pforte; denn weit ist die Pforte und breit der Weg, der zum Ve…",
+      "marker": "apricot",
+      "verses": [
+        "40:7:13",
+        "40:7:14",
+        "42:13:23",
+        "42:13:24",
+        "42:13:25"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Viele werden an jenem Tage zu mir sagen: Herr, Herr! Haben wir nicht durch deinen Namen…",
+      "marker": "blush",
+      "verses": [
+        "40:7:22",
+        "40:7:23",
+        "42:13:26",
+        "42:13:27"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Ich sage euch aber, daß viele von Osten und Westen kommen und mit Abraham und Isaak und…",
+      "marker": "fog",
+      "verses": [
+        "40:8:11",
+        "40:8:12",
+        "42:13:28",
+        "42:13:29"
+      ]
+    },
+    {
+      "id": "crossref_04",
+      "label": "Aber viele Erste werden Letzte, und Letzte Erste sein.",
+      "marker": "mint",
+      "verses": [
+        "40:19:30",
+        "41:10:31",
+        "42:13:30"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "aland_no": 59,
+  "title": "On Love of One's Enemies",
+  "title_de": "Zur Feindesliebe",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "5.43-48",
+    "mark": "",
+    "luke": "6.27-28 6.32-36",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ich aber sage euch: Liebet eure Feinde, segnet, die euch fluchen, tut wohl denen, die e…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:44",
+        "40:5:45",
+        "42:6:27",
+        "42:6:28",
+        "42:6:34",
+        "42:6:35"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Denn wenn ihr liebet, die euch lieben, welchen Lohn habt ihr? Tun nicht auch die Zöllne…",
+      "marker": "blush",
+      "verses": [
+        "40:5:46",
+        "40:5:47",
+        "42:6:32"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Ihr nun sollt vollkommen sein, wie euer himmlischer Vater vollkommen ist.",
+      "marker": "fog",
+      "verses": [
+        "40:5:48",
+        "42:6:36"
+      ]
+    }
+  ]
+}

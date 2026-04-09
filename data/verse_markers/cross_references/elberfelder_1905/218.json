@@ -1,0 +1,28 @@
+{
+  "aland_no": 218,
+  "title": "The Parable of Salt",
+  "title_de": "Das Gleichnis vom Salz",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "5.13",
+    "mark": "9.49-50",
+    "luke": "14.34-35",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Ihr seid das Salz der Erde; wenn aber das Salz kraftlos geworden ist, womit soll es ges…",
+      "marker": "apricot",
+      "verses": [
+        "40:5:13",
+        "41:9:49",
+        "41:9:50",
+        "42:14:34",
+        "42:14:35"
+      ]
+    }
+  ]
+}

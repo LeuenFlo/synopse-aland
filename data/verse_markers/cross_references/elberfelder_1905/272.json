@@ -1,0 +1,26 @@
+{
+  "aland_no": 272,
+  "title": "The Cursing of the Fig Tree",
+  "title_de": "Der verdorrte Feigenbaum",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "21.18-19",
+    "mark": "11.12-14",
+    "luke": "",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Und als er einen Feigenbaum an dem Wege sah, ging er auf ihn zu und fand nichts an ihm…",
+      "marker": "apricot",
+      "verses": [
+        "40:21:19",
+        "41:11:13",
+        "41:11:14"
+      ]
+    }
+  ]
+}

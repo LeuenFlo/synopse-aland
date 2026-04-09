@@ -1,0 +1,47 @@
+{
+  "aland_no": 111,
+  "title": "Plucking Grain on the Sabbath",
+  "title_de": "Ährenlesen am Sabbat",
+  "description": "Evangelien-Querverweise: automatisch gruppierte Marker innerhalb dieser Perikope (nur Matthaeus, Markus, Lukas, Johannes). Dieselben Vers-Zuordnungen gelten fuer alle Lesetexte. Kurzlabels vom ersten Vers der Gruppe (Elberfelder 1905).",
+  "source": "cross_references_chinese_whispers_v1",
+  "translation_reference": "elberfelder_1905",
+  "refs": {
+    "matthew": "12.1-8",
+    "mark": "2.23-28",
+    "luke": "6.1-5",
+    "john": ""
+  },
+  "groups": [
+    {
+      "id": "crossref_01",
+      "label": "Als aber die Pharisäer es sahen, sprachen sie zu ihm: Siehe, deine Jünger tun, was am S…",
+      "marker": "apricot",
+      "verses": [
+        "40:12:2",
+        "42:6:2"
+      ]
+    },
+    {
+      "id": "crossref_02",
+      "label": "Er aber sprach zu ihnen: Habt ihr nicht gelesen, was David tat, als ihn und die bei ihm…",
+      "marker": "blush",
+      "verses": [
+        "40:12:3",
+        "40:12:5",
+        "41:2:25",
+        "41:2:26",
+        "42:6:3"
+      ]
+    },
+    {
+      "id": "crossref_03",
+      "label": "Denn der Sohn des Menschen ist Herr des Sabbaths.",
+      "marker": "fog",
+      "verses": [
+        "40:12:8",
+        "41:2:28",
+        "42:6:5"
+      ]
+    }
+  ]
+}

@@ -237,6 +237,15 @@
         "wordinfo": "Tap or hover a word to see lemma, morphology, and gloss.",
         "interlinear": "Compact word-for-word help beneath the Greek text. Click a word to open its analysis in a separate window."
       },
+      "verseDialog": {
+        "referenceLabel": "Default translation"
+      },
+      "gridHint": {
+        "body": "Click a verse!"
+      },
+      "wordHint": {
+        "body": "Click a word!"
+      },
       "empty": {
         "wordinfo": "Tap a word to see lemma, morphology, Strong, and gloss.",
         "interlinear": "Tap a word to see more word-level information."

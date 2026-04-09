@@ -310,6 +310,7 @@ function readPath(obj, key) {
     setAttr("compare-translations-bar", "aria-label", t("common.readingTexts"));
     setAttr("compare-modal-actions", "aria-label", t("common.actions"));
     setAttr("compare-modal-close", "aria-label", t("common.close"));
+    setText("compare-marker-note", t("js.greekTools.gridHint.body"));
     setText("translation-picker-title", t("common.allReadingTexts"));
     setAttr("translation-picker-close", "aria-label", t("common.close"));
     setAttr("translation-info-dialog-close", "aria-label", t("common.closeHint"));

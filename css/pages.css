@@ -965,42 +965,6 @@ button.compare-home-pill {
   line-height: 1.2;
 }
 
-.compare-home-example-layer__close {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.35rem;
-  height: 2.35rem;
-  margin: 0;
-  padding: 0;
-  border: 1.5px solid color-mix(in srgb, var(--border) 92%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--bg2) 98%, white 2%);
-  color: color-mix(in srgb, var(--paper) 96%, var(--heading) 4%);
-  font-size: 1.65rem;
-  font-weight: 600;
-  line-height: 1;
-  cursor: pointer;
-  transition:
-    border-color 0.12s ease,
-    color 0.12s ease,
-    background 0.12s ease,
-    transform 0.12s ease;
-}
-
-.compare-home-example-layer__close:hover {
-  border-color: color-mix(in srgb, var(--accent-ring) 58%, var(--border));
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent-soft) 36%, var(--bg2));
-  transform: translateY(-1px);
-}
-
-.compare-home-example-layer__close:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .compare-home-example-layer__body {
   flex: 0 0 auto;
   display: flex;

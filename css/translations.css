@@ -1310,7 +1310,7 @@ html[data-theme="dark"] .site-info-dialog {
   border-radius: 0.42rem;
   cursor: pointer;
   text-align: left;
-  transition: background 0.14s ease, box-shadow 0.14s ease, color 0.14s ease;
+  transition: background 0.14s ease, box-shadow 0.14s ease, color 0.14s ease, transform 0.14s ease;
 }
 
 .compare-greek-token--static {

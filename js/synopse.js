@@ -742,6 +742,11 @@
     : function () {
         return "";
       };
+  const getPrimaryQuickTranslationId = translationTools
+    ? translationTools.getPrimaryQuickTranslationId
+    : function () {
+        return "";
+      };
   const setActiveTranslationId = translationTools
     ? translationTools.setActiveTranslationId
     : function () {};
@@ -775,6 +780,11 @@
     ? translationTools.translationIsSourceTextForId
     : function () {
         return false;
+      };
+  const translationVerboseLabelForId = translationTools
+    ? translationTools.translationVerboseLabelForId
+    : function (translationId) {
+        return String(translationId || "");
       };
   const compareColumnMetaHtmlForTranslation = translationTools
     ? translationTools.compareColumnMetaHtmlForTranslation
@@ -813,6 +823,9 @@
         escapeAttr: escapeAttr,
         getBookLabel: getBookLabel,
         effectiveTranslationId: effectiveTranslationId,
+        getReferenceTranslationId: getPrimaryQuickTranslationId,
+        getVerseCache: getVerseCache,
+        translationVerboseLabelForId: translationVerboseLabelForId,
         invalidateOpenPanels: function (options) {
           invalidateOpenPanels(options);
         },

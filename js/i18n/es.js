@@ -243,6 +243,15 @@
         "wordinfo": "Toca o pasa sobre una palabra para ver lema, morfología y glosa.",
         "interlinear": "Ayuda palabra por palabra, compacta, debajo del texto griego. Toca una palabra para abrir su análisis en una ventana separada."
       },
+      "verseDialog": {
+        "referenceLabel": "Traducción predeterminada"
+      },
+      "gridHint": {
+        "body": "Toca un versículo!"
+      },
+      "wordHint": {
+        "body": "Toca una palabra!"
+      },
       "empty": {
         "wordinfo": "Toca una palabra para ver lema, morfología, Strong y glosa.",
         "interlinear": "Toca una palabra para ver más información léxica."

@@ -32,6 +32,21 @@
       function () {
         return "";
       };
+    const getReferenceTranslationId =
+      options.getReferenceTranslationId ||
+      function () {
+        return "";
+      };
+    const getVerseCache =
+      options.getVerseCache ||
+      async function () {
+        return null;
+      };
+    const translationVerboseLabelForId =
+      options.translationVerboseLabelForId ||
+      function (translationId) {
+        return String(translationId || "");
+      };
     const getCompareGridEl =
       options.getCompareGridEl ||
       function (which) {
@@ -39,6 +54,7 @@
       };
     const DISPLAY_READING = "reading";
     const DISPLAY_INTERLINEAR = "interlinear";
+    const COMPACT_VERSE_WORD_DIALOG_MAX_WIDTH = 980;
     const GOSPEL_BOOK_KEYS = {
       40: "matthew",
       41: "mark",
@@ -50,7 +66,9 @@
       "js.greekTools.openVerseTitle": "Interlinear zu {ref} oeffnen",
       "js.greekTools.empty.verse": "Fuer diesen Vers ist keine Interlinear-Ansicht verfuegbar.",
       "js.greekTools.empty.interlinear": "Ein Wort antippen, um weitere Wortinfos zu sehen.",
+      "js.greekTools.wordHint.body": "Klick auf ein Wort!",
       "js.greekTools.verseDialog.title": "Interlinear",
+      "js.greekTools.verseDialog.referenceLabel": "Standarduebersetzung",
       "js.greekTools.verseDialog.original": "Griechischer Vers",
       "js.greekTools.verseDialog.interlinear": "Wort fuer Wort",
       "js.greekTools.verseDialog.hint": "Wort antippen fuer Analyse",
@@ -405,10 +423,22 @@
     let verseDialogSwapTimer = 0;
     let verseDialogRequestSeq = 0;
     const DIALOG_ANIMATION_MS = 220;
+    const compactVerseWordDialogMedia =
+      typeof window !== "undefined" && typeof window.matchMedia === "function"
+        ? window.matchMedia("(max-width: " + COMPACT_VERSE_WORD_DIALOG_MAX_WIDTH + "px)")
+        : null;
 
     function uiLang() {
       const lang = String(document.documentElement.lang || "de").slice(0, 2).toLowerCase();
       return MORPH_LABELS[lang] ? lang : "de";
+    }
+
+    function usesSeparateVerseWordDialog() {
+      if (compactVerseWordDialogMedia) return !!compactVerseWordDialogMedia.matches;
+      if (typeof window !== "undefined" && Number.isFinite(window.innerWidth)) {
+        return window.innerWidth <= COMPACT_VERSE_WORD_DIALOG_MAX_WIDTH;
+      }
+      return false;
     }
 
     function tt(key, vars) {
@@ -460,6 +490,10 @@
 
     function verseDialogRefEl() {
       return document.getElementById("greek-verse-dialog-ref");
+    }
+
+    function verseDialogHintEl() {
+      return document.getElementById("greek-verse-dialog-hint");
     }
 
     function verseDialogBodyEl() {
@@ -746,6 +780,7 @@
         dialog.classList.remove("is-visible");
         dialog.classList.remove("is-closing");
       }
+      if (dialog) dialog.classList.remove("is-verse-mode");
       activeDialogPanel = "";
       if (!(options && options.preserveSelection) && panel) {
         clearPanelSelection(panel);
@@ -804,7 +839,8 @@
       const refLabel = getBookLabelByNumber(selection.book) + " " + selection.chapter + "," + selection.verse;
       title.innerHTML = renderDialogTitle(token.w || "", token.t || "");
       refEl.textContent = refLabel;
-      body.innerHTML = renderCardHtml(which);
+      body.innerHTML = which === "verse" ? renderVerseWordPaneHtml({ hideTitle: true }) : renderCardHtml(which);
+      dialog.classList.toggle("is-verse-mode", which === "verse");
       body.classList.remove("is-swapping");
       void body.offsetWidth;
       body.classList.add("is-swapping");
@@ -846,6 +882,7 @@
       });
       dialog.addEventListener("close", function () {
         if (suppressDialogCloseHandler) return;
+        dialog.classList.remove("is-verse-mode");
         const panel = activeDialogPanel;
         activeDialogPanel = "";
         if (panel) clearPanelSelection(panel);
@@ -1011,7 +1048,7 @@
           button.classList.toggle("is-related", related);
         });
       }
-      if (which === "verse") syncVerseWordPane();
+      if (which === "verse" && !usesSeparateVerseWordDialog()) syncVerseWordPane();
     }
 
     function clearSelection(which) {
@@ -1172,13 +1209,14 @@
       );
     }
 
-    function renderVerseWordPaneHtml() {
+    function renderVerseWordPaneHtml(options) {
       const selection = selectedTokenByPanel.verse;
       const token = getTokenFromSelection(selection);
       if (!selection || !token) {
         return '<div class="greek-verse-word greek-verse-word--empty"><p>' + escapeHtml(tt("js.greekTools.empty.interlinear")) + "</p></div>";
       }
 
+      const hideTitle = !!(options && options.hideTitle);
       const morph = describeMorphology(token.m);
       const gloss = cleanGloss(token.gl || token.g || token.lt || token.st || "");
       const word = String(token.w || "").trim();
@@ -1186,14 +1224,18 @@
 
       return (
         '<div class="greek-verse-word">' +
-        '<h3 class="greek-verse-word__title">' +
-        '<span class="greek-verse-word__title-main">' +
-        escapeHtml(word) +
-        "</span>" +
-        (transliteration
-          ? '<span class="greek-verse-word__title-meta">(' + escapeHtml(transliteration) + ")</span>"
-          : "") +
-        "</h3>" +
+        (hideTitle
+          ? ""
+          : (
+            '<h3 class="greek-verse-word__title">' +
+            '<span class="greek-verse-word__title-main">' +
+            escapeHtml(word) +
+            "</span>" +
+            (transliteration
+              ? '<span class="greek-verse-word__title-meta">(' + escapeHtml(transliteration) + ")</span>"
+              : "") +
+            "</h3>"
+          )) +
         (gloss ? '<p class="greek-verse-word__gloss">' + escapeHtml(gloss) + "</p>" : "") +
         '<dl class="greek-verse-word__facts">' +
         renderVerseWordFactHtml("morphology", morph.summary || "") +
@@ -1232,29 +1274,83 @@
       };
     }
 
-    function renderVerseDialogHtml(target, tokens) {
-      if (!Array.isArray(tokens) || !tokens.length) {
-        return '<div class="compare-greek-card compare-greek-card--empty"><p>' + escapeHtml(tt("js.greekTools.empty.verse")) + "</p></div>";
+    function resolveReferenceVerseBlocks(target, cache) {
+      const compareApi = window.SYNOPTIC_COMPARE;
+      if (!cache || !compareApi || typeof compareApi.getColumnBlocks !== "function") {
+        return { ok: false, note: tt("js.noTranslationData") };
       }
+      return compareApi.getColumnBlocks(
+        target.book,
+        target.chapter + "." + target.verse,
+        cache.idx,
+        cache.maxV,
+        cache.aliases,
+      );
+    }
+
+    function renderReferenceVerseHtml(target, referenceState) {
+      if (!referenceState || !referenceState.translationId) return "";
+
+      const translationLabel = referenceState.label || translationVerboseLabelForId(referenceState.translationId);
+      let bodyHtml = "";
+      const metaHtml = translationLabel
+        ? '<p class="greek-verse-reference__meta">' + escapeHtml(translationLabel) + "</p>"
+        : "";
+
+      if (referenceState.loadFailed) {
+        bodyHtml = '<p class="greek-verse-reference__note">' + escapeHtml(tt("js.translationLoadFailed")) + "</p>";
+      } else if (!referenceState.cache) {
+        bodyHtml = '<p class="greek-verse-reference__note">' + escapeHtml(tt("js.noTranslationData")) + "</p>";
+      } else {
+        const resolved = resolveReferenceVerseBlocks(target, referenceState.cache);
+        const blocks = resolved && resolved.ok && Array.isArray(resolved.blocks) ? resolved.blocks.filter(function (block) {
+          return block && block.text != null;
+        }) : [];
+        if (blocks.length) {
+          bodyHtml =
+            '<p class="greek-verse-reference__text">' +
+            blocks
+              .map(function (block) {
+                return escapeHtml(block.text);
+              })
+              .join(" ") +
+            "</p>";
+        } else {
+          bodyHtml =
+            '<p class="greek-verse-reference__note">' +
+            escapeHtml((resolved && resolved.note) || tt("js.noTranslationData")) +
+            "</p>";
+        }
+      }
+
+      return '<div class="greek-verse-reference">' + bodyHtml + metaHtml + "</div>";
+    }
+
+    function renderVerseDialogHtml(target, tokens, referenceState) {
+      const referenceHtml = renderReferenceVerseHtml(target, referenceState);
+      const verseContentHtml = Array.isArray(tokens) && tokens.length
+        ? (
+          '<div class="compare-greek-verse compare-greek-verse--interlinear greek-verse-layout__tokens">' +
+          tokens
+            .map(function (token, index) {
+              return renderTokenHtml(token, target.book, target.chapter, target.verse, index, "verse", DISPLAY_INTERLINEAR);
+            })
+            .join("") +
+          "</div>"
+        )
+        : '<div class="compare-greek-card compare-greek-card--empty"><p>' + escapeHtml(tt("js.greekTools.empty.verse")) + "</p></div>";
+
       return (
         '<div class="greek-verse-layout">' +
         '<section class="greek-verse-layout__verse">' +
-        '<p class="greek-verse-layout__hint">' +
-        escapeHtml(tt("js.greekTools.verseDialog.hint")) +
-        "</p>" +
-        '<div class="compare-greek-verse compare-greek-verse--interlinear greek-verse-layout__tokens">' +
-        tokens
-          .map(function (token, index) {
-            return renderTokenHtml(token, target.book, target.chapter, target.verse, index, "verse", DISPLAY_INTERLINEAR);
-          })
-          .join("") +
-        "</div>" +
+        verseContentHtml +
         "</section>" +
         '<aside class="greek-verse-layout__sidebar">' +
         '<div class="greek-verse-layout__word-pane" id="greek-verse-dialog-word">' +
         renderVerseWordPaneHtml() +
         "</div>" +
         "</aside>" +
+        referenceHtml +
         "</div>"
       );
     }
@@ -1281,7 +1377,8 @@
       const body = verseDialogBodyEl();
       const title = verseDialogTitleEl();
       const refEl = verseDialogRefEl();
-      if (!target || !dialog || !body || !title || !refEl) return;
+      const hintEl = verseDialogHintEl();
+      if (!target || !dialog || !body || !title || !refEl || !hintEl) return;
       if (sameVerseTarget(activeVerseDialog, target) && dialog.open) return;
 
       const requestSeq = ++verseDialogRequestSeq;
@@ -1296,6 +1393,8 @@
       }
       refEl.textContent = tt("js.greekTools.verseDialog.title");
       title.textContent = verseLabel(target.book, target.chapter, target.verse);
+      hintEl.textContent = tt("js.greekTools.wordHint.body");
+      hintEl.hidden = true;
 
       body.innerHTML = '<p class="compare-note">' + escapeHtml(tt("js.loadingGreek")) + "</p>";
       if (!dialog.open) {
@@ -1310,12 +1409,31 @@
         dialog.classList.add("is-visible");
       }
 
-      const bookData = await ensureInterlinearBook(target.book);
+      const referenceTranslationId = getReferenceTranslationId();
+      const referenceLabel = referenceTranslationId ? translationVerboseLabelForId(referenceTranslationId) : "";
+      const [bookData, referenceResult] = await Promise.all([
+        ensureInterlinearBook(target.book),
+        referenceTranslationId
+          ? getVerseCache(referenceTranslationId)
+              .then(function (cache) {
+                return { cache: cache, loadFailed: false };
+              })
+              .catch(function () {
+                return { cache: null, loadFailed: true };
+              })
+          : Promise.resolve({ cache: null, loadFailed: false }),
+      ]);
       if (requestSeq !== verseDialogRequestSeq || !sameVerseTarget(activeVerseDialog, target)) return;
       const verseMap = bookData && bookData.verses ? bookData.verses : null;
       const tokens = verseMap ? verseMap[target.chapter + ":" + target.verse] : null;
+      hintEl.hidden = !(Array.isArray(tokens) && tokens.length);
       selectedTokenByPanel.verse = ensureVerseSelection(target, tokens);
-      body.innerHTML = renderVerseDialogHtml(target, tokens);
+      body.innerHTML = renderVerseDialogHtml(target, tokens, {
+        translationId: referenceTranslationId,
+        label: referenceLabel,
+        cache: referenceResult.cache,
+        loadFailed: referenceResult.loadFailed,
+      });
       body.classList.remove("is-swapping");
       void body.offsetWidth;
       body.classList.add("is-swapping");
@@ -1351,7 +1469,13 @@
       event.preventDefault();
       const which = tokenButton.getAttribute("data-greek-panel") || "modal";
       setSelectedToken(which, selection);
-      if (which !== "verse") syncWordDialogFromSelection(which);
+      if (which === "verse") {
+        if (usesSeparateVerseWordDialog()) {
+          syncWordDialogFromSelection(which);
+        }
+      } else {
+        syncWordDialogFromSelection(which);
+      }
     });
 
     document.addEventListener("keydown", function (event) {
@@ -1366,6 +1490,20 @@
 
     bindWordDialog();
     bindVerseDialog();
+
+    if (compactVerseWordDialogMedia) {
+      const handleCompactVerseDialogChange = function () {
+        if (!usesSeparateVerseWordDialog() && activeDialogPanel === "verse") {
+          closeWordDialog({ preserveSelection: true });
+          syncSelectedTokenState("verse");
+        }
+      };
+      if (typeof compactVerseWordDialogMedia.addEventListener === "function") {
+        compactVerseWordDialogMedia.addEventListener("change", handleCompactVerseDialogChange);
+      } else if (typeof compactVerseWordDialogMedia.addListener === "function") {
+        compactVerseWordDialogMedia.addListener(handleCompactVerseDialogChange);
+      }
+    }
 
     return {
       syncPanel: function (which) {

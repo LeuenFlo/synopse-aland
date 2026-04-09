@@ -609,6 +609,7 @@
 
     return {
       translationById: translationById,
+      getPrimaryQuickTranslationId: getPrimaryQuickTranslationId,
       getActiveTranslationId: getActiveTranslationId,
       setActiveTranslationId: setActiveTranslationId,
       getHomeDemoTranslationId: getHomeDemoTranslationId,

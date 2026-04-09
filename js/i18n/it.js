@@ -244,6 +244,15 @@
         "wordinfo": "Tocca o passa sul termine per vedere lemma, morfologia e gloss.",
         "interlinear": "Aiuto parola per parola compatto sotto il testo greco. Tocca una parola per aprire la sua analisi in una finestra separata."
       },
+      "verseDialog": {
+        "referenceLabel": "Traduzione predefinita"
+      },
+      "gridHint": {
+        "body": "Tocca un versetto!"
+      },
+      "wordHint": {
+        "body": "Tocca una parola!"
+      },
       "empty": {
         "wordinfo": "Tocca una parola per vedere lemma, morfologia, Strong e gloss.",
         "interlinear": "Tocca una parola per vedere piu informazioni lessicali."

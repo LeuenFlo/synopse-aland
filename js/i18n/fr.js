@@ -243,6 +243,15 @@
         "wordinfo": "Touchez ou survolez un mot pour voir le lemme, la morphologie et le glossaire.",
         "interlinear": "Aide mot a mot compacte sous le texte grec. Touchez un mot pour ouvrir son analyse dans une fenetre separee."
       },
+      "verseDialog": {
+        "referenceLabel": "Traduction par defaut"
+      },
+      "gridHint": {
+        "body": "Touchez un verset !"
+      },
+      "wordHint": {
+        "body": "Touchez un mot !"
+      },
       "empty": {
         "wordinfo": "Touchez un mot pour voir le lemme, la morphologie, Strong et le glossaire.",
         "interlinear": "Touchez un mot pour voir davantage d’informations lexicales."

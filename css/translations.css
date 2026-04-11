@@ -1818,6 +1818,12 @@ html[data-theme="dark"] .compare-marker--clay {
   box-shadow: var(--shadow-card);
 }
 
+.pill--match {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, currentColor 24%, transparent),
+    0 0 0 4px color-mix(in srgb, currentColor 10%, transparent);
+}
+
 .pill.mt.on { background: rgba(42, 110, 168, 0.12); border-color: rgba(42, 110, 168, 0.45); color: #1a4d78; }
 .pill.mk.on { background: rgba(154, 130, 48, 0.12); border-color: rgba(154, 130, 48, 0.45); color: #5c4d1c; }
 .pill.lk.on { background: rgba(47, 143, 95, 0.12); border-color: rgba(47, 143, 95, 0.45); color: #1a5c3a; }
@@ -1851,6 +1857,242 @@ html[data-theme="dark"] .pill.jn.on {
   text-transform: none;
   opacity: 0.88;
   margin-left: 0.3rem;
+}
+
+.row-verse-match {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.38rem 0.55rem;
+  margin: 0.15rem 0 0;
+  padding: 0.48rem 0.72rem;
+  border-radius: 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--accent-strong) 60%, var(--border));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 80%, transparent), transparent 72%),
+    color-mix(in srgb, var(--bg2) 86%, white);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  color: var(--heading);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.row-verse-match__ref {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.48rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-soft) 88%, transparent);
+  color: var(--accent);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.row-verse-match__text {
+  min-width: 0;
+  color: var(--heading);
+}
+
+.gospel-search-result {
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.gospel-search-result__head {
+  margin-bottom: 1.35rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.gospel-search-result__title {
+  margin: 0;
+  color: var(--heading);
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(1.6rem, 3.1vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.gospel-search-result__body {
+  display: block;
+  background: var(--bg);
+  color: var(--paper);
+}
+
+.gospel-search-result__paragraph {
+  margin: 0;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  color: var(--paper);
+  font-size: clamp(1.1rem, 0.98rem + 0.35vw, 1.36rem);
+  line-height: 1.9;
+  letter-spacing: 0.002em;
+}
+
+.gospel-search-result__paragraph + .gospel-search-event {
+  margin-top: 1.3rem;
+}
+
+.gospel-search-event + .gospel-search-result__paragraph {
+  margin-top: 1rem;
+}
+
+.gospel-search-result__verse {
+  display: inline;
+}
+
+.gospel-search-result__verse.is-target {
+  background: color-mix(in srgb, var(--accent-soft) 82%, transparent);
+  border-radius: 0.38rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.05rem 0.18rem 0.1rem;
+}
+
+.gospel-search-result__verse-num {
+  margin-right: 0.24rem;
+  color: var(--muted);
+  font-size: 0.7em;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: text-top;
+}
+
+.gospel-search-result__verse.is-target .gospel-search-result__verse-num {
+  color: var(--accent);
+}
+
+.gospel-search-event {
+  margin: 1.45rem 0 3rem;
+  padding: 0;
+  border-top: none;
+  border-bottom: none;
+}
+
+.gospel-search-event__headline {
+  display: block;
+  min-width: 0;
+}
+
+.gospel-search-event__title {
+  margin: 0;
+  color: var(--heading);
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(1.8rem, 1.38rem + 1.45vw, 2.85rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.gospel-search-event__text {
+  margin-top: 1rem;
+}
+
+.gospel-search-event__link {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.38rem;
+  margin-top: 0.7rem;
+  padding: 0.34rem 0.56rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-soft) 62%, white);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  color: var(--accent-ink);
+  font-size: 0.77rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: normal;
+  line-height: 1.2;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.gospel-search-event__link:hover {
+  background: color-mix(in srgb, var(--accent-soft) 82%, white);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  color: var(--accent-ink);
+  transform: translateY(-1px);
+}
+
+.gospel-search-event__link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 56%, transparent);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.gospel-search-event__link-text {
+  color: var(--muted);
+}
+
+.gospel-search-event__link-witnesses {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.gospel-search-event__link-witness {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.55rem;
+  padding: 0.12rem 0.28rem;
+  border-radius: 999px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 82%, transparent);
+  background: color-mix(in srgb, var(--bg-muted) 78%, white);
+}
+
+.gospel-search-event__link-witness.mt {
+  border-color: color-mix(in srgb, var(--mt) 38%, transparent);
+  background: color-mix(in srgb, var(--mt) 10%, white);
+  color: var(--mt);
+}
+
+.gospel-search-event__link-witness.mk {
+  border-color: color-mix(in srgb, var(--mk) 38%, transparent);
+  background: color-mix(in srgb, var(--mk) 10%, white);
+  color: var(--mk);
+}
+
+.gospel-search-event__link-witness.lk {
+  border-color: color-mix(in srgb, var(--lk) 38%, transparent);
+  background: color-mix(in srgb, var(--lk) 10%, white);
+  color: var(--lk);
+}
+
+.gospel-search-event__link-witness.jn {
+  border-color: color-mix(in srgb, var(--jn) 38%, transparent);
+  background: color-mix(in srgb, var(--jn) 10%, white);
+  color: var(--jn);
+}
+
+.gospel-search-result--greek .gospel-search-result__paragraph {
+  font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
+  font-feature-settings: "kern" 1;
+  font-synthesis: none;
+  font-size: clamp(1.12rem, 1rem + 0.35vw, 1.4rem);
+  line-height: 1.96;
+}
+
+.list.list--reveal > .gospel-search-result {
+  animation: listResultIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .empty {

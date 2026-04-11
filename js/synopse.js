@@ -30,6 +30,10 @@
           "js.noGreekData": "Keine Textdaten verfügbar.",
           "js.noTranslationData": "Übersetzungsdaten nicht verfügbar.",
           "js.noLinkedGospelText": "In dieser Zeile ist kein Evangelientext verknüpft.",
+          "js.openSynopsis": "Zur Synopse",
+          "js.compareWithLabel": "Vergleiche mit",
+          "js.compareWith": "Vergleiche mit {gospels}",
+          "js.goToEvent": "Zum Ereignis",
           "js.translationPrefix": "Übersetzung: {label}",
           "js.chooseChapterToSeeEvents": "Kapitel wählen, um passende Ereignisse zu sehen.",
           "js.noEventForChapter": "Kein Ereignis gefunden, das dieses Kapitel direkt enthält.",
@@ -226,6 +230,447 @@
           .replace(/ß/g, "ss")
           .trim();
       };
+  const SEARCH_BOOK_NUMBERS = {
+    matthew: 40,
+    mark: 41,
+    luke: 42,
+    john: 43,
+  };
+  const DIRECT_GOSPEL_REF_KEYS = {
+    matthew: "ref_matthew",
+    mark: "ref_mark",
+    luke: "ref_luke",
+    john: "ref_john",
+  };
+  const DIRECT_GOSPEL_WITNESS_KEYS = [
+    { id: "matthew", cls: "mt", prop: "in_matthew", label: "Mt" },
+    { id: "mark", cls: "mk", prop: "in_mark", label: "Mk" },
+    { id: "luke", cls: "lk", prop: "in_luke", label: "Lk" },
+    { id: "john", cls: "jn", prop: "in_john", label: "Jn" },
+  ];
+  let searchVerseTextTranslationId = "";
+  let searchVerseTextCache = null;
+  let searchVerseTextLoadPromise = null;
+  let searchVerseTextFailedTranslationId = "";
+
+  function hasSpecificVerseQuery(query) {
+    return !!(query && Number.isFinite(query.chapter) && Number.isFinite(query.verse) && query.verse >= 1);
+  }
+
+  function getSearchVerseQueryKey(query) {
+    if (!query) return "";
+    return [query.book || "", query.chapter || 0, query.verse || 0].join(":");
+  }
+
+  function ensureSearchVerseTextCache(translationId) {
+    const requestedQueryKey = getSearchVerseQueryKey(activeSearchChapterQuery);
+    if (!translationId) return Promise.resolve(null);
+    if (searchVerseTextTranslationId === translationId && searchVerseTextCache) {
+      return Promise.resolve(searchVerseTextCache);
+    }
+    if (searchVerseTextTranslationId === translationId && searchVerseTextLoadPromise) {
+      return searchVerseTextLoadPromise;
+    }
+    if (searchVerseTextFailedTranslationId === translationId) {
+      return Promise.resolve(null);
+    }
+
+    searchVerseTextTranslationId = translationId;
+    searchVerseTextCache = null;
+    searchVerseTextLoadPromise = getVerseCache(translationId)
+      .then(function (cache) {
+        searchVerseTextLoadPromise = null;
+        if (searchVerseTextTranslationId !== translationId) return cache;
+        searchVerseTextCache = cache;
+        searchVerseTextFailedTranslationId = cache ? "" : translationId;
+        if (requestedQueryKey && requestedQueryKey === getSearchVerseQueryKey(activeSearchChapterQuery)) {
+          filter();
+        }
+        return cache;
+      })
+      .catch(function () {
+        searchVerseTextLoadPromise = null;
+        if (searchVerseTextTranslationId === translationId) {
+          searchVerseTextFailedTranslationId = translationId;
+          if (requestedQueryKey && requestedQueryKey === getSearchVerseQueryKey(activeSearchChapterQuery)) {
+            filter();
+          }
+        }
+        return null;
+      });
+    return searchVerseTextLoadPromise;
+  }
+
+  function getSearchVerseSnippet(row, query, cache) {
+    const compareApi = window.SYNOPTIC_COMPARE;
+    const book = query ? getVerseSearchBooks()[query.book] : null;
+    const bookNumber = query ? SEARCH_BOOK_NUMBERS[query.book] : 0;
+    const ref = row && book ? row[book.refKey] || "" : "";
+    if (
+      !row ||
+      !hasSpecificVerseQuery(query) ||
+      !cache ||
+      !compareApi ||
+      typeof compareApi.getColumnBlocks !== "function" ||
+      !book ||
+      !bookNumber ||
+      !ref
+    ) {
+      return null;
+    }
+
+    const resolved = compareApi.getColumnBlocks(
+      bookNumber,
+      ref,
+      cache.idx || Object.create(null),
+      cache.maxV || Object.create(null),
+      cache.aliases || Object.create(null),
+    );
+    if (!resolved || !resolved.ok || !Array.isArray(resolved.blocks)) return null;
+
+    const block = resolved.blocks.find(function (entry) {
+      return entry && entry.ch === query.chapter && entry.v === query.verse && entry.text != null;
+    });
+    if (!block || block.text == null) return null;
+
+    return {
+      label: getBookLabel(query.book) + " " + query.chapter + "," + query.verse,
+      text: String(block.text || "")
+        .replace(/\s+/g, " ")
+        .trim(),
+    };
+  }
+
+  function renderMatchedVerseSnippet(row, query, cache) {
+    const match = getSearchVerseSnippet(row, query, cache);
+    if (!match) return "";
+    return (
+      '<p class="row-verse-match">' +
+      '<span class="row-verse-match__ref">' +
+      escapeHtml(match.label) +
+      "</span>" +
+      '<span class="row-verse-match__text">' +
+      escapeHtml(match.text) +
+      "</span>" +
+      "</p>"
+    );
+  }
+
+  let filterRequestSeq = 0;
+
+  function getDirectGospelQuery(searchAssistState, normalizedQuery) {
+    if (!searchAssistState || searchAssistState.mode !== "chapters" || !searchAssistState.book) return null;
+    const parts = String(normalizedQuery || "").split(/\s+/).filter(Boolean);
+    const rest = parts.slice(1).join(" ").trim();
+    if (!rest) {
+      return {
+        book: searchAssistState.book.id,
+        chapter: 1,
+        verse: 0,
+      };
+    }
+    if (!searchAssistState.selectedChapter) return null;
+    return {
+      book: searchAssistState.book.id,
+      chapter: searchAssistState.selectedChapter,
+      verse: searchAssistState.selectedVerse || 0,
+    };
+  }
+
+  function formatDirectGospelQueryLabel(query) {
+    if (!query) return "";
+    return getBookLabel(query.book) + " " + query.chapter + (query.verse ? "," + query.verse : "");
+  }
+
+  function getCachedVerseText(cache, bookNumber, chapter, verse) {
+    if (!cache || !cache.idx) return null;
+    const aliases =
+      cache.aliases && cache.aliases[bookNumber] && cache.aliases[bookNumber].length
+        ? cache.aliases[bookNumber]
+        : [bookNumber];
+    for (let i = 0; i < aliases.length; i += 1) {
+      const text = cache.idx[aliases[i] + ":" + chapter + ":" + verse];
+      if (text != null) return String(text);
+    }
+    return null;
+  }
+
+  function getDirectGospelChapterVerses(query, cache) {
+    const bookNumber = SEARCH_BOOK_NUMBERS[query.book];
+    if (!bookNumber || !cache || !cache.maxV) return [];
+    const maxVerse = cache.maxV[bookNumber + ":" + query.chapter] || 0;
+    const verses = [];
+    for (let verse = 1; verse <= maxVerse; verse += 1) {
+      const text = getCachedVerseText(cache, bookNumber, query.chapter, verse);
+      if (text == null) continue;
+      verses.push({ verse: verse, text: text });
+    }
+    return verses;
+  }
+
+  function getDirectGospelChapterEvents(query) {
+    const compareApi = window.SYNOPTIC_COMPARE;
+    const refKey = query ? DIRECT_GOSPEL_REF_KEYS[query.book] : "";
+    const bookNumber = query ? SEARCH_BOOK_NUMBERS[query.book] : 0;
+    if (
+      !query ||
+      !refKey ||
+      !bookNumber ||
+      !compareApi ||
+      typeof compareApi.expandRefToVerses !== "function"
+    ) {
+      return [];
+    }
+
+    const events = [];
+    const seenRanges = new Set();
+
+    data.forEach(function (row) {
+      const ref = row && row[refKey];
+      if (!ref) return;
+      const expanded = compareApi.expandRefToVerses(String(ref), bookNumber, Object.create(null));
+      if (!expanded || !expanded.ok || !Array.isArray(expanded.verses) || !expanded.verses.length) return;
+
+      const chapterVerses = expanded.verses.filter(function (pair) {
+        return pair && pair[0] === query.chapter && Number.isFinite(pair[1]);
+      });
+      if (!chapterVerses.length) return;
+      const signature = chapterVerses
+        .map(function (pair) {
+          return pair[0] + ":" + pair[1];
+        })
+        .join("|");
+      if (seenRanges.has(signature)) return;
+      seenRanges.add(signature);
+
+      events.push({
+        alandNo: row.aland_no,
+        startVerse: chapterVerses[0][1],
+        endVerse: chapterVerses[chapterVerses.length - 1][1],
+        title: getRowTitle(row),
+        in_matthew: !!row.in_matthew,
+        in_mark: !!row.in_mark,
+        in_luke: !!row.in_luke,
+        in_john: !!row.in_john,
+      });
+    });
+
+    events.sort(function (a, b) {
+      const startDiff = (a.startVerse || 0) - (b.startVerse || 0);
+      if (startDiff) return startDiff;
+      const endDiff = (b.endVerse || 0) - (a.endVerse || 0);
+      if (endDiff) return endDiff;
+      const noA = Number(a && a.alandNo) || 0;
+      const noB = Number(b && b.alandNo) || 0;
+      if (noA !== noB) return noA - noB;
+      return String(a && a.title ? a.title : "").localeCompare(String(b && b.title ? b.title : ""));
+    });
+    return events;
+  }
+
+  function getDirectGospelComparisonLabels(event, currentBookId) {
+    return DIRECT_GOSPEL_WITNESS_KEYS.filter(function (item) {
+      return item.id !== currentBookId && !!(event && event[item.prop]);
+    }).map(function (item) {
+      return item.label;
+    });
+  }
+
+  function renderDirectGospelComparisonWitnesses(event, currentBookId) {
+    const comparisons = DIRECT_GOSPEL_WITNESS_KEYS.filter(function (item) {
+      return item.id !== currentBookId && !!(event && event[item.prop]);
+    });
+    if (!comparisons.length) return "";
+    return (
+      '<span class="gospel-search-event__link-witnesses" aria-hidden="true">' +
+      comparisons
+        .map(function (item) {
+          return (
+            '<span class="gospel-search-event__link-witness ' +
+            item.cls +
+            '">' +
+            item.label +
+            "</span>"
+          );
+        })
+        .join("") +
+      "</span>"
+    );
+  }
+
+  function renderDirectGospelEventActionContent(event, currentBookId) {
+    const labels = getDirectGospelComparisonLabels(event, currentBookId);
+    if (!labels.length) {
+      return '<span class="gospel-search-event__link-text">' + escapeHtml(t("js.goToEvent")) + "</span>";
+    }
+    return (
+      '<span class="gospel-search-event__link-text">' +
+      escapeHtml(t("js.compareWithLabel")) +
+      "</span>" +
+      renderDirectGospelComparisonWitnesses(event, currentBookId)
+    );
+  }
+
+  function renderDirectGospelVerse(entry, targetVerse) {
+    return (
+      '<span class="gospel-search-result__verse' +
+      (targetVerse === entry.verse ? " is-target" : "") +
+      '">' +
+      '<span class="gospel-search-result__verse-num">' +
+      entry.verse +
+      "</span>" +
+      '<span class="gospel-search-result__verse-text">' +
+      escapeHtml(entry.text) +
+      "</span>" +
+      "</span>"
+    );
+  }
+
+  function renderDirectGospelParagraph(entries, targetVerse) {
+    if (!Array.isArray(entries) || !entries.length) return "";
+    return (
+      '<p class="gospel-search-result__paragraph">' +
+      entries
+        .map(function (entry) {
+          return renderDirectGospelVerse(entry, targetVerse);
+        })
+        .join(" ") +
+      "</p>"
+    );
+  }
+
+  function renderDirectGospelEventSection(event, entries, currentBookId, targetVerse) {
+    const href = event && event.alandNo ? buildContextualPericopeUrl(event.alandNo) : "";
+    const actionContent = renderDirectGospelEventActionContent(event, currentBookId);
+    return (
+      '<section class="gospel-search-event">' +
+      '<div class="gospel-search-event__headline">' +
+      '<h3 class="gospel-search-event__title">' +
+      escapeHtml((event && event.title) || t("js.eventFallback")) +
+      "</h3>" +
+      "</div>" +
+      '<div class="gospel-search-event__text">' +
+      renderDirectGospelParagraph(entries, targetVerse) +
+      "</div>" +
+      (href
+        ? '<a class="gospel-search-event__link" href="' +
+          escapeAttr(href) +
+          '" data-aland-no="' +
+          escapeAttr(String(event.alandNo || "")) +
+          '">' +
+          actionContent +
+          "</a>"
+        : "") +
+      "</section>"
+    );
+  }
+
+  function renderDirectGospelBody(query, verses) {
+    const events = getDirectGospelChapterEvents(query);
+    const parts = [];
+    let cursor = 0;
+
+    function takeVersesUntil(beforeVerse) {
+      const chunk = [];
+      while (cursor < verses.length && verses[cursor].verse < beforeVerse) {
+        chunk.push(verses[cursor]);
+        cursor += 1;
+      }
+      return chunk;
+    }
+
+    function takeVersesThrough(lastVerse) {
+      const chunk = [];
+      while (cursor < verses.length && verses[cursor].verse <= lastVerse) {
+        chunk.push(verses[cursor]);
+        cursor += 1;
+      }
+      return chunk;
+    }
+
+    events.forEach(function (event) {
+      const leadingVerses = takeVersesUntil(event.startVerse || 0);
+      if (leadingVerses.length) {
+        parts.push(renderDirectGospelParagraph(leadingVerses, query.verse));
+      }
+
+      const eventVerses = takeVersesThrough(event.endVerse || 0);
+      if (eventVerses.length) {
+        parts.push(renderDirectGospelEventSection(event, eventVerses, query.book, query.verse));
+      }
+    });
+
+    if (cursor < verses.length) {
+      parts.push(renderDirectGospelParagraph(verses.slice(cursor), query.verse));
+    }
+
+    return parts.join("");
+  }
+
+  function renderDirectGospelResult(query, verses, translationId) {
+    const title = formatDirectGospelQueryLabel({ book: query.book, chapter: query.chapter, verse: 0 });
+    return (
+      '<article class="gospel-search-result' +
+      (translationIsSourceTextForId(translationId) ? " gospel-search-result--greek" : "") +
+      '">' +
+      '<header class="gospel-search-result__head">' +
+      '<h2 class="gospel-search-result__title">' +
+      escapeHtml(title) +
+      "</h2>" +
+      "</header>" +
+      '<div class="gospel-search-result__body">' +
+      renderDirectGospelBody(query, verses) +
+      "</div>" +
+      "</article>"
+    );
+  }
+
+  function renderDirectGospelSearch(query, translationId, requestSeq) {
+    const countEl = document.getElementById("count");
+    if (countEl) {
+      const translationLabel = translationVerboseLabelForId(translationId);
+      countEl.textContent = translationLabel || "";
+    }
+    pulseCountLine();
+    listEl.innerHTML =
+      '<div class="empty">' +
+      escapeHtml(translationIsSourceTextForId(translationId) ? t("js.loadingGreek") : t("js.loadingTranslation")) +
+      "</div>";
+    triggerListReveal();
+    syncListFabs();
+
+    getVerseCache(translationId)
+      .then(function (cache) {
+        if (requestSeq !== filterRequestSeq) return;
+        const verses = getDirectGospelChapterVerses(query, cache);
+        if (!verses.length) {
+          listEl.innerHTML =
+            '<div class="empty">' +
+            escapeHtml(translationIsSourceTextForId(translationId) ? t("js.noGreekData") : t("js.noTranslationData")) +
+            "</div>";
+          triggerListReveal();
+          syncListFabs();
+          return;
+        }
+        listEl.innerHTML = renderDirectGospelResult(query, verses, translationId);
+        triggerListReveal();
+        syncListFabs();
+      })
+      .catch(function (err) {
+        if (requestSeq !== filterRequestSeq) return;
+        const detail = err && err.message ? " " + err.message : "";
+        listEl.innerHTML =
+          '<div class="empty">' +
+          escapeHtml(
+            (translationIsSourceTextForId(translationId) ? t("js.greekLoadFailed") : t("js.translationLoadFailed")) +
+              detail,
+          ) +
+          "</div>";
+        triggerListReveal();
+        syncListFabs();
+      });
+  }
+
   function createAlandTopic(id, label, startAland, endAland) {
     const alandNos = [];
     for (let no = startAland; no <= endAland; no += 1) {
@@ -398,6 +843,23 @@
       return url.toString();
     } catch (e) {
       return "/liste/?p=" + encodeURIComponent(String(alandNo));
+    }
+  }
+
+  function buildContextualPericopeUrl(alandNo) {
+    try {
+      const url = new URL(buildPericopeUrl(alandNo), window.location.href);
+      const query = qInput && qInput.value ? String(qInput.value).trim() : "";
+      const translationId = typeof effectiveTranslationId === "function" ? effectiveTranslationId("main") : "";
+      if (query) {
+        url.searchParams.set("q", query);
+      }
+      if (translationId) {
+        url.searchParams.set("translation", translationId);
+      }
+      return url.toString();
+    } catch (e) {
+      return buildPericopeUrl(alandNo);
     }
   }
 
@@ -618,9 +1080,10 @@
     return true;
   }
 
-  function pill(cls, label, on, bold, ref) {
+  function pill(cls, label, on, bold, ref, options) {
+    options = options || {};
     const r = ref ? `<span class="ref">${escapeHtml(ref)}</span>` : "";
-    return `<span class="pill ${cls} ${on ? "on" : ""} ${on && bold ? "bold" : ""}">${label}${r}</span>`;
+    return `<span class="pill ${cls} ${on ? "on" : ""} ${on && bold ? "bold" : ""} ${options.isMatch ? "pill--match" : ""}">${label}${r}</span>`;
   }
 
   const FAVORITE_ALANDS_STORAGE_KEY = "synopse-favorite-alands";
@@ -702,14 +1165,16 @@
 
   loadFavoriteAlands();
   let initialHomeDemoTranslationId = "";
-  if (isCompareHome) {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const tr = params.get("translation");
-      if (tr) initialHomeDemoTranslationId = tr;
-    } catch (e) {
-      /* ignore */
+  let requestedTranslationId = "";
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const tr = params.get("translation");
+    if (tr) {
+      requestedTranslationId = tr;
+      if (isCompareHome) initialHomeDemoTranslationId = tr;
     }
+  } catch (e) {
+    /* ignore */
   }
 
   const translationToolsFactory =
@@ -750,6 +1215,9 @@
   const setActiveTranslationId = translationTools
     ? translationTools.setActiveTranslationId
     : function () {};
+  if (requestedTranslationId) {
+    setActiveTranslationId(requestedTranslationId);
+  }
   const getHomeDemoTranslationId = translationTools
     ? translationTools.getHomeDemoTranslationId
     : function () {
@@ -1693,6 +2161,9 @@
     options = options || {};
     refreshQuickStripOnly();
     syncTranslationButtons();
+    if (listEl && hasSpecificVerseQuery(activeSearchChapterQuery)) {
+      filter();
+    }
     if (compareModal && compareModal.classList.contains("is-open") && compareModalRowId !== null) {
       refillCompareGrid("modal", options);
     }
@@ -1724,20 +2195,31 @@
     );
   }
 
-  function renderRow(r) {
+  function setDirectGospelMode(active) {
+    document.body.classList.toggle("is-direct-gospel-mode", !!active);
+  }
+
+  function renderRow(r, options) {
+    options = options || {};
     const title = escapeHtml(getRowTitle(r));
+    const verseQuery = options.verseQuery || null;
+    const verseSnippet = hasSpecificVerseQuery(verseQuery)
+      ? renderMatchedVerseSnippet(r, verseQuery, options.verseCache || null)
+      : "";
+    const matchedBookId = verseQuery && verseQuery.book ? verseQuery.book : "";
     return `
       <section class="row-wrap" data-row-id="${r.row_id}" data-aland-no="${r.aland_no}">
         <div class="row row-head" tabindex="0" role="button" aria-label="${escapeAttr(t("js.openCompareAria"))}">
           <div class="row-main">
             <h2>${title}</h2>
+            ${verseSnippet}
           </div>
           <div class="row-actions">
             <div class="gospels">
-              ${pill("mt", "Mt", r.in_matthew, r.bold_matthew, r.ref_matthew)}
-              ${pill("mk", "Mk", r.in_mark, r.bold_mark, r.ref_mark)}
-              ${pill("lk", "Lk", r.in_luke, r.bold_luke, r.ref_luke)}
-              ${pill("jn", "Jn", r.in_john, r.bold_john, r.ref_john)}
+              ${pill("mt", "Mt", r.in_matthew, r.bold_matthew, r.ref_matthew, { isMatch: matchedBookId === "matthew" && r.in_matthew })}
+              ${pill("mk", "Mk", r.in_mark, r.bold_mark, r.ref_mark, { isMatch: matchedBookId === "mark" && r.in_mark })}
+              ${pill("lk", "Lk", r.in_luke, r.bold_luke, r.ref_luke, { isMatch: matchedBookId === "luke" && r.in_luke })}
+              ${pill("jn", "Jn", r.in_john, r.bold_john, r.ref_john, { isMatch: matchedBookId === "john" && r.in_john })}
             </div>
             <span class="chev" aria-hidden="true">↗</span>
           </div>
@@ -1747,26 +2229,49 @@
 
   function filter() {
     if (!listEl) return;
+    const requestSeq = ++filterRequestSeq;
     const qEl = document.getElementById("q");
     const qRaw = qEl && qEl.value ? qEl.value : "";
     const q = normalizeSearchToken(qRaw);
     const searchAssistState = getSearchAssistState(qRaw);
+    const directGospelQuery = getDirectGospelQuery(searchAssistState, q);
     activeSearchChapterQuery =
-      searchAssistState && searchAssistState.mode === "chapters" && searchAssistState.selectedChapter
-        ? { book: searchAssistState.book.id, chapter: searchAssistState.selectedChapter }
+      !directGospelQuery && searchAssistState && searchAssistState.mode === "chapters" && searchAssistState.selectedChapter
+        ? {
+            book: searchAssistState.book.id,
+            chapter: searchAssistState.selectedChapter,
+            verse: searchAssistState.selectedVerse || null,
+          }
         : null;
     renderSearchAssist(searchAssistState);
     const sec = activeSection;
     const explorerTopic = explorerTopicById.get(explorerActiveTopicId) || null;
     const verseQuery = activeSearchChapterQuery;
+    const specificVerseQuery = hasSpecificVerseQuery(verseQuery) ? verseQuery : null;
     const textQuery = verseQuery ? "" : q;
     const hasDefaultState = !textQuery && !sec && !explorerTopic && activePreset === "all" && !verseQuery;
     const filterModeActive = hasOpenFilterPanel();
+    const listTranslationId = effectiveTranslationId("main");
+    const verseSnippetCache =
+      specificVerseQuery && searchVerseTextTranslationId === listTranslationId ? searchVerseTextCache : null;
+
+    if (specificVerseQuery && listTranslationId && (!verseSnippetCache || searchVerseTextTranslationId !== listTranslationId)) {
+      ensureSearchVerseTextCache(listTranslationId);
+    }
 
     syncExplorerVisibility();
     syncFilterVisibility();
 
     updateSectionListHeading();
+
+    if (directGospelQuery) {
+      setDirectGospelMode(true);
+      scrollListToFirst = false;
+      renderDirectGospelSearch(directGospelQuery, listTranslationId, requestSeq);
+      return;
+    }
+
+    setDirectGospelMode(false);
 
     if (hasDefaultState) {
       const favoriteRows = getFavoriteRows();
@@ -1784,9 +2289,17 @@
       } else if (searchAssistState && searchAssistState.mode === "chapters" && !verseQuery) {
         listEl.innerHTML = '<div class="empty">' + t("js.chooseChapterToSeeEvents") + "</div>";
       } else if (favoriteRows.length) {
-        listEl.innerHTML = favoriteRows.map(renderRow).join("");
+        listEl.innerHTML = favoriteRows.map(function (row) {
+          return renderRow(row, { verseQuery: verseQuery, verseCache: verseSnippetCache });
+        }).join("");
       } else {
-        listEl.innerHTML = renderStarterLanding() + starterRows.map(renderRow).join("");
+        listEl.innerHTML =
+          renderStarterLanding() +
+          starterRows
+            .map(function (row) {
+              return renderRow(row, { verseQuery: verseQuery, verseCache: verseSnippetCache });
+            })
+            .join("");
       }
       scrollListToFirst = false;
       triggerListReveal();
@@ -1841,14 +2354,18 @@
       listEl.innerHTML = searchAssistState && searchAssistState.mode === "chapters" && !verseQuery
         ? '<div class="empty">' + t("js.chooseChapterToSeeEvents") + "</div>"
         : verseQuery
-          ? '<div class="empty">' + t("js.noEventForChapter") + "</div>"
+          ? '<div class="empty">' + (hasSpecificVerseQuery(verseQuery) ? t("js.noResults") : t("js.noEventForChapter")) + "</div>"
           : '<div class="empty">' + t("js.noResults") + "</div>";
       scrollListToFirst = false;
       triggerListReveal();
       syncListFabs();
       return;
     }
-    listEl.innerHTML = visibleOut.map(renderRow).join("");
+    listEl.innerHTML = visibleOut
+      .map(function (row) {
+        return renderRow(row, { verseQuery: verseQuery, verseCache: verseSnippetCache });
+      })
+      .join("");
     triggerListReveal();
     if (scrollListToFirst && visibleOut.length) {
       scrollListToFirst = false;
@@ -1867,6 +2384,18 @@
 
   if (listEl) {
     listEl.addEventListener("click", (e) => {
+      const synopsisLink = e.target.closest(".gospel-search-event__link[data-aland-no]");
+      if (synopsisLink) {
+        const isModifiedClick = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+        if (isModifiedClick) return;
+        const alandNo = parseInt(synopsisLink.getAttribute("data-aland-no") || "", 10);
+        const row = Number.isNaN(alandNo) ? null : rowByAlandNo.get(alandNo);
+        if (!row) return;
+        e.preventDefault();
+        openCompareModalForRow(row, synopsisLink);
+        return;
+      }
+
       const head = e.target.closest(".row-head");
       if (!head) return;
       const wrap = head.closest(".row-wrap");
@@ -1998,6 +2527,10 @@
   if (listEl) {
     try {
       const params = new URLSearchParams(window.location.search);
+      const rawQuery = params.get("q");
+      if (qInput && rawQuery != null) {
+        qInput.value = rawQuery;
+      }
       let handledPericope = false;
       const rawPericope = params.get("p");
       if (rawPericope != null && rawPericope !== "") {

@@ -35,6 +35,12 @@
           john: { label: "Johannes", refKey: "ref_john", maxChapter: 21, aliases: ["johannes", "jn", "john"] },
         };
       };
+    var SEARCH_BOOK_NUMBERS = {
+      matthew: 40,
+      mark: 41,
+      luke: 42,
+      john: 43,
+    };
 
     function getSearchBookDefs() {
       return Object.entries(getVerseSearchBooks()).map(function (entry) {
@@ -49,6 +55,33 @@
           }),
         };
       });
+    }
+
+    function parseReferenceQuery(rest, book) {
+      var raw = String(rest || "").trim();
+      var chapterOnlyMatch;
+      var verseMatch;
+      var chapter;
+      var verse;
+      if (!raw || !book) return null;
+
+      chapterOnlyMatch = raw.match(/^(\d+)$/);
+      if (chapterOnlyMatch) {
+        chapter = parseInt(chapterOnlyMatch[1], 10);
+        if (chapter >= 1 && chapter <= book.maxChapter) {
+          return { chapter: chapter, verse: null };
+        }
+        return null;
+      }
+
+      verseMatch = raw.match(/^(\d+)(?:\s*[:.,]\s*|\s+)(\d+)$/);
+      if (!verseMatch) return null;
+
+      chapter = parseInt(verseMatch[1], 10);
+      verse = parseInt(verseMatch[2], 10);
+      if (chapter < 1 || chapter > book.maxChapter || verse < 1) return null;
+
+      return { chapter: chapter, verse: verse };
     }
 
     function getSearchAssistState(rawValue) {
@@ -66,21 +99,17 @@
         return book.aliases.includes(first);
       });
       if (exactBook) {
-        var chapterDigits = rest.replace(/[^\d]/g, "");
-        var matchingChapters = Array.from({ length: exactBook.maxChapter }, function (_, index) {
+        var parsedQuery = parseReferenceQuery(rest, exactBook);
+        var chapters = Array.from({ length: exactBook.maxChapter }, function (_, index) {
           return index + 1;
-        }).filter(function (chapter) {
-          return !chapterDigits || String(chapter).startsWith(chapterDigits);
         });
-        var selectedChapter =
-          /^\d+$/.test(rest) && parseInt(rest, 10) >= 1 && parseInt(rest, 10) <= exactBook.maxChapter
-            ? parseInt(rest, 10)
-            : 0;
+        var selectedChapter = parsedQuery ? parsedQuery.chapter : !rest ? 1 : 0;
         return {
           mode: "chapters",
           book: exactBook,
-          chapters: matchingChapters,
+          chapters: chapters,
           selectedChapter: selectedChapter,
+          selectedVerse: parsedQuery && parsedQuery.verse ? parsedQuery.verse : 0,
         };
       }
 
@@ -126,12 +155,6 @@
         return;
       }
 
-      if (state.selectedChapter) {
-        searchAssistEl.hidden = true;
-        searchAssistEl.innerHTML = "";
-        return;
-      }
-
       searchAssistEl.hidden = false;
       searchAssistEl.innerHTML =
         '<div class="search-assist__heading">' +
@@ -163,11 +186,29 @@
       if (!query) return "";
       var book = getVerseSearchBooks()[query.book];
       if (!book) return "";
-      return book.label + " " + query.chapter;
+      return book.label + " " + query.chapter + (query.verse ? "," + query.verse : "");
     }
 
-    function refContainsChapter(ref, chapter) {
+    function getVersePairsForReference(ref, bookId) {
+      var compareApi = window.SYNOPTIC_COMPARE;
+      var bookNumber = SEARCH_BOOK_NUMBERS[bookId];
+      var expanded;
+      if (!ref || !compareApi || typeof compareApi.expandRefToVerses !== "function" || !bookNumber) {
+        return null;
+      }
+      expanded = compareApi.expandRefToVerses(String(ref || ""), bookNumber, Object.create(null));
+      if (!expanded || !expanded.ok || !Array.isArray(expanded.verses)) return null;
+      return expanded.verses;
+    }
+
+    function refContainsChapter(ref, chapter, bookId) {
       if (!ref || !chapter) return false;
+      var versePairs = getVersePairsForReference(ref, bookId);
+      if (versePairs && versePairs.length) {
+        return versePairs.some(function (pair) {
+          return pair[0] === chapter;
+        });
+      }
       var tokens = String(ref)
         .replace(/;/g, " ")
         .split(/\s+/)
@@ -201,11 +242,23 @@
       return false;
     }
 
+    function refContainsVerse(ref, bookId, chapter, verse) {
+      if (!ref || !chapter || !verse) return false;
+      var versePairs = getVersePairsForReference(ref, bookId);
+      if (!versePairs || !versePairs.length) return false;
+      return versePairs.some(function (pair) {
+        return pair[0] === chapter && pair[1] === verse;
+      });
+    }
+
     function rowMatchesVerseQuery(row, query) {
       if (!row || !query) return false;
       var book = getVerseSearchBooks()[query.book];
       if (!book) return false;
-      return refContainsChapter(row[book.refKey] || "", query.chapter);
+      if (query.verse) {
+        return refContainsVerse(row[book.refKey] || "", query.book, query.chapter, query.verse);
+      }
+      return refContainsChapter(row[book.refKey] || "", query.chapter, query.book);
     }
 
     function normalizeReferenceSignaturePart(value) {

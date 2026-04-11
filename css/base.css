@@ -548,8 +548,11 @@ header p.lead {
 .filter-acc-panel[data-filter-kind="presets"].is-hidden-by-search {
   opacity: 0;
   width: 0;
+  height: 0;
+  min-height: 0;
   min-width: 0;
   flex-basis: 0;
+  overflow: hidden;
   margin-left: calc(var(--filter-gap) * -1);
   border-color: transparent;
   background: transparent;
@@ -833,6 +836,10 @@ select {
   margin-bottom: 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
+}
+
+body.is-direct-gospel-mode .liste-page__search {
+  border-bottom-color: transparent;
 }
 
 .liste-page__search-row,

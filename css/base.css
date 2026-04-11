@@ -322,6 +322,14 @@ html[data-theme="dark"] .theme-switch:hover {
   animation-delay: 0.14s;
 }
 
+.lang-switch[open] .lang-switch__btn:nth-child(6) {
+  animation-delay: 0.17s;
+}
+
+.lang-switch[open] .lang-switch__btn:nth-child(7) {
+  animation-delay: 0.2s;
+}
+
 @keyframes lang-switch-menu-in {
   from {
     opacity: 0;
@@ -817,6 +825,10 @@ select {
   color: var(--muted);
   margin-bottom: var(--filter-gap);
   transition: opacity 0.25s ease;
+}
+
+.count:empty {
+  display: none;
 }
 
 .count.count--pulse {

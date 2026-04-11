@@ -683,9 +683,12 @@
       (translationIsSourceTextForId(translationId) ? " gospel-search-result--greek" : "") +
       '">' +
       '<header class="gospel-search-result__head">' +
+      '<div class="gospel-search-result__head-row">' +
       '<h2 class="gospel-search-result__title">' +
       escapeHtml(title) +
       "</h2>" +
+      renderDirectGospelTranslationButton(translationVerboseLabelForId(translationId)) +
+      "</div>" +
       "</header>" +
       '<div class="gospel-search-result__body">' +
       renderDirectGospelBody(query, verses) +
@@ -728,11 +731,26 @@
     return true;
   }
 
+  function renderDirectGospelTranslationButton(label) {
+    if (!label) return "";
+    const pickerTitle = t("js.translationUi.quickOpenPickerTitle");
+    return (
+      '<button type="button" class="gospel-search-result__translation-btn" data-open-translation-picker ' +
+      'aria-haspopup="dialog" aria-controls="translation-picker-overlay" ' +
+      'title="' +
+      escapeAttr(pickerTitle) +
+      '" aria-label="' +
+      escapeAttr(label + " - " + pickerTitle) +
+      '">' +
+      escapeHtml(label) +
+      "</button>"
+    );
+  }
+
   function renderDirectGospelSearch(query, translationId, requestSeq) {
     const countEl = document.getElementById("count");
     if (countEl) {
-      const translationLabel = translationVerboseLabelForId(translationId);
-      countEl.textContent = translationLabel || "";
+      countEl.textContent = "";
     }
     pulseCountLine();
     listEl.innerHTML =
@@ -1391,6 +1409,9 @@
   const openTranslationInfoDialog = translationTools
     ? translationTools.openTranslationInfoDialog
     : function () {};
+  const handleTranslationInfoDialogClose = translationTools
+    ? translationTools.handleTranslationInfoDialogClose
+    : function () {};
   const focusTranslationQuickControl = translationTools
     ? translationTools.focusTranslationQuickControl
     : function () {};
@@ -1965,6 +1986,9 @@
     const dlg = document.getElementById("translation-info-dialog");
     if (dlg && typeof dlg.close === "function") dlg.close();
   });
+  document.getElementById("translation-info-dialog").addEventListener("close", function () {
+    handleTranslationInfoDialogClose();
+  });
 
   const siteInfoDialog = document.getElementById("site-info-dialog");
   const siteInfoBtn = document.getElementById("compare-home-info-btn");
@@ -2029,6 +2053,14 @@
     }
     const tBtn = e.target.closest("button[data-translation]");
     if (!tBtn) return;
+    if (
+      tBtn.classList.contains("translation-quick__btn") &&
+      tBtn.dataset.translation === getActiveTranslationId()
+    ) {
+      e.preventDefault();
+      openTranslationPicker();
+      return;
+    }
     if (!isCompareHome) {
       clearContextQueryParamsFromUrl();
     }
@@ -2279,7 +2311,10 @@
     options = options || {};
     refreshQuickStripOnly();
     syncTranslationButtons();
-    if (listEl && hasSpecificVerseQuery(activeSearchChapterQuery)) {
+    if (
+      listEl &&
+      (hasSpecificVerseQuery(activeSearchChapterQuery) || document.body.classList.contains("is-direct-gospel-mode"))
+    ) {
       filter();
     }
     if (compareModal && compareModal.classList.contains("is-open") && compareModalRowId !== null) {

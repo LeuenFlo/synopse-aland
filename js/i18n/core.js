@@ -1,6 +1,6 @@
 (function () {
   var STORAGE_KEY = "synopse-lang";
-  var SUPPORTED_LANGS = ["de", "en", "fr", "it", "es"];
+  var SUPPORTED_LANGS = ["de", "en", "fr", "it", "es", "el", "la"];
   var COUNTRY_LANG_MAP = {
     AR: "es",
     AT: "de",
@@ -9,12 +9,14 @@
     CL: "es",
     CO: "es",
     CR: "es",
+    CY: "el",
     CU: "es",
     DE: "de",
     DO: "es",
     EC: "es",
     ES: "es",
     FR: "fr",
+    GR: "el",
     GB: "en",
     GT: "es",
     HN: "es",

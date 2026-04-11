@@ -189,7 +189,7 @@
         label: "Menge 1939",
         path: "/data/translations/german/menge.json",
         info:
-          "Hermann Menge erarbeitete diese Übersetzung bewusst nahe an der Lutherbibel; das Neue Testament erschien 1931, die vollständige Bibel mit Alten Testament folgte 1939 — die Jahreszahl im Namen bezieht sich auf diesen Gesamtstand vor dem Zweiten Weltkrieg. Die Menge-Bibel war im deutschsprachigen Raum eine weit verbreitete Alternative zu Luther und Elberfelder.",
+          "Die Bibelübersetzung von Hermann Menge orientiert sich bewusst an der klassischen deutschen Bibelsprache und steht der Luthertradition nahe. Das Neue Testament erschien 1931, die vollständige Bibel mit dem Alten Testament 1939. Die Menge-Bibel war über viele Jahrzehnte eine weit verbreitete Alternative zu Luther- und Elberfelder-Ausgaben.",
         infoUrl: "https://de.wikipedia.org/wiki/Hermann_Menge",
       },
       {
@@ -198,7 +198,7 @@
         label: "Leonberger Bibel 2015",
         path: "/data/translations/german/leonberger_na28.json",
         info:
-          "Die Leonberger Bibel ist eine urtextnahe deutschsprachige Übersetzung, die für digitale Nutzung und verschiedene Formate konzipiert ist und laufend überarbeitet wird. Diese Datei entspricht dem Neuen Testament nach dem kritischen Text der 28. Auflage von Nestle-Aland (NA28). Übersetzt wird wörtlich und konsequent bei Schlüsselbegriffen („Konstanz“); es gibt eine alternative NT-Linie nach dem byzantinischen Text (z. B. Robinson-Pierpont). Im Gesamtprojekt dient für das Alte Testament u. a. die Zürcher Bibel (1942) als Grundlage — hier ist nur das NT (NA28) enthalten.",
+          "Die Leonberger Bibel ist eine urtextnahe deutsche Übersetzung, die eigens für die digitale Nutzung entwickelt wurde und laufend überarbeitet wird. Diese Ausgabe bietet das Neue Testament auf Grundlage des kritischen Textes von Nestle-Aland 28. Die Übersetzung folgt einem möglichst wörtlichen Ansatz und achtet auf eine konsequente Wiedergabe zentraler Begriffe.",
         infoUrl: "https://bibelberater.de/bibeluebersetzung/leonberger-bibel/",
       },
       {
@@ -207,7 +207,7 @@
         label: "Offene Bibel (in Arbeit)",
         path: "/data/translations/german/offene_bibel_studienausgabe.json",
         info:
-          "Die Offene Bibel ist ein gemeinschaftliches deutschsprachiges Übersetzungsprojekt; die Studienausgabe verbindet einen verständlichen Wortlaut mit Hinweisen zur Textgestalt. Der Text eignet sich für Vergleiche mit älteren und wörtlicheren deutschen Bibeln.",
+          "Die Offene Bibel ist ein gemeinschaftliches deutschsprachiges Übersetzungsprojekt. Die Studienausgabe verbindet einen gut verständlichen Text mit Hinweisen zur Textgestalt und zum Übersetzungsstand. Sie eignet sich besonders für Vergleiche mit älteren oder stärker wörtlich ausgerichteten deutschen Bibelübersetzungen.",
         infoUrl: "https://de.wikipedia.org/wiki/Offene_Bibel",
       },
       {
@@ -216,7 +216,7 @@
         label: "Elberfelder 1905",
         path: "/data/translations/german/elberfelder_1905.json",
         info:
-          "Die Elberfelder Übersetzung entstand im pietistischen Umfeld und strebt eine möglichst wörtliche Wiedergabe des hebräischen und griechischen Urtextes an. Die hier verwendete Fassung von 1905 gehört zu den klassischen, älteren Elberfelder-Texten vor den späteren grossen Revisionen (ab 1961 bzw. 1985); Sprache und Schreibung sind damit typisch für die Bibeldrucke des frühen 20. Jahrhunderts.",
+          "Die Elberfelder Bibel entstand im pietistischen Umfeld und verfolgt das Ziel, den hebräischen und griechischen Ausgangstext möglichst genau wiederzugeben. Die hier verwendete Ausgabe von 1905 gehört zu den klassischen älteren Fassungen vor den grossen späteren Revisionen. Sprache und Schreibweise spiegeln den Stil deutscher Bibeldrucke des frühen 20. Jahrhunderts wider.",
         infoUrl: "https://de.wikipedia.org/wiki/Elberfelder_Bibel",
       },
       {
@@ -225,7 +225,7 @@
         label: "Luther 1912",
         path: "/data/translations/german/luther_1912.json",
         info:
-          "Die Lutherbibel von 1912 ist eine Revision der Übersetzung Martin Luthers (Grundlage 1545) und war im deutschsprachigen Protestantismus lange eine verbreitete Standardfassung, bevor neuere Gesamtausgaben und Überarbeitungen (z. B. 1984, 2017) folgten. Sie bewahrt die vertraute Luther-Sprache, angepasst an Orthographie und Wortgebrauch des ausgehenden Kaiserreichs und der Weimarer Zeit.",
+          "Die Lutherbibel von 1912 ist eine Revision der Übersetzung Martin Luthers und war im deutschsprachigen Protestantismus lange eine wichtige Standardausgabe. Sie bewahrt den vertrauten Klang der Luthersprache, zeigt aber zugleich die Orthographie und den Sprachgebrauch des frühen 20. Jahrhunderts. Damit verbindet sie reformatorische Tradition mit einer historischen Sprachstufe der Moderne.",
         infoUrl: "https://de.wikipedia.org/wiki/Lutherbibel",
       },
       {
@@ -234,7 +234,7 @@
         label: "Zürcher 1931",
         path: "/data/translations/german/zurcher_1931.json",
         info:
-          "Die Zürcher Bibel steht in der reformierten Übersetzungstradition (Zwingli-Bibel). Die Ausgabe von 1931 repräsentiert die Zwischenkriegszeit: klare, damals moderne Sprache und die für die Schweiz typische Bibelfassung vor den späteren Überarbeitungen. Sie ist ein guter Bezugspunkt für historischen Sprachduktus der 1930er-Jahre.",
+          "Die Zürcher Bibel steht in der reformierten Übersetzungstradition und ist historisch mit der Zwingli-Bibel verbunden. Die Ausgabe von 1931 bietet eine klare und für ihre Zeit moderne Sprache. Sie ist ein wichtiger Bezugspunkt für den bibeldeutschen Stil der Zwischenkriegszeit, besonders im schweizerischen Raum.",
         infoUrl: "https://de.wikipedia.org/wiki/Zürcher_Bibel",
       },
       {
@@ -243,7 +243,7 @@
         label: "Volxbibel 2012",
         path: "/data/translations/german/volxbibel_nt.json",
         info:
-          "Die Volxbibel ist eine freie, moderne Bibelübersetzung in Umgangssprache (Projekt u. a. um Martin Dreyer und die Jesus Freaks, seit 2005). Der Text entsteht gemeinschaftlich und wird unter einer Creative-Commons-Lizenz veröffentlicht. In dieser App ist das Neue Testament eingebunden (Stand NT 4.0, wie bei der 2012 veröffentlichten Gesamtausgabe).",
+          "Die Volxbibel ist eine freie moderne Bibelübersetzung in alltagsnaher Sprache. Sie entstand im Umfeld von Martin Dreyer und der Bewegung der Jesus Freaks und wird gemeinschaftlich weiterentwickelt. In dieser App ist das Neue Testament eingebunden, das sprachlich bewusst gegenwartsnah und niedrigschwellig formuliert ist.",
         infoUrl: "https://de.wikipedia.org/wiki/Volxbibel",
       },
       {
@@ -252,7 +252,7 @@
         label: "Greek",
         path: "/data/translations/greek/greek_slb.json",
         info:
-          "Das SBL Greek New Testament (SBLGNT) ist eine kritisch edierte Ausgabe des griechischen Neuen Testaments; die erste Ausgabe erschien 2010 (Society of Biblical Literature). Der Text steht frei in elektronischer Form zur Verfügung und richtet sich an Studium, Lehre und Forschung.",
+          "Το SBL Greek New Testament είναι μια κριτική έκδοση της ελληνικής Καινής Διαθήκης, που δημοσιεύτηκε από τη Society of Biblical Literature. Προορίζεται κυρίως για μελέτη, διδασκαλία και έρευνα και διατίθεται ελεύθερα σε ψηφιακή μορφή. Αποτελεί χρήσιμο κείμενο αναφοράς για τη σύγκριση χειρογράφων και εκδόσεων.",
         infoUrl: "https://www.sblgnt.com/",
       },
       {
@@ -261,7 +261,7 @@
         label: "Byz 2013 (Robinson–Pierpont)",
         path: "/data/translations/greek/byz_2013.json",
         info:
-          "The New Testament in the Original Greek: Byzantine Textform (2013), herausgegeben von Maurice A. Robinson und William G. Pierpont — kurz: Robinson–Pierpont Byzantine Text (Revision 2013). „Byzantine Textform“ meint den Mehrheitstext (Majority Text) der griechischen Handschriften: den Text, der in den meisten byzantinischen Manuskripten überliefert ist. Das ist keine Ausgabe des Textus Receptus: Der TR basiert auf wenigen späten Handschriften und historisch gewachsenen Drucktraditionen (Erasmus → Stephanus → Beza → Elzevir) und enthält u. a. in der Offenbarung Rückübersetzungen aus dem Lateinischen; die Byzantine Textform 2013 hingegen basiert auf systematischer Auswertung vieler Handschriften und versucht, den Mehrheitstext wissenschaftlich zu rekonstruieren — konfessionell nicht „überliefert“, sondern kritisch erstellt. Typisch unterscheiden sich Byz und TR u. a. bei der Johannesoffenbarung, bei einigen längeren Lesarten und in Orthographie sowie Wortstellung; Byz wirkt oft gleichmässiger, der TR historisch gewachsen, aber textkritisch uneinheitlicher. In Software wird Byz 2013 gern genutzt, weil der Text frei verfügbar, konsistent und der Manuskriptmehrheit nahe ist — gut für Vergleiche und textkritische Werkzeuge.",
+          "Η έκδοση Byzantine Textform 2013 των Maurice A. Robinson και William G. Pierpont παρουσιάζει το ελληνικό κείμενο της Καινής Διαθήκης σύμφωνα με τη βυζαντινή χειρόγραφη παράδοση. Δεν ταυτίζεται με τον Textus Receptus, αλλά βασίζεται σε ευρύτερη αξιολόγηση πολλών χειρογράφων. Χρησιμοποιείται συχνά για συγκρίσεις κειμένου και για εργαλεία κριτικής του κειμένου.",
         infoUrl: "https://en.wikipedia.org/wiki/Byzantine_text-type",
       },
       {
@@ -271,7 +271,7 @@
         labelLong: "World English Translation (WEB)",
         path: "/data/translations/english/WEB.json",
         info:
-          "The World English Translation (WEB) is a modern English translation in the public domain, derived in part from the American Standard Version (1901). It is widely used for digital distribution and comparison.",
+          "The World English Bible is a modern English translation in the public domain, based in part on the American Standard Version of 1901. It was prepared for broad digital use and is widely used in websites, apps, and comparison tools. Its language is more contemporary than older classic English translations.",
         infoUrl: "https://worldenglish.bible/",
       },
       {
@@ -281,7 +281,7 @@
         labelLong: "King James Version (KJV, 1769)",
         path: "/data/translations/english/KJV.json",
         info:
-          "King James Version (1769): weit verbreitete englische Bibelübersetzung, sprachlich der frühneuzeitlichen Tradition verbunden. Für Vergleiche mit deutschsprachigen und anderen europäischen Texten geeignet.",
+          "The King James Version is one of the most influential English Bible translations in history. The 1769 edition represents the classic standard form of the KJV and preserves its distinctive early modern style. It remains an important reference point for historical and literary comparison.",
         infoUrl: "https://en.wikipedia.org/wiki/King_James_Version",
       },
       {
@@ -291,7 +291,7 @@
         labelLong: "American Standard Version (ASV, 1901)",
         path: "/data/translations/english/ASV.json",
         info:
-          "American Standard Version (1901): englische Übersetzung mit wörtlicher Ausrichtung, historisch wichtige protestantische Standardbibel vor der modernen Flut an Übersetzungen. Gut vergleichbar mit der KJV-Tradition.",
+          "The American Standard Version of 1901 is a historically important English Bible translation with a strongly literal approach. For many readers it served as a major Protestant reference Bible before the rise of most modern English versions. It is especially useful for comparison with the King James tradition and other formal translations.",
         infoUrl: "https://en.wikipedia.org/wiki/American_Standard_Version",
       },
       {
@@ -300,7 +300,7 @@
         label: "Louis Segond 1910",
         path: "/data/translations/french/segond_1910.json",
         info:
-          "Die Übersetzung Louis Segond (1910) ist eine verbreitete protestantische Bibel in französischer Sprache, in der Schweiz und Frankreich lange Standard gewesen.",
+          "La Bible de Louis Segond, dans son édition de 1910, est l’une des traductions protestantes françaises les plus connues. Elle a longtemps servi de version de référence en Suisse romande et dans une grande partie du monde francophone. Son style reflète la langue biblique classique du début du XXe siècle.",
         infoUrl: "https://fr.wikipedia.org/wiki/Bible_Segond",
       },
       {
@@ -309,7 +309,7 @@
         label: "Riveduta 1927",
         path: "/data/translations/italian/riveduta_1927.json",
         info:
-          "La Riveduta del 1927 è una traduzione protestante italiana della tradizione della Bibbia Riveduta; lessico e sintassi riflettono l’italiano del primo Novecento. La Nuova Riveduta (es. 1994) è un’edizione separata e tutelata — qui è usata solo la fase 1927 in pubblico dominio.",
+          "La Riveduta del 1927 è una storica traduzione protestante italiana, legata alla tradizione della Bibbia Riveduta. Il suo lessico e la sua sintassi riflettono l’italiano del primo Novecento. Rimane un importante testo di confronto per lo studio delle traduzioni bibliche italiane in pubblico dominio.",
         infoUrl: "https://ebible.org/ita1927/",
       },
       {
@@ -318,7 +318,7 @@
         label: "Reina-Valera 1909",
         path: "/data/translations/spanish/SpaRV.json",
         info:
-          "Reina-Valera (hier Ausgabe 1909): weit verbreitete spanische Bibeltradition. Wichtiger Bezug für hispanophone Textvergleiche.",
+          "La Reina-Valera de 1909 forma parte de la tradición bíblica protestante más difundida en lengua española. Durante mucho tiempo fue una edición de referencia para iglesias, lectores y estudios bíblicos en el mundo hispanohablante. Su estilo conserva rasgos clásicos que la hacen especialmente útil para comparaciones históricas.",
         infoUrl: "https://es.wikipedia.org/wiki/Reina-Valera",
       },
       {
@@ -327,7 +327,7 @@
         label: "Vulgata Clementina",
         path: "/data/translations/latin/VulgClementine.json",
         info:
-          "Clementinische Vulgata: lateinische Bibel in der von Papst Clemens VIII. bestätigten Fassung (Sixto-Clementina, 1592); verbreitete katholische Referenz vor modernen Neuausgaben.",
+          "Vulgata Clementina est editio latina Bibliorum a Clemente VIII confirmata, quae per multa saecula in Ecclesia Catholica late adhibita est. Textus hic ad traditionem Sixto-Clementinam anni 1592 pertinet. Magna est utilitas eius ad comparationes historicas, liturgicas et philologicas.",
         infoUrl: "https://de.wikipedia.org/wiki/Vulgata",
       },
     ],

@@ -218,6 +218,7 @@
       "morePickerLabelReplace": "Change quick-access translations",
       "morePickerTitleAdd": "Add more translations",
       "morePickerTitleReplace": "Choose more translations or replace one",
+      "quickOpenPickerTitle": "Change translation",
       "moreTranslations": "More",
       "unknown": "Unknown",
       "other": "Other",
@@ -226,6 +227,7 @@
       "moreLanguages": "More Languages",
       "greek": "Greek",
       "latin": "Latin",
+      "learnMore": "Learn more",
       "moreInfoPrefix": " More information: ",
       "shortInfo": "Short info",
       "hintFor": "Note on {label}"

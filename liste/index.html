@@ -9,11 +9,15 @@
   <script src="/js/i18n/fr.js"></script>
   <script src="/js/i18n/it.js"></script>
   <script src="/js/i18n/es.js"></script>
+  <script src="/js/i18n/el.js"></script>
+  <script src="/js/i18n/la.js"></script>
   <script src="/js/i18n/events/de.js"></script>
   <script src="/js/i18n/events/en.js"></script>
   <script src="/js/i18n/events/fr.js"></script>
   <script src="/js/i18n/events/it.js"></script>
   <script src="/js/i18n/events/es.js"></script>
+  <script src="/js/i18n/events/el.js"></script>
+  <script src="/js/i18n/events/la.js"></script>
   <script src="/js/i18n/core.js"></script>
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" id="meta-theme-color" content="#ffffff" />
@@ -67,6 +71,8 @@
             <button type="button" class="lang-switch__btn" data-lang-switch="fr">FR</button>
             <button type="button" class="lang-switch__btn" data-lang-switch="it">IT</button>
             <button type="button" class="lang-switch__btn" data-lang-switch="es">ES</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="el">EL</button>
+            <button type="button" class="lang-switch__btn" data-lang-switch="la">LA</button>
           </div>
         </details>
         <div class="compare-home-theme">
@@ -277,13 +283,22 @@
     </div>
   </div>
 
-  <dialog id="translation-info-dialog" class="translation-info-dialog" aria-labelledby="translation-info-dialog-title">
-    <div class="translation-info-dialog-inner">
+  <dialog id="translation-info-dialog" class="translation-info-dialog translation-info-dialog--translation" aria-labelledby="translation-info-dialog-title">
+    <div class="translation-info-dialog-inner translation-info-dialog-inner--translation">
       <button type="button" class="translation-info-dialog-x" id="translation-info-dialog-close" aria-label="Hinweis schliessen">
         ×
       </button>
-      <h4 id="translation-info-dialog-title" class="translation-info-dialog-h"></h4>
-      <p id="translation-info-dialog-body" class="translation-info-dialog-body"></p>
+      <div class="translation-info-dialog-hero">
+        <div class="translation-info-dialog-media" id="translation-info-dialog-media" hidden>
+          <img id="translation-info-dialog-image" class="translation-info-dialog-image" alt="" />
+        </div>
+        <div class="translation-info-dialog-copy">
+          <p id="translation-info-dialog-kicker" class="translation-info-dialog-kicker" hidden></p>
+          <h4 id="translation-info-dialog-title" class="translation-info-dialog-h"></h4>
+          <p id="translation-info-dialog-figure" class="translation-info-dialog-figure" hidden></p>
+        </div>
+      </div>
+      <div id="translation-info-dialog-body" class="translation-info-dialog-body"></div>
     </div>
   </dialog>
 

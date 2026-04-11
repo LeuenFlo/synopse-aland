@@ -1830,24 +1830,24 @@ html[data-theme="dark"] .compare-marker--clay {
 .pill.jn.on { background: rgba(107, 91, 158, 0.12); border-color: rgba(107, 91, 158, 0.45); color: #3d3358; }
 
 html[data-theme="dark"] .pill.mt.on {
-  background: #253447;
-  border-color: #334a62;
-  color: #c5d2e3;
+  background: color-mix(in srgb, var(--mt) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--mt) 42%, var(--border));
+  color: var(--mt);
 }
 html[data-theme="dark"] .pill.mk.on {
-  background: #4f4227;
-  border-color: #6b5a36;
-  color: #e8dcc4;
+  background: color-mix(in srgb, var(--mk) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--mk) 42%, var(--border));
+  color: var(--mk);
 }
 html[data-theme="dark"] .pill.lk.on {
-  background: #2b3628;
-  border-color: #3d4a38;
-  color: #c8d4c4;
+  background: color-mix(in srgb, var(--lk) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--lk) 42%, var(--border));
+  color: var(--lk);
 }
 html[data-theme="dark"] .pill.jn.on {
-  background: #432644;
-  border-color: #5c3560;
-  color: #dfc4e4;
+  background: color-mix(in srgb, var(--jn) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--jn) 42%, var(--border));
+  color: var(--jn);
 }
 
 .pill .ref {
@@ -2081,6 +2081,62 @@ html[data-theme="dark"] .pill.jn.on {
   border-color: color-mix(in srgb, var(--jn) 38%, transparent);
   background: color-mix(in srgb, var(--jn) 10%, white);
   color: var(--jn);
+}
+
+/* Dark: keine color-mix mit white (wirkt schlammig/hart); stattdessen Flächen aus Theme-Grau + Stahlblau */
+html[data-theme="dark"] .row-verse-match {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 75%, transparent), transparent 70%),
+    var(--bg-muted);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+}
+
+html[data-theme="dark"] .gospel-search-event__link {
+  background: color-mix(in srgb, var(--accent) 26%, var(--bg2));
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+  color: var(--paper);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .gospel-search-event__link:hover {
+  background: color-mix(in srgb, var(--accent) 36%, var(--bg2));
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+  color: var(--paper);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .gospel-search-event__link:focus-visible {
+  outline-color: color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+html[data-theme="dark"] .gospel-search-event__link-text {
+  color: color-mix(in srgb, var(--paper) 88%, var(--accent));
+}
+
+html[data-theme="dark"] .gospel-search-event__link-witness {
+  border-color: var(--border-strong);
+  background: var(--bg-muted);
+}
+
+html[data-theme="dark"] .gospel-search-event__link-witness.mt {
+  background: color-mix(in srgb, var(--mt) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--mt) 42%, transparent);
+}
+
+html[data-theme="dark"] .gospel-search-event__link-witness.mk {
+  background: color-mix(in srgb, var(--mk) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--mk) 42%, transparent);
+}
+
+html[data-theme="dark"] .gospel-search-event__link-witness.lk {
+  background: color-mix(in srgb, var(--lk) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--lk) 42%, transparent);
+}
+
+html[data-theme="dark"] .gospel-search-event__link-witness.jn {
+  background: color-mix(in srgb, var(--jn) 24%, var(--bg2));
+  border-color: color-mix(in srgb, var(--jn) 42%, transparent);
 }
 
 .gospel-search-result--greek .gospel-search-result__paragraph {

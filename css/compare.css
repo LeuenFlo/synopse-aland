@@ -321,7 +321,13 @@
 }
 
 html[data-theme="dark"] .compare-modal-share,
-html[data-theme="dark"] .compare-modal-favorite,
+html[data-theme="dark"] .compare-modal-favorite {
+  border-color: var(--border);
+  background: var(--bg-muted);
+  color: var(--paper);
+  box-shadow: none;
+}
+
 html[data-theme="dark"] .compare-marker-toggle {
   border-color: rgba(220, 187, 109, 0.34);
   background: color-mix(in srgb, #3f3420 68%, var(--bg2));
@@ -339,7 +345,12 @@ html[data-theme="dark"] .compare-marker-note {
 }
 
 html[data-theme="dark"] .compare-modal-share:hover,
-html[data-theme="dark"] .compare-modal-favorite:hover,
+html[data-theme="dark"] .compare-modal-favorite:hover {
+  border-color: var(--accent-ring);
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+}
+
 html[data-theme="dark"] .compare-marker-toggle:hover {
   border-color: rgba(233, 203, 132, 0.38);
   background: color-mix(in srgb, #52411f 68%, var(--bg2));

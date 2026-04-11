@@ -34,6 +34,7 @@
           "js.compareWithLabel": "Vergleiche mit",
           "js.compareWith": "Vergleiche mit {gospels}",
           "js.goToEvent": "Zum Ereignis",
+          "js.goToContext": "Zum Kontext",
           "js.translationPrefix": "Übersetzung: {label}",
           "js.chooseChapterToSeeEvents": "Kapitel wählen, um passende Ereignisse zu sehen.",
           "js.noEventForChapter": "Kein Ereignis gefunden, das dieses Kapitel direkt enthält.",
@@ -248,10 +249,12 @@
     { id: "luke", cls: "lk", prop: "in_luke", label: "Lk" },
     { id: "john", cls: "jn", prop: "in_john", label: "Jn" },
   ];
+  const DIRECT_GOSPEL_SCROLL_HASH = "#context-verse";
   let searchVerseTextTranslationId = "";
   let searchVerseTextCache = null;
   let searchVerseTextLoadPromise = null;
   let searchVerseTextFailedTranslationId = "";
+  let directGospelTargetScrollRequested = false;
 
   function hasSpecificVerseQuery(query) {
     return !!(query && Number.isFinite(query.chapter) && Number.isFinite(query.verse) && query.verse >= 1);
@@ -380,6 +383,72 @@
   function formatDirectGospelQueryLabel(query) {
     if (!query) return "";
     return getBookLabel(query.book) + " " + query.chapter + (query.verse ? "," + query.verse : "");
+  }
+
+  function getCompareReferenceContextQuery(bookId, ref) {
+    const compareApi = window.SYNOPTIC_COMPARE;
+    const bookNumber = SEARCH_BOOK_NUMBERS[bookId];
+    if (!bookId || !ref) return null;
+
+    if (compareApi && typeof compareApi.expandRefToVerses === "function" && bookNumber) {
+      const expanded = compareApi.expandRefToVerses(String(ref), bookNumber, Object.create(null));
+      if (expanded && expanded.ok && Array.isArray(expanded.verses) && expanded.verses.length) {
+        return {
+          book: bookId,
+          chapter: expanded.verses[0][0],
+          verse: expanded.verses[0][1],
+        };
+      }
+    }
+
+    const chapterVerseMatch = String(ref).match(/(\d+)\s*[,.:]\s*(\d+)/);
+    if (chapterVerseMatch) {
+      return {
+        book: bookId,
+        chapter: parseInt(chapterVerseMatch[1], 10),
+        verse: parseInt(chapterVerseMatch[2], 10),
+      };
+    }
+
+    const chapterMatch = String(ref).match(/(\d+)/);
+    if (chapterMatch) {
+      return {
+        book: bookId,
+        chapter: parseInt(chapterMatch[1], 10),
+        verse: 0,
+      };
+    }
+
+    return null;
+  }
+
+  function buildCompareContextUrl(bookId, ref, translationId) {
+    const query = getCompareReferenceContextQuery(bookId, ref);
+    if (!query) return "";
+    try {
+      const url = new URL("/liste/", window.location.href);
+      url.searchParams.set("q", formatDirectGospelQueryLabel(query));
+      if (translationId) {
+        url.searchParams.set("translation", translationId);
+      }
+      url.hash = DIRECT_GOSPEL_SCROLL_HASH;
+      return url.pathname + url.search + url.hash;
+    } catch (e) {
+      const search = new URLSearchParams();
+      search.set("q", formatDirectGospelQueryLabel(query));
+      if (translationId) {
+        search.set("translation", translationId);
+      }
+      return "/liste/?" + search.toString() + DIRECT_GOSPEL_SCROLL_HASH;
+    }
+  }
+
+  function renderCompareContextLink(bookId, ref, translationId) {
+    const href = buildCompareContextUrl(bookId, ref, translationId);
+    if (!href) return "";
+    const contextQuery = getCompareReferenceContextQuery(bookId, ref);
+    const title = contextQuery ? ` title="${escapeAttr(formatDirectGospelQueryLabel(contextQuery))}"` : "";
+    return `<a class="text-col-context-link" href="${escapeAttr(href)}"${title}>${escapeHtml(t("js.goToContext"))}</a>`;
   }
 
   function getCachedVerseText(cache, bookNumber, chapter, verse) {
@@ -625,6 +694,40 @@
     );
   }
 
+  function scrollToDirectGospelTarget(query) {
+    if (!query || !query.verse) return;
+    const target = listEl ? listEl.querySelector(".gospel-search-result__verse.is-target") : null;
+    if (!target || typeof target.scrollIntoView !== "function") return;
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      });
+    });
+  }
+
+  function consumeDirectGospelTargetScroll(query) {
+    const shouldScroll = !!(directGospelTargetScrollRequested && query && query.verse);
+    directGospelTargetScrollRequested = false;
+    return shouldScroll;
+  }
+
+  function consumeDirectGospelScrollHash() {
+    if (location.hash !== DIRECT_GOSPEL_SCROLL_HASH) return false;
+    try {
+      history.replaceState(null, "", location.pathname + location.search);
+    } catch (e) {
+      /* ignore */
+    }
+    return true;
+  }
+
   function renderDirectGospelSearch(query, translationId, requestSeq) {
     const countEl = document.getElementById("count");
     if (countEl) {
@@ -654,6 +757,9 @@
         }
         listEl.innerHTML = renderDirectGospelResult(query, verses, translationId);
         triggerListReveal();
+        if (consumeDirectGospelTargetScroll(query)) {
+          scrollToDirectGospelTarget(query);
+        }
         syncListFabs();
       })
       .catch(function (err) {
@@ -821,6 +927,13 @@
     }
   }
 
+  function clearContextQueryParamsFromUrl() {
+    replaceCurrentQuery(function (params) {
+      params.delete("q");
+      params.delete("translation");
+    });
+  }
+
   function clearPericopeParamFromUrl() {
     replaceCurrentQuery(function (params) {
       params.delete("p");
@@ -966,6 +1079,7 @@
   document.querySelectorAll(".filter-acc-panel").forEach(function (panel) {
     panel.addEventListener("toggle", function () {
       if (panel.open) {
+        clearContextQueryParamsFromUrl();
         clearPericopeDeepLinkWithoutFiltering();
         clearExplorerSelectionWithoutFiltering();
         clearVerseQueryWithoutFiltering();
@@ -1915,6 +2029,9 @@
     }
     const tBtn = e.target.closest("button[data-translation]");
     if (!tBtn) return;
+    if (!isCompareHome) {
+      clearContextQueryParamsFromUrl();
+    }
     setActiveTranslationId(tBtn.dataset.translation);
     if (!isQuickPairTranslationId(getActiveTranslationId())) {
       notePinnedTranslationChoice(getActiveTranslationId());
@@ -2050,10 +2167,10 @@
       const cacheForColumns = cache || { idx: Object.create(null), maxV: Object.create(null), aliases: Object.create(null) };
       const { idx, maxV, aliases } = cacheForColumns;
       const cols = [
-        { book: 40, label: getBookLabel("matthew"), cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
-        { book: 41, label: getBookLabel("mark"), cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
-        { book: 42, label: getBookLabel("luke"), cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
-        { book: 43, label: getBookLabel("john"), cls: "jn", inKey: "in_john", refKey: "ref_john" },
+        { id: "matthew", book: 40, label: getBookLabel("matthew"), cls: "mt", inKey: "in_matthew", refKey: "ref_matthew" },
+        { id: "mark", book: 41, label: getBookLabel("mark"), cls: "mk", inKey: "in_mark", refKey: "ref_mark" },
+        { id: "luke", book: 42, label: getBookLabel("luke"), cls: "lk", inKey: "in_luke", refKey: "ref_luke" },
+        { id: "john", book: 43, label: getBookLabel("john"), cls: "jn", inKey: "in_john", refKey: "ref_john" },
       ];
 
       const active = cols.filter((c) => r[c.inKey]);
@@ -2090,7 +2207,8 @@
                 })
               : SC.renderColumnHtml(c.book, c.label, ref, idx, maxV, aliases);
           const body = applyVerseMarkers(c.book, renderedBody, markerMap);
-          return `<div class="text-col ${c.cls}"><h4>${c.label}<span class="ref-tag">${escapeHtml(ref)}</span></h4>${colMeta}<div class="text-col-body">${body}</div></div>`;
+          const contextLink = renderCompareContextLink(c.id, ref, tid);
+          return `<div class="text-col ${c.cls}"><h4>${c.label}<span class="ref-tag">${escapeHtml(ref)}</span></h4>${colMeta}<div class="text-col-body">${body}</div>${contextLink}</div>`;
         }),
       );
       if (!isCompareRowActive(r, which)) return;
@@ -2235,6 +2353,9 @@
     const q = normalizeSearchToken(qRaw);
     const searchAssistState = getSearchAssistState(qRaw);
     const directGospelQuery = getDirectGospelQuery(searchAssistState, q);
+    if (!directGospelQuery || !directGospelQuery.verse) {
+      directGospelTargetScrollRequested = false;
+    }
     activeSearchChapterQuery =
       !directGospelQuery && searchAssistState && searchAssistState.mode === "chapters" && searchAssistState.selectedChapter
         ? {
@@ -2431,12 +2552,19 @@
     }
 
     qInput.addEventListener("input", function () {
+      clearContextQueryParamsFromUrl();
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
       clearVerseQueryWithoutFiltering();
       filter();
     });
+    qInput.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+      directGospelTargetScrollRequested = true;
+      filter();
+    });
     qInput.addEventListener("focus", function () {
+      clearContextQueryParamsFromUrl();
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
       clearVerseQueryWithoutFiltering();
@@ -2454,6 +2582,7 @@
     searchAssistEl.addEventListener("click", function (e) {
       const chapterBtn = e.target.closest("[data-search-assist-chapter]");
       if (chapterBtn) {
+        clearContextQueryParamsFromUrl();
         const bookId = chapterBtn.getAttribute("data-search-assist-book") || "";
         const chapter = chapterBtn.getAttribute("data-search-assist-chapter") || "";
         const book = getVerseSearchBooks()[bookId];
@@ -2465,6 +2594,7 @@
       }
       const bookBtn = e.target.closest("[data-search-assist-book]");
       if (!bookBtn) return;
+      clearContextQueryParamsFromUrl();
       const bookId = bookBtn.getAttribute("data-search-assist-book") || "";
       const book = getVerseSearchBooks()[bookId];
       if (!book) return;
@@ -2478,6 +2608,7 @@
     explorerChapterEl.addEventListener("click", function (e) {
       const btn = e.target.closest("[data-explorer-group]");
       if (!btn) return;
+      clearContextQueryParamsFromUrl();
       clearPericopeDeepLinkWithoutFiltering();
       clearVerseQueryWithoutFiltering();
       const nextGroupId = btn.dataset.explorerGroup || "";
@@ -2489,6 +2620,7 @@
     chapterPickerItemsEl.addEventListener("click", function (e) {
       const btn = e.target.closest("[data-explorer-topic]");
       if (!btn) return;
+      clearContextQueryParamsFromUrl();
       clearPericopeDeepLinkWithoutFiltering();
       clearVerseQueryWithoutFiltering();
       clearStandardFiltersWithoutFiltering();
@@ -2514,6 +2646,7 @@
     presetEl.addEventListener("click", (e) => {
       const b = e.target.closest("button[data-preset]");
       if (!b) return;
+      clearContextQueryParamsFromUrl();
       clearPericopeDeepLinkWithoutFiltering();
       clearExplorerSelectionWithoutFiltering();
       clearVerseQueryWithoutFiltering();
@@ -2526,6 +2659,9 @@
   const DEFAULT_ALAND_NO = 18;
   if (listEl) {
     try {
+      if (consumeDirectGospelScrollHash()) {
+        directGospelTargetScrollRequested = true;
+      }
       const params = new URLSearchParams(window.location.search);
       const rawQuery = params.get("q");
       if (qInput && rawQuery != null) {

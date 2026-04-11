@@ -151,6 +151,7 @@
     "compareWithLabel": "Compare with",
     "compareWith": "Compare with {gospels}",
     "goToEvent": "Go to event",
+    "goToContext": "View context",
     "translationPrefix": "Translation: {label}",
     "byzantineMeta": "Byzantine majority text (Byz 2013)",
     "sblMeta": "critical edition of the Society of Biblical Literature",

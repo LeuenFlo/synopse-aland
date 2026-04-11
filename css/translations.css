@@ -1258,6 +1258,33 @@ html[data-theme="dark"] .site-info-dialog {
   overflow: visible;
 }
 
+.text-col-context-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.55rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.16s ease, opacity 0.16s ease, border-color 0.16s ease;
+}
+
+.text-col.mt .text-col-context-link { color: var(--mt); }
+.text-col.mk .text-col-context-link { color: var(--mk); }
+.text-col.lk .text-col-context-link { color: var(--lk); }
+.text-col.jn .text-col-context-link { color: var(--jn); }
+
+.text-col-context-link:hover {
+  opacity: 0.82;
+}
+
+.text-col-context-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 /* Griechischer NT-Text: SBL Greek (lokal data/SBL_grk.ttf) */
 .compare-modal-panel.is-greek-script .text-col-body {
   font-family: "SBL Greek", "Times New Roman", "Palatino Linotype", Palatino, serif;
@@ -1952,6 +1979,7 @@ html[data-theme="dark"] .pill.jn.on {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   padding: 0.05rem 0.18rem 0.1rem;
+  scroll-margin-block: 7rem;
 }
 
 .gospel-search-result__verse-num {

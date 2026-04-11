@@ -151,7 +151,7 @@ body.compare-home .compare-home-wrap {
 }
 
 .liste-page .list-section {
-  padding-top: 1.5rem;
+  padding-top: 3.35rem;
 }
 
 .liste-page .liste-page__footer {
@@ -169,7 +169,7 @@ body.compare-home .compare-home-wrap {
 }
 
 .event-explorer {
-  margin-top: 1.1rem;
+  margin-top: 2.25rem;
 }
 
 .event-explorer__chapters {
@@ -1013,6 +1013,10 @@ body.compare-home-example-is-open {
 }
 
 @media (max-width: 720px) {
+  .liste-page .filter-toolbar-search input[type="search"] {
+    font-size: 16px;
+  }
+
   .compare-home-shell {
     min-height: 0;
   }

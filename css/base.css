@@ -834,12 +834,8 @@ select {
 
 .liste-page__search {
   margin-bottom: 0;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
-}
-
-body.is-direct-gospel-mode .liste-page__search {
-  border-bottom-color: transparent;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .liste-page__search-row,
@@ -967,7 +963,7 @@ body.is-direct-gospel-mode .liste-page__search {
 }
 
 .start-state {
-  margin: 0 0 1.15rem;
+  margin: 0 0 1.35rem;
 }
 
 .start-state__kicker {
@@ -979,19 +975,19 @@ body.is-direct-gospel-mode .liste-page__search {
 
 .start-state__title {
   margin: 0;
-  font-size: clamp(1.55rem, 3vw, 2.05rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  color: var(--paper);
+  font-size: clamp(1.22rem, 2.25vw, 1.6rem);
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  line-height: 1.18;
+  color: color-mix(in srgb, var(--paper) 86%, var(--muted));
 }
 
 .start-state__text {
-  margin: 0.6rem 0 0;
-  max-width: 42rem;
-  font-size: 0.95rem;
-  color: var(--muted);
-  line-height: 1.58;
+  margin: 0.45rem 0 0;
+  max-width: 38rem;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--muted) 88%, transparent);
+  line-height: 1.62;
 }
 
 .row-wrap .row-head {
